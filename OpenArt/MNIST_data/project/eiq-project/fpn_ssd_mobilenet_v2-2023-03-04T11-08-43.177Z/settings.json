@@ -1,0 +1,1 @@
+{"task": "detection", "tune": "fpn_ssd_mobilenet_v2", "device": ""}
