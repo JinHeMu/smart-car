@@ -1,0 +1,5 @@
+Load "c:\\Users\\49075\\Desktop\\RTThread demo\\RTTHREAD V1.2.7 DEMO\\Project\\MDK\\Objects\\RT106X.axf" 
+_____^
+*** error 56: cannot open file
+Error: Flash Download failed  -  Could not load file 'c:\Users\49075\Desktop\RTThread demo\RTTHREAD V1.2.7 DEMO\Project\MDK\Objects\RT106X.axf'
+Flash Load finished at 13:23:21
