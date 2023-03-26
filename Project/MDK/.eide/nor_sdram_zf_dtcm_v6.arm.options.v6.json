@@ -1,0 +1,31 @@
+{
+    "version": 3,
+    "beforeBuildTasks": [],
+    "afterBuildTasks": [],
+    "global": {
+        "use-microLIB": true,
+        "output-debug-info": "enable"
+    },
+    "c/cpp-compiler": {
+        "optimization": "level-1",
+        "language-c": "c99",
+        "language-cpp": "c++03",
+        "link-time-optimization": true,
+        "one-elf-section-per-function": true,
+        "plain-char-is-signed": true,
+        "short-enums#wchar": true,
+        "warnings": "ac5-like-warnings",
+        "C_FLAGS": "-fno-common  -fdata-sections  -ffreestanding  -fno-builtin  -mthumb",
+        "CXX_FLAGS": "-fno-common  -fdata-sections  -ffreestanding  -fno-builtin  -mthumb"
+    },
+    "asm-compiler": {
+        "$use": "asm-auto"
+    },
+    "linker": {
+        "output-format": "elf",
+        "misc-controls": "--diag_suppress=L6329",
+        "xo-base": "",
+        "ro-base": "0x00000000",
+        "rw-base": "0x20000000"
+    }
+}

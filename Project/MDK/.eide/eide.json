@@ -1,0 +1,1451 @@
+{
+  "name": "RT106X",
+  "type": "ARM",
+  "dependenceList": [],
+  "srcDirs": [
+    ".eide/deps"
+  ],
+  "virtualFolder": {
+    "name": "<virtual_root>",
+    "files": [],
+    "folders": [
+      {
+        "name": "board",
+        "files": [
+          {
+            "path": "../../Libraries/seekfree_libraries/board/board.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/board/board.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/board/clock_config.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/board/pin_mux.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "code",
+        "files": [
+          {
+            "path": "../CODE/button.c"
+          },
+          {
+            "path": "../CODE/button.h"
+          },
+          {
+            "path": "../CODE/buzzer.c"
+          },
+          {
+            "path": "../CODE/buzzer.h"
+          },
+          {
+            "path": "../CODE/display.c"
+          },
+          {
+            "path": "../CODE/display.h"
+          },
+          {
+            "path": "../CODE/encoder.c"
+          },
+          {
+            "path": "../CODE/encoder.h"
+          },
+          {
+            "path": "../CODE/motor.c"
+          },
+          {
+            "path": "../CODE/motor.h"
+          },
+          {
+            "path": "../CODE/smotor.c"
+          },
+          {
+            "path": "../CODE/smotor.h"
+          },
+          {
+            "path": "../CODE/timer_pit.c"
+          },
+          {
+            "path": "../CODE/timer_pit.h"
+          },
+          {
+            "path": "../CODE/filter.c"
+          },
+          {
+            "path": "../CODE/filter.h"
+          },
+          {
+            "path": "../CODE/carmove.c"
+          },
+          {
+            "path": "../CODE/carmove.h"
+          },
+          {
+            "path": "../CODE/A4.c"
+          },
+          {
+            "path": "../CODE/A4.h"
+          },
+          {
+            "path": "../CODE/imu963.c"
+          },
+          {
+            "path": "../CODE/imu963.h"
+          },
+          {
+            "path": "../CODE/openart.c"
+          },
+          {
+            "path": "../CODE/openart.h"
+          },
+          {
+            "path": "../CODE/imu660.c"
+          },
+          {
+            "path": "../CODE/imu660.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "components",
+        "files": [
+          {
+            "path": "../../Libraries/nxp_libraries/components/lists/generic_list.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/lists/generic_list.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/serial_manager.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/serial_manager.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/serial_port_uart.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/serial_port_uart.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/uart/lpuart_adapter.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/uart/uart.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/osa/fsl_os_abstraction.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/osa/fsl_os_abstraction_bm.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/osa/fsl_os_abstraction_bm.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/osa/fsl_os_abstraction_config.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "deceive",
+        "files": [
+          {
+            "path": "../../Libraries/nxp_libraries/deceive/system_MIMXRT1064.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/deceive/system_MIMXRT1064.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/deceive/MIMXRT1064_features.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/deceive/MIMXRT1064.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/deceive/fsl_device_registers.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "doc",
+        "files": [],
+        "folders": []
+      },
+      {
+        "name": "drives",
+        "files": [
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_adc.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_adc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_adc_etc.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_adc_etc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_aipstz.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_aipstz.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_aoi.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_aoi.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_bee.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_bee.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_cache.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_cache.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_clock.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_clock.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_cmp.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_cmp.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_common.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_common.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_csi.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_csi.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_dcdc.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_dcdc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_dcp.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_dcp.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_dmamux.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_dmamux.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_edma.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_edma.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_elcdif.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_elcdif.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_enc.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_enc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_enet.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_enet.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_ewm.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_ewm.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexcan.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexcan.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_camera.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_camera.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_i2c_master.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_i2c_master.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_i2s.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_i2s.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_i2s_edma.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_i2s_edma.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_spi.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_spi.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_spi_edma.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_spi_edma.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_uart.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_uart.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_uart_edma.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexio_uart_edma.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexram.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexram.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexspi.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_flexspi.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_gpc.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_gpc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_gpio.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_gpio.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_gpt.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_gpt.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_iomuxc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_kpp.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_kpp.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpi2c.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpi2c.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpi2c_edma.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpi2c_edma.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpspi.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpspi.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpspi_edma.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpspi_edma.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpuart.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpuart.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpuart_edma.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_lpuart_edma.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_pit.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_pit.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_pmu.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_pmu.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_pwm.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_pwm.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_pxp.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_pxp.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_qtmr.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_qtmr.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_rtwdog.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_rtwdog.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_sai.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_sai.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_sai_edma.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_sai_edma.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_semc.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_semc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_snvs_hp.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_snvs_hp.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_snvs_lp.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_snvs_lp.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_spdif.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_spdif.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_spdif_edma.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_spdif_edma.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_src.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_src.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_tempmon.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_tempmon.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_trng.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_trng.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_tsc.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_tsc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_usdhc.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_usdhc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_wdog.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_wdog.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_xbara.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_xbara.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_xbarb.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_xbarb.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_ocotp.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/drives/fsl_ocotp.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "fatfs",
+        "files": [
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/fatfs/source/diskio.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/fatfs/source/diskio.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/fatfs/source/ff.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/fatfs/source/ff.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/fatfs/source/ffconf.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/fatfs/source/ffsystem.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/fatfs/source/ffunicode.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/fatfs/source/fsl_sd_disk/fsl_sd_disk.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/fatfs/source/fsl_sd_disk/fsl_sd_disk.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "rtthread_components",
+        "files": [
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/cmd.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_compiler.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_error.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_heap.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_init.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_node.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_ops.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_parser.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_token.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_var.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/finsh_vm.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/msh.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/msh_file.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/shell.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/components/finsh/symbol.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "rtthread_inc",
+        "files": [
+          {
+            "path": "../../Libraries/rttherad_libraries/include/rtdbg.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/rtdebug.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/rtdef.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/rthw.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/rtlibc.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/rtm.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/rtservice.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/rtthread.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/libc/libc_dirent.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/libc/libc_errno.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/libc/libc_fcntl.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/libc/libc_fdset.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/libc/libc_ioctl.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/libc/libc_limits.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/libc/libc_signal.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/libc/libc_stat.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/include/libc/libc_stdio.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "rtthread_lib",
+        "files": [
+          {
+            "path": "../../Libraries/rttherad_libraries/libcpu/arm/cortex-m7/context_rvds.S"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/libcpu/arm/cortex-m7/cpu_cache.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/libcpu/arm/cortex-m7/cpuport.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "rtthread_src",
+        "files": [
+          {
+            "path": "../../Libraries/rttherad_libraries/src/clock.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/components.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/cpu.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/device.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/idle.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/ipc.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/irq.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/kservice.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/mem.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/memheap.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/mempool.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/object.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/scheduler.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/signal.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/slab.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/thread.c"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/src/timer.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "sdmmc",
+        "files": [
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/inc/fsl_mmc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/inc/fsl_sd.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/inc/fsl_sdio.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/inc/fsl_sdmmc_common.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/inc/fsl_sdmmc_host.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/inc/fsl_sdmmc_spec.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/port/fsl_sdmmc_event.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/port/usdhc/interrupt/fsl_sdmmc_event.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/port/usdhc/interrupt/fsl_sdmmc_host.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/src/fsl_mmc.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/src/fsl_sd.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/src/fsl_sdio.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/sdmmc/src/fsl_sdmmc_common.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "seekfree_libraries",
+        "files": [
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_adc.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_adc.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_camera.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_camera.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_csi.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_csi.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_flash.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_flash.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_gpio.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_gpio.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_iic.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_iic.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_iomuxc.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_iomuxc.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_pit.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_pit.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_pwm.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_pwm.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_qtimer.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_qtimer.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_rom_api.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_rom_api.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_spi.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_spi.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_systick.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_systick.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_uart.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_uart.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_vector.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_vector.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/common/common.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/common/common.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/common/SEEKFREE_PRINTF.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/common/SEEKFREE_PRINTF.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_usb_cdc.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_usb_cdc.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_sdcard.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/zf_sdcard.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "seekfree_peripheral",
+        "files": [
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_18TFT.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_18TFT.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_FONT.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_FONT.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_FUN.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_FUN.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_ICM20602.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_ICM20602.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_IIC.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_IIC.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_L3G4200D.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_L3G4200D.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_MMA8451.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_MMA8451.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_MPU6050.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_MPU6050.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_NRF24L01.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_NRF24L01.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_OLED.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_OLED.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_VIRSCO.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_VIRSCO.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_WIRELESS.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_WIRELESS.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_W25QXXJV.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_W25QXXJV.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_MT9V03X.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_MT9V03X.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_MT9V03X_CSI.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_MT9V03X_CSI.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_SCC8660.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_SCC8660.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_SCC8660_CSI.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_SCC8660_CSI.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_IPS114_SPI.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_IPS114_SPI.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_BLUETOOTH_CH9141.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_BLUETOOTH_CH9141.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_GPS_TAU1201.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_GPS_TAU1201.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_IPS200.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_IPS200.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_IMU963RA.c"
+          },
+          {
+            "path": "../../Libraries/seekfree_peripheral/SEEKFREE_IMU963RA.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "startup",
+        "files": [
+          {
+            "path": "../../Libraries/nxp_libraries/startup/MDK-ARM/startup_MIMXRT1064.s"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "usb",
+        "files": [
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/device/usb_device_ehci.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/device/usb_device_ehci.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/include/usb.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/include/usb_misc.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/include/usb_spec.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/phy/usb_phy.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/phy/usb_phy.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/device/usb_device_dci.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/device/usb_device_dci.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/middleware/usb/device/usb_device.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter/usb_device_cdc_acm.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter/usb_device_cdc_acm.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter/usb_device_ch9.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter/usb_device_ch9.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter/usb_device_class.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter/usb_device_class.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter/usb_device_config.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter/usb_device_descriptor.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter/usb_device_descriptor.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "user_c",
+        "files": [
+          {
+            "path": "../USER/src/isr.c"
+          },
+          {
+            "path": "../USER/src/main.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "user_h",
+        "files": [
+          {
+            "path": "../USER/inc/isr.h"
+          },
+          {
+            "path": "../USER/inc/RT106X_config.h"
+          },
+          {
+            "path": "../../Libraries/seekfree_libraries/headfile.h"
+          },
+          {
+            "path": "../../Libraries/rttherad_libraries/bsp/rtconfig.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "utilities",
+        "files": [
+          {
+            "path": "../../Libraries/nxp_libraries/utilities/fsl_assert.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/utilities/debug_console/fsl_debug_console.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/utilities/debug_console/fsl_debug_console.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/utilities/debug_console/fsl_debug_console_conf.h"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/utilities/str/fsl_str.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/utilities/str/fsl_str.h"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "xip",
+        "files": [
+          {
+            "path": "../../Libraries/nxp_libraries/xip/evkmimxrt1064_flexspi_nor_config.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/xip/evkmimxrt1064_sdram_ini_dcd.c"
+          },
+          {
+            "path": "../../Libraries/nxp_libraries/xip/fsl_flexspi_nor_boot.c"
+          }
+        ],
+        "folders": []
+      }
+    ]
+  },
+  "outDir": "build",
+  "deviceName": null,
+  "packDir": null,
+  "miscInfo": {
+    "uid": "59cd9ccc01a08d786f352bcd5c2f0938"
+  },
+  "targets": {
+    "nor_sdram_zf_dtcm_v5": {
+      "excludeList": [],
+      "toolchain": "AC5",
+      "compileConfig": {
+        "cpuType": "Cortex-M7",
+        "floatingPointHardware": "double",
+        "useCustomScatterFile": false,
+        "scatterFilePath": "<YOUR_SCATTER_FILE>.sct",
+        "storageLayout": {
+          "RAM": [
+            {
+              "tag": "IRAM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x20000000",
+                "size": "0x5000"
+              },
+              "isChecked": true,
+              "noInit": false
+            }
+          ],
+          "ROM": [
+            {
+              "tag": "IROM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x08000000",
+                "size": "0x10000"
+              },
+              "isChecked": true,
+              "isStartup": true
+            }
+          ]
+        },
+        "options": "null"
+      },
+      "uploader": "OpenOCD",
+      "uploadConfig": {
+        "bin": "",
+        "target": "stm32f1x",
+        "interface": "stlink",
+        "baseAddr": "0x08000000"
+      },
+      "uploadConfigMap": {
+        "JLink": {
+          "bin": "",
+          "baseAddr": "",
+          "cpuInfo": {
+            "vendor": "null",
+            "cpuName": "null"
+          },
+          "proType": 1,
+          "speed": 8000,
+          "otherCmds": ""
+        }
+      },
+      "custom_dep": {
+        "name": "default",
+        "incList": [
+          "../CODE",
+          "../USER/inc",
+          "../USER/src",
+          "../../Libraries/seekfree_libraries",
+          "../../Libraries/nxp_libraries/CMSIS/Include",
+          "../../Libraries/nxp_libraries/cmsis_drivers",
+          "../../Libraries/nxp_libraries/drives",
+          "../../Libraries/nxp_libraries/startup",
+          "../../Libraries/nxp_libraries/startup/MDK-ARM",
+          "../../Libraries/nxp_libraries/utilities",
+          "../../Libraries/nxp_libraries/utilities/debug_console",
+          "../../Libraries/nxp_libraries/utilities/str",
+          "../../Libraries/nxp_libraries/xip",
+          "../../Libraries/nxp_libraries/deceive",
+          "../../Libraries/nxp_libraries/components/serial_manager",
+          "../../Libraries/nxp_libraries/components/uart",
+          "../../Libraries/nxp_libraries/components/lists",
+          "../../Libraries/nxp_libraries/components/osa",
+          "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter",
+          "../../Libraries/nxp_libraries/middleware/usb/include",
+          "../../Libraries/nxp_libraries/middleware/usb/phy",
+          "../../Libraries/nxp_libraries/middleware/usb/device",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/inc",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/port",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/port/usdhc",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/port/usdhc/interrupt",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/src",
+          "../../Libraries/nxp_libraries/middleware/fatfs/source",
+          "../../Libraries/nxp_libraries/middleware/fatfs/source/fsl_sd_disk",
+          "../../Libraries/seekfree_libraries/common",
+          "../../Libraries/seekfree_libraries/board",
+          "../../Libraries/seekfree_peripheral",
+          ".cmsis/include",
+          "RTE/_nor_sdram_zf_dtcm_v5",
+          ".eide/deps"
+        ],
+        "libList": [],
+        "sourceDirList": [],
+        "defineList": [
+          "CPU_MIMXRT1064DVL6A",
+          "SKIP_SYSCLK_INIT",
+          "XIP_EXTERNAL_FLASH=1",
+          "XIP_BOOT_HEADER_DCD_ENABLE",
+          "XIP_BOOT_HEADER_ENABLE",
+          "PRINTF_FLOAT_ENABLE=1",
+          "SCANF_FLOAT_ENABLE=1",
+          "PRINTF_ADVANCED_ENABLE=1",
+          "SCANF_ADVANCED_ENABLE=1",
+          "FSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ=0",
+          "USB_STACK_BM"
+        ]
+      }
+    },
+    "nor_sdram_zf_dtcm_v6": {
+      "excludeList": [],
+      "toolchain": "AC6",
+      "compileConfig": {
+        "cpuType": "Cortex-M7",
+        "floatingPointHardware": "double",
+        "useCustomScatterFile": false,
+        "scatterFilePath": "<YOUR_SCATTER_FILE>.sct",
+        "storageLayout": {
+          "RAM": [
+            {
+              "tag": "IRAM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x20000000",
+                "size": "0x5000"
+              },
+              "isChecked": true,
+              "noInit": false
+            }
+          ],
+          "ROM": [
+            {
+              "tag": "IROM",
+              "id": 1,
+              "mem": {
+                "startAddr": "0x08000000",
+                "size": "0x10000"
+              },
+              "isChecked": true,
+              "isStartup": true
+            }
+          ]
+        },
+        "options": "null"
+      },
+      "uploader": "JLink",
+      "uploadConfig": {
+        "bin": "",
+        "baseAddr": "",
+        "cpuInfo": {
+          "vendor": "null",
+          "cpuName": "null"
+        },
+        "proType": 1,
+        "speed": 8000,
+        "otherCmds": ""
+      },
+      "uploadConfigMap": {},
+      "custom_dep": {
+        "name": "default",
+        "incList": [
+          "../CODE",
+          "../USER/inc",
+          "../USER/src",
+          "../../Libraries/seekfree_libraries",
+          "../../Libraries/nxp_libraries/CMSIS/Include",
+          "../../Libraries/nxp_libraries/cmsis_drivers",
+          "../../Libraries/nxp_libraries/drives",
+          "../../Libraries/nxp_libraries/startup",
+          "../../Libraries/nxp_libraries/startup/MDK-ARM",
+          "../../Libraries/nxp_libraries/utilities",
+          "../../Libraries/nxp_libraries/utilities/debug_console",
+          "../../Libraries/nxp_libraries/utilities/str",
+          "../../Libraries/nxp_libraries/xip",
+          "../../Libraries/nxp_libraries/deceive",
+          "../../Libraries/nxp_libraries/components/serial_manager",
+          "../../Libraries/nxp_libraries/components/uart",
+          "../../Libraries/nxp_libraries/components/lists",
+          "../../Libraries/nxp_libraries/components/osa",
+          "../../Libraries/nxp_libraries/components/serial_manager/usb_cdc_adapter",
+          "../../Libraries/nxp_libraries/middleware/usb/include",
+          "../../Libraries/nxp_libraries/middleware/usb/phy",
+          "../../Libraries/nxp_libraries/middleware/usb/device",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/inc",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/port",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/port/usdhc",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/port/usdhc/interrupt",
+          "../../Libraries/nxp_libraries/middleware/sdmmc/src",
+          "../../Libraries/nxp_libraries/middleware/fatfs/source",
+          "../../Libraries/nxp_libraries/middleware/fatfs/source/fsl_sd_disk",
+          "../../Libraries/seekfree_libraries/common",
+          "../../Libraries/seekfree_libraries/board",
+          "../../Libraries/seekfree_peripheral",
+          "../../Libraries/rttherad_libraries/bsp",
+          "../../Libraries/rttherad_libraries/components/finsh",
+          "../../Libraries/rttherad_libraries/include",
+          "../../Libraries/rttherad_libraries/include/libc",
+          ".cmsis/include",
+          "RTE/_nor_sdram_zf_dtcm_v6"
+        ],
+        "libList": [],
+        "sourceDirList": [],
+        "defineList": [
+          "CPU_MIMXRT1064DVL6A",
+          "SKIP_SYSCLK_INIT",
+          "XIP_EXTERNAL_FLASH=1",
+          "XIP_BOOT_HEADER_DCD_ENABLE",
+          "XIP_BOOT_HEADER_ENABLE",
+          "PRINTF_FLOAT_ENABLE=1",
+          "SCANF_FLOAT_ENABLE=1",
+          "PRINTF_ADVANCED_ENABLE=1",
+          "SCANF_ADVANCED_ENABLE=1",
+          "FSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ=0",
+          "USB_STACK_BM"
+        ]
+      }
+    }
+  },
+  "version": "3.3"
+}

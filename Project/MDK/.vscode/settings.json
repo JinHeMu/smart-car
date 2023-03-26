@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "seekfree_bluetooth_ch9141.h": "c",
+        "headfile.h": "c",
+        "buzzer.h": "c",
+        "display.h": "c",
+        "openart.h": "c",
+        "carmove.h": "c",
+        "motor.h": "c"
+    }
+}
