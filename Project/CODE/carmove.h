@@ -40,7 +40,8 @@ struct point{
 //extern struct point TAR_POINT[point_num];
 
 extern Pose_car car;
-
+extern uint8 running_mode;//小车运行模式
+extern rt_sem_t recognize_sem;
 
 void route_planning_init();
 

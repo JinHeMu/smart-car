@@ -18,9 +18,6 @@ float Angel_kp=0.06 , Angel_ki=0 , Angel_kd=0.4 ;//角度环
 float Position_kp=0.1,Position_ki=0,Position_kd=0;
 
 
-
-
-
 //积分法计算位移参数
 
 //电机目标速度
@@ -248,29 +245,11 @@ int picture_y_pid(int16 now_y,int16 target_y)
 void pid_calculate(void)
 {
 	
-////	
-    duty1 = Incremental_pid1(speed_tar_1*116,RC_encoder1);
+    duty1 = Incremental_pid1(speed_tar_1*116,RC_encoder1);//计算得到每个电机输出目标值
     duty2 = Incremental_pid2(speed_tar_2*116,RC_encoder2);
     duty3 = Incremental_pid3(speed_tar_3*116,RC_encoder3);
     duty4 = Incremental_pid4(speed_tar_4*116,RC_encoder4);
 
-		
-
-
-
-//		rt_kprintf("duty3:%d\n",duty3);
-//		rt_kprintf("duty4:%d\n",duty4);
-
-	
-	
-//	
-//		duty1 = 0;
-//    duty2 = 4000;
-//    duty3 = 6000;
-//    duty4 = 8000;
-	
-
-	
     duty1 = limit(duty1, PWM_LIMIT);
     duty2 = limit(duty2, PWM_LIMIT);
     duty3 = limit(duty3, PWM_LIMIT);

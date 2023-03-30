@@ -1,8 +1,6 @@
 #include "encoder.h"
 
 
-
-
 //---------------------结构体---------------------//
 struct RC_Para Encoder1_Para = {0,0,0.25};//低通滤波
 struct RC_Para Encoder2_Para = {0,0,0.25};
@@ -23,11 +21,9 @@ int16 RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4;//滤波之后encoder的值
 
 void encoder_init(void)
 {
+  //初始化 QTIMER_1 A相使用QTIMER1_TIMER2_C2 B相使用QTIMER1_TIMER3_C24
     qtimer_quad_init(QTIMER_1,QTIMER1_TIMER0_C0,QTIMER1_TIMER1_C1);
-    
-    //初始化 QTIMER_1 A相使用QTIMER1_TIMER2_C2 B相使用QTIMER1_TIMER3_C24
     qtimer_quad_init(QTIMER_1,QTIMER1_TIMER2_C2,QTIMER1_TIMER3_C24);
-    
     qtimer_quad_init(QTIMER_2,QTIMER2_TIMER0_C3,QTIMER2_TIMER3_C25);
     qtimer_quad_init(QTIMER_3,QTIMER3_TIMER2_B18,QTIMER3_TIMER3_B19);
 }
@@ -37,7 +33,6 @@ void encoder_init(void)
 void omni_mileage()//计算全方位移动距离
 {
     float detax=0,detay=0;
-
     detay=(float)(RC_encoder1 + RC_encoder2 + RC_encoder3 + RC_encoder4)/4;//y轴移动速度
     detax=(float)(-RC_encoder1 + RC_encoder2 + RC_encoder3 - RC_encoder4)/4;//x轴移动速度
     car.MileageX+=(float)(detax*MileageKx);//单位cm
@@ -60,7 +55,6 @@ void encoder_get(void)
     //Car.mileage=(Encoder/1024)*(45/104)*2*PI*0.03;
 			omni_mileage();
 	
-		
       qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER0_C0 );
       qtimer_quad_clear(QTIMER_1,QTIMER1_TIMER2_C2 );
       qtimer_quad_clear(QTIMER_2,QTIMER2_TIMER0_C3 );

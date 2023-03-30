@@ -16,9 +16,8 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
         encoder_get();
 //			rt_kprintf("x:%d", (int)car.MileageX);
 ////			rt_kprintf("y:%d\n", (int)car.MileageY);
-			rt_kprintf("x:%d", (int)car.Speed_X);
-			rt_kprintf("y:%d\n", (int)car.Speed_Y);
-
+			// rt_kprintf("x:%d", (int)car.Speed_X);
+			// rt_kprintf("y:%d\n", (int)car.Speed_Y);
     }
 
     if(0 == (time%5))//0.005s采集一次
@@ -32,7 +31,10 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 //			// parm1 y轴速度 parm2 x轴速度
 //			
 			car_omni(car.Speed_X,car.Speed_Y,car.Speed_Z); 
-//			car_omni(5,5,0); 
+
+
+            //小车右为x，小车上为y
+			// car_omni(5,0,0); 
 //			rt_kprintf("%d\n",RC_encoder2);
 //			rt_kprintf("%d\n",duty2);
 			
@@ -55,11 +57,8 @@ void timer_pit_init(void)
     if(RT_NULL != timer)
     {
         rt_timer_start(timer);
-				rt_kprintf("rt_timer_create successed ...\n");
-    }else
-		{
-			rt_kprintf("rt_timer_create falied ...\n");
-		}
+    }
+
 
     
 }

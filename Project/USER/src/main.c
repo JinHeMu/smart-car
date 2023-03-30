@@ -34,9 +34,6 @@ void main()
 		gpio_toggle(B9);		
 		rt_thread_mdelay(500);
 		motor_control(1);
-		
-
-
-
+		uart_putchar(USART_4, 0x43);
 	}
 }
