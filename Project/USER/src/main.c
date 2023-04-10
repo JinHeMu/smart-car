@@ -26,14 +26,12 @@ void main()
 	motor_init();
 	route_planning_init();
 
-	//		smotor_init();
-	//		magnet_init();
+	arm_init();
 
 	while (1)
 	{
 		gpio_toggle(B9);		
 		rt_thread_mdelay(500);
 		motor_control(1);
-		uart_putchar(USART_4, 0x43);
 	}
 }

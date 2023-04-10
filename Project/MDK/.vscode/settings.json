@@ -6,6 +6,11 @@
         "display.h": "c",
         "openart.h": "c",
         "carmove.h": "c",
-        "motor.h": "c"
-    }
+        "motor.h": "c",
+        "encoder.h": "c",
+        "smotor.h": "c"
+    },
+    "idf.flashType": "UART",
+    "idf.portWin": "COM5",
+    "idf.adapterTargetName": "esp32"
 }

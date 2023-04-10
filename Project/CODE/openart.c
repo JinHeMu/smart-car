@@ -13,7 +13,7 @@ uint8 ART1_uart_rx_buffer;
 lpuart_transfer_t ART1_receivexfer;
 lpuart_handle_t ART1_g_lpuartHandle;
 
-uint8 ART1_mode=3;//模式1位识别坐标点 模式2矫正位姿 模式3识别图片
+uint8 ART1_mode=1;//模式1位识别坐标点 模式2矫正位姿 模式3识别图片
 uint8 ART1_dat[82]; // 前一半x后一半y
 uint8 ART1_POINT_X[40];
 uint8 ART1_POINT_Y[40];
@@ -25,7 +25,7 @@ char classified[10];
 
 uint8 point_num = 0; // 数据个数
 
-rt_sem_t point_sem;//识别坐标点后信号量
+rt_sem_t uart_point_sem;//识别坐标点后信号量
 //rt_sem_t key2_sem;
 //rt_sem_t key3_sem;
 //rt_sem_t key4_sem;
@@ -70,7 +70,7 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 							ART1_POINT_Y[temp-point_num/2] = ART1_dat[temp];
 						}			 
 					}
-					rt_sem_release(point_sem);
+					rt_sem_release(uart_point_sem);//发送已经识别完毕坐标纸的信号量
 					rxstate = 0;
 				}
 				else//没有接收到帧尾，获取坐标点

@@ -44,7 +44,6 @@ void Menu_key_set(void)
 	{
 		ips114_clear(WHITE);
 		func_index = table[func_index].next; // 按键next按下后的索引号
-		rt_kprintf("1");
 		mb_data = 0; // 邮箱数据清除
 	}
 
@@ -52,7 +51,6 @@ void Menu_key_set(void)
 	{
 		ips114_clear(WHITE);
 		func_index = table[func_index].enter; // 按键enter按下后的索引号
-		rt_kprintf("2");
 		mb_data = 0; // 邮箱数据清除
 	}
 
@@ -60,7 +58,6 @@ void Menu_key_set(void)
 	{
 		ips114_clear(WHITE);
 		func_index = table[func_index].back; // 按键back按下后的索引号
-		rt_kprintf("3");
 		mb_data = 0; // 邮箱数据清除
 	}
 	current_operation_index = table[func_index].current_operation; // 执行当前索引号所对应的功能函数

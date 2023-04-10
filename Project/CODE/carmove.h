@@ -17,6 +17,9 @@ typedef struct Pose_car {
     //目标位置
     float target_x;
     float target_y;
+    //识别后搬运位置
+    float target_carry_x;
+    float target_carry_y;
     //当前姿态
     float current_angle;
     //目标姿态
@@ -46,7 +49,7 @@ extern rt_sem_t recognize_sem;
 void route_planning_init();
 
 void uart_coordinate_transforming(uint8 ART1_POINT_X[15], uint8 ART1_POINT_Y[15], uint8 num);
-void nearest_neighbor_sort(struct point* arr, int size);
+void static_planning(struct point* arr, int size);
 
 
 

@@ -4,11 +4,11 @@
 #include "headfile.h"
 
 
-void smotor_init(void);
-void smotor1_control(int16 duty);
-void magnet_init(void);
-void magnet_release(void);
-void magnet_appeal(void);
+void arm_init(void);
+void arm_carry(void);
+void arm_down(void);
+void arm_box(void);
+
 
 //void smotor2_control(int16 duty);
 //void smotor3_control(int16 duty);

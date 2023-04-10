@@ -10,7 +10,7 @@
       <TargetName>nor_sdram_zf_dtcm_v5</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::..\5.06</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -48,8 +48,8 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>RT106X</OutputName>
+          <OutputDirectory>./.rtt-studio/Debug\</OutputDirectory>
+          <OutputName>rtthread</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -110,7 +110,7 @@
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
-          <SimDllArguments> </SimDllArguments>
+          <SimDllArguments></SimDllArguments>
           <SimDlgDll>DCM.DLL</SimDlgDll>
           <SimDlgDllArguments>-pCM7</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
@@ -338,7 +338,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--library_interface=armcc --diag_suppress=66,1296,186,1 --bss_threshold=0</MiscControls>
-              <Define>CPU_MIMXRT1064DVL6A,SKIP_SYSCLK_INIT,XIP_EXTERNAL_FLASH=1, XIP_BOOT_HEADER_DCD_ENABLE =1, XIP_BOOT_HEADER_ENABLE =1,PRINTF_FLOAT_ENABLE=1, SCANF_FLOAT_ENABLE=1, PRINTF_ADVANCED_ENABLE=1, SCANF_ADVANCED_ENABLE=1,FSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ=0,USB_STACK_BM,</Define>
+              <Define>CPU_MIMXRT1064DVL6A,SKIP_SYSCLK_INIT,XIP_EXTERNAL_FLASH=1, XIP_BOOT_HEADER_DCD_ENABLE =1, XIP_BOOT_HEADER_ENABLE =1,PRINTF_FLOAT_ENABLE=1, SCANF_FLOAT_ENABLE=1, PRINTF_ADVANCED_ENABLE=1, SCANF_ADVANCED_ENABLE=1,FSL_DRIVER_TRANSFER_DOUBLE_WEAK_IRQ=0,USB_STACK_BM</Define>
               <Undefine></Undefine>
               <IncludePath>..\CODE;..\USER\inc;..\USER\src;..\..\Libraries\seekfree_libraries;..\..\Libraries\nxp_libraries\CMSIS\Include;..\..\Libraries\nxp_libraries\cmsis_drivers;..\..\Libraries\nxp_libraries\drives;..\..\Libraries\nxp_libraries\startup;..\..\Libraries\nxp_libraries\startup\MDK-ARM;..\..\Libraries\nxp_libraries\utilities;..\..\Libraries\nxp_libraries\utilities\debug_console;..\..\Libraries\nxp_libraries\utilities\str;..\..\Libraries\nxp_libraries\xip;..\..\Libraries\nxp_libraries\deceive;..\..\Libraries\nxp_libraries\components\serial_manager;..\..\Libraries\nxp_libraries\components\uart;..\..\Libraries\nxp_libraries\components\lists;..\..\Libraries\nxp_libraries\components\osa;..\..\Libraries\nxp_libraries\components\serial_manager\usb_cdc_adapter;..\..\Libraries\nxp_libraries\middleware\usb\include;..\..\Libraries\nxp_libraries\middleware\usb\phy;..\..\Libraries\nxp_libraries\middleware\usb\device;..\..\Libraries\nxp_libraries\middleware\sdmmc\inc;..\..\Libraries\nxp_libraries\middleware\sdmmc\port;..\..\Libraries\nxp_libraries\middleware\sdmmc\port\usdhc;..\..\Libraries\nxp_libraries\middleware\sdmmc\port\usdhc\interrupt;..\..\Libraries\nxp_libraries\middleware\sdmmc\src;..\..\Libraries\nxp_libraries\middleware\fatfs\source;..\..\Libraries\nxp_libraries\middleware\fatfs\source\fsl_sd_disk;..\..\Libraries\seekfree_libraries\common;..\..\Libraries\seekfree_libraries\board;..\..\Libraries\seekfree_peripheral</IncludePath>
             </VariousControls>
@@ -371,7 +371,7 @@
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\scf\MIMXRT1064xxxxx_flexspi_nor_v5.scf</ScatterFile>
+            <ScatterFile>scf\MIMXRT1064xxxxx_flexspi_nor.scf</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc>--remove 
@@ -2413,7 +2413,7 @@
         </CommonProperty>
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
-          <SimDllArguments> </SimDllArguments>
+          <SimDllArguments></SimDllArguments>
           <SimDlgDll>DCM.DLL</SimDlgDll>
           <SimDlgDllArguments>-pCM7</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>

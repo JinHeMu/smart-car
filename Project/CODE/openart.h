@@ -4,7 +4,7 @@
 #include "headfile.h"
 
 
-extern rt_sem_t point_sem;
+extern rt_sem_t uart_point_sem;
 
 extern char classified[10];
 
