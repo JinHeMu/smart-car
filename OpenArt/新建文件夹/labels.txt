@@ -1,0 +1,15 @@
+bean
+corn
+peanut
+potato
+rice
+apple
+bannana
+grape
+durian
+orange
+cucumber
+eggplant
+pepper
+cabbage
+radish

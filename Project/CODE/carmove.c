@@ -1,10 +1,5 @@
 #include "carmove.h"
 
-// 模式0  停止等待
-// 模式1  导航 纠正 识别
-// 模式2  搬运图片模式
-// 模式3  回车库
-uint8 running_mode = 0; // 小车运行模式
 
 /**************************************************************************
 
@@ -31,6 +26,11 @@ uint8 running_mode = 0; // 小车运行模式
 3.如何控制小车运动到应该到的点位，同时规划出下一个点位
 **************************************************************************/
 
+// 模式0  停止等待
+// 模式1  导航 纠正 识别
+// 模式2  搬运图片模式
+// 模式3  回车库
+uint8 running_mode = 0; // 小车功能模式
 
 
 struct point tar_point[15]; // 排序好顺序的目标坐标
@@ -41,6 +41,76 @@ rt_sem_t correct_sem;   // 矫正
 rt_sem_t arrive_sem;    // 到达
 rt_sem_t carry_sem;     // 搬运
 rt_sem_t recognize_sem; // 识别
+
+
+
+/**************************************************************************
+函数功能：求两点间的距离
+入口参数：当前位置 目标位置
+返回值：两点距离
+**************************************************************************/
+float distance(float current_x, float current_y, float target_x, float target_y)
+{
+    static float temp;
+    float det_x = (target_x * 20 - current_x);
+    float det_y = (target_y * 20 - current_y);
+    temp = (float)sqrt(det_x * det_x + det_y * det_y);
+    //	rt_kprintf("%d\n", (int)temp);
+    return temp;
+}
+
+// 获得目标角度
+float get_angle(void)
+{
+    static float temp;
+    temp = car.target_angle = atan2((car.target_x - car.current_x), (car.target_y - car.current_y)) * 180 / PI;
+    return  temp;
+}
+
+
+/**************************************************************************
+函数功能：整合函数  输入坐标 小车到指定坐标 单位 坐标单位 角度
+入口参数：目标坐标
+返回值：无
+**************************************************************************/
+void car_move(float tar_x, float tar_y, float tar_angle, uint8 flag)
+{
+    //姿态控制
+    if(flag == 0)
+    {
+        car.target_angle = tar_angle;
+        rt_thread_mdelay(1000);
+        
+        while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 10)//持续运动
+        {
+            car.target_angle = tar_angle;
+            car.Speed_X = picture_x_pid((int)car.MileageX, (int)car.target_x * 20);
+            car.Speed_Y = picture_y_pid((int)car.MileageY, (int)car.target_y * 20);
+            //            rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
+        }
+
+
+    }else
+    {
+        //全向移动
+        while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 10)//持续运动
+        {
+            car.target_angle = 0;
+            car.Speed_X = picture_x_pid((int)car.MileageX, (int)car.target_x * 20);
+            car.Speed_Y = picture_y_pid((int)car.MileageY, (int)car.target_y * 20);
+            //            rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
+        }
+
+    }
+   
+}
+
+
+
+
+
+
+
 
 /**************************************************************************
 函数功能：将串口接受的字符坐标转化成数字坐标
@@ -126,32 +196,20 @@ void dynamic_planning(float current_x,float current_y)
 }
 
 
-/**************************************************************************
-函数功能：求两点间的距离
-入口参数：当前位置 目标位置
-返回值：两点距离
-**************************************************************************/
-float distance(float current_x, float current_y, float target_x, float target_y)
-{
-    static float temp;
-    float det_x = (target_x * 20 - current_x);
-    float det_y = (target_y * 20 - current_y);
-    temp = (float)sqrt(det_x * det_x + det_y * det_y);
-    //	rt_kprintf("%d\n", (int)temp);
-    return temp;
-}
 
-// 获得当前位置，以及距离下一个点位的距离
-void get_location(void)
+
+
+
+
+void arrive_point_entry(void *param)
 {
-    //    charge_locate();
-    //    get_target();
-    // 用两点式计算角度和距离
-    car.target_angle = atan2((car.target_x - car.current_x), (car.target_y - car.current_y)) * 180 / PI;
-    // 计算两点x，y的距离差值
-    car.target_distanceX = 20 * (car.target_x - car.current_x);
-    car.target_distanceY = 20 * (car.target_y - car.current_y);
-    // Car.Distance=sqrt(Car.DistanceX*Car.DistanceX+Car.DistanceY*Car.DistanceY);
+    while (1)
+    {
+        rt_sem_take(arrive_sem, RT_WAITING_FOREVER);//接受到达信号量
+        rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送1000
+        car_move(car.target_x, car.target_y, car.target_angle, 1);
+    }
+    
 }
 
 void traverse_points()
@@ -184,36 +242,15 @@ void traverse_points()
 
         // rt_mb_send(buzzer_mailbox, 500);//给buzzer_mailbox发送100
 
-        while (distance(car.MileageX, car.MileageY, car.target_x, car.target_y) > 10)//持续运动
-        {
-            car.Speed_X = picture_x_pid((int)car.MileageX, (int)car.target_x * 20);
-            car.Speed_Y = picture_y_pid((int)car.MileageY, (int)car.target_y * 20);
-            //            rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
-        }
-
-
-        // rt_sem_release(arrive_sem);
-
-        rt_sem_release(correct_sem);//到达后发送矫正信号
+        car_move(car.target_x, car.target_y, car.target_angle, 1);
     }
+
+
+        rt_sem_release(arrive_sem);
+
+        // rt_sem_release(correct_sem);//到达后发送矫正信号
 }
 
-
-void arrive_point_entry(void *param)
-{
-    while (1)
-    {
-        rt_sem_take(arrive_sem, RT_WAITING_FOREVER);//接受到达信号量
-        rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送1000
-        while (distance(car.MileageX, car.MileageY, car.target_x, car.target_y) > 10)//持续运动
-        {
-            car.Speed_X = picture_x_pid((int)car.MileageX, (int)car.target_x * 20);
-            car.Speed_Y = picture_y_pid((int)car.MileageY, (int)car.target_y * 20);
-            //            rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
-        }
-    }
-    
-}
 
 
 void correct_entry(void *param)

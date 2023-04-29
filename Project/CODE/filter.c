@@ -49,9 +49,9 @@ float Kalmen_getAngle(float now_angle, float now_rate,float dt)
 
     //预测误差协方差
     kal_P[0][0] += Q_angle - (kal_P[0][1] -kal_P[1][0]) * dt;
-    kal_P[0][1] -= kal_P[1][1] * dt;
-    kal_P[1][0] -= kal_P[1][1] * dt;
-    kal_P[1][1] = kal_P[1][0] + Q_bias;
+    kal_P[0][1] -= kal_P[0][1] * dt;
+    kal_P[1][0] -= kal_P[1][0] * dt;
+    kal_P[1][1] += Q_bias;
 
     //计算卡尔曼增益
     kal_k[0] = kal_P[0][0]/(kal_P[0][0] + R_angle);
@@ -59,13 +59,13 @@ float Kalmen_getAngle(float now_angle, float now_rate,float dt)
 
     //计算最优估计值
     kal_angle = kal_angle + kal_k[0] * (now_angle - kal_angle);
-    Q_bias = Q_bias + kal_k[1] * (now_angle - kal_angle);
+    Q_bias    = Q_bias    + kal_k[1] * (now_angle - kal_angle);
 
     //更新协方差矩阵
     kal_P[0][0] = kal_P[0][0] - kal_k[0] * kal_P[0][0];
     kal_P[0][1] = kal_P[0][1] - kal_k[0] * kal_P[0][1];
     kal_P[1][0] = kal_P[1][0] - kal_k[1] * kal_P[0][0];
-    kal_P[1][0] = kal_P[1][0] - kal_k[1] * kal_P[0][1];
+    kal_P[1][1] = kal_P[1][1] - kal_k[1] * kal_P[0][1];
 
     return kal_angle;
 }

@@ -27,9 +27,10 @@ typedef struct Pose_car {
     //目标距离
     float target_distanceX;
     float target_distanceY;
-    //距上次转向之后前进的距离(里程）
+    //里程
     float MileageX;
     float MileageY;
+    float MileageZ;
 }Pose_car;
 
 

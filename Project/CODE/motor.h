@@ -23,6 +23,8 @@ void car_omni(float x, float y, float z);
 int angel_pid(int NowAngel,int TargetAngel);
 int picture_x_pid(int16 now_x,int16 target_x);
 int picture_y_pid(int16 now_y,int16 target_y);
+int correct_x_pid(int16 now_x,int16 target_y);
+int correct_y_pid(int16 now_y,int16 target_y);
 
 
 void car_ahead();

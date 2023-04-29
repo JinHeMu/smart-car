@@ -8,7 +8,11 @@
         "carmove.h": "c",
         "motor.h": "c",
         "encoder.h": "c",
-        "smotor.h": "c"
+        "smotor.h": "c",
+        "seekfree_imu963ra.h": "c",
+        "zf_spi.h": "c",
+        "imu963.h": "c",
+        "seekfree_ips114_spi.h": "c"
     },
     "idf.flashType": "UART",
     "idf.portWin": "COM5",

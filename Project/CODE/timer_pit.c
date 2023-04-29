@@ -25,11 +25,11 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 			Mahony_computeAngles();//采集陀螺仪数据
 			
 			car.Speed_Z=angel_pid((int)angle_z, (int)car.target_angle);//omnimove模式下目标方向一直为0
-//			rt_kprintf("%d\n",(int)car.target_angle);
-//			
-//			//给予小车速度，通过解算自动输出到电机来形成相应的速度
-//			// parm1 y轴速度 parm2 x轴速度
-//			
+////			rt_kprintf("%d\n",(int)car.target_angle);
+////			
+////			//给予小车速度，通过解算自动输出到电机来形成相应的速度
+////			// parm1 y轴速度 parm2 x轴速度
+////			
 			car_omni(car.Speed_X,car.Speed_Y,car.Speed_Z); 
 
 

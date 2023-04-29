@@ -14,6 +14,7 @@ RC_Filter_pt RC_Encoder4 = &Encoder4_Para;
 
 float MileageKx=0.008632f;//对应实际x距离比例值
 float MileageKy=0.00888f;
+float MileageKz= 0.01f;
 
 int16 encoder1=0,encoder2=0,encoder3=0,encoder4=0;//编码器的值
 int16 RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4;//滤波之后encoder的值
@@ -32,11 +33,14 @@ void encoder_init(void)
 
 void omni_mileage()//计算全方位移动距离
 {
-    float detax=0,detay=0;
+    float detax=0,detay=0,detaz=0;
     detay=(float)(RC_encoder1 + RC_encoder2 + RC_encoder3 + RC_encoder4)/4;//y轴移动速度
     detax=(float)(-RC_encoder1 + RC_encoder2 + RC_encoder3 - RC_encoder4)/4;//x轴移动速度
+    detaz = (float)(RC_encoder1 - RC_encoder2 + RC_encoder3 - RC_encoder4)/4;
     car.MileageX+=(float)(detax*MileageKx);//单位cm
     car.MileageY+=(float)(detay*MileageKy);//单位cm
+    car.MileageZ += (float)(detaz*MileageKz);
+
 }
 
 void encoder_get(void)

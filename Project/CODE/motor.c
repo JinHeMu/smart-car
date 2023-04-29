@@ -16,6 +16,7 @@ int32 duty1=0,duty2=0,duty3=0,duty4=0;//电机PWM值
 float Incremental_kp=0.9, Incremental_ki=2.4, Incremental_kd=0;//增量式PID，控制电机输出值
 float Angel_kp=0.06 , Angel_ki=0 , Angel_kd=0.4 ;//角度环
 float Position_kp=0.08,Position_ki=0,Position_kd=0;
+float correct_kp=0.08,correct_ki=0,correct_kd=0;
 
 
 //积分法计算位移参数
@@ -236,6 +237,36 @@ int picture_y_pid(int16 now_y,int16 target_y)
         Speed_Y=-10;
     return (int)Speed_Y;
 }
+
+int correct_x_pid(int16 now_x,int16 target_x)
+{
+    static float Bias,Speed_X,Integral_bias,Last_Bias;
+    Bias=(float)(target_x - now_x);
+    Integral_bias+=Bias;
+    Speed_X=Position_kp*Bias+Position_ki*Integral_bias+Position_kd*(Bias-Last_Bias);
+    Last_Bias=Bias;
+    if(Speed_X>=2)
+        Speed_X=2;
+    if(Speed_X<=-2)
+        Speed_X=-2;
+    return (int)Speed_X;
+}
+
+int correct_y_pid(int16 now_y,int16 target_y)
+{
+    static float Bias,Speed_Y,Integral_bias,Last_Bias;
+    Bias=(float)(target_y - now_y);
+    Integral_bias+=Bias;
+    Speed_Y=Position_kp*Bias+Position_ki*Integral_bias+Position_kd*(Bias-Last_Bias);
+    Last_Bias=Bias;
+    if(Speed_Y>=2)
+        Speed_Y=2;
+    if(Speed_Y<=-2)
+        Speed_Y=-2;
+    return (int)Speed_Y;
+}
+
+
 
 
 

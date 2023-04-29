@@ -22,7 +22,7 @@ def openart_init():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(2000)
+    sensor.set_brightness(1000)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True,(0,0,0))
@@ -61,20 +61,20 @@ def find_coordinates(img):
         if r.w() > 120 and r.w() < 180 and r.h() > 70 and r.h() < 130:
             # 绘制矩形外框，便于在IDE上查看识别到的矩形位置
             corners = r.corners()
-            img1 = img.rotation_corr(0,0,0,0,0,1,60,corners)
-            img1.draw_rectangle(r.rect(), color=(255, 0, 0))
+            img1 = img.rotation_corr(0,0,0,0,0,1,60,corners).replace(vflip=True,  hmirror=False,  transpose=False)
+ 
             # 将矩形属性打印出来
             # jiangly 不是dd
             # print("w:" + str(r.w()) + "  h:" + str(r.h()))
             # 在矩形中搜索圆形
-            for c in img1.find_circles(threshold=2800, x_margin=5, y_margin=5, r_margin=5, r_min=1,
+            for c in img1.find_circles((5,5,300,220),x_stride = 2, y_stride = 1,threshold=1500, x_margin=10, y_margin=10, r_margin=5, r_min=1,
                                       r_max=5, r_step=1):
                 # 绘制圆形外框
                 img1.draw_circle(c.x(), c.y(), c.r(), color=(255, 0, 0))
                 # 计算实际X坐标点
-                posx = (float(c.x()) - float(r.x())) / float(r.w()) * 35 + 1
+                posx = (float(c.x())) / 315 * 35 + 1
                 # 计算实际Y坐标点
-                posy = 25 - ((float(c.y()) - float(r.y())) / float(r.h()) * 25) + 1
+                posy = 25 - ((float(c.y())-1) / 235 * 25) + 1
 
                 pos_nowx.append(int(posx)) #将识别到的坐标点加入列表中
                 pos_y.append(int(posy))
