@@ -70,6 +70,11 @@ void ARHS_getValues()
 	source_data.gyro_x = ((float)imu963ra_gyro_x + Gyro_Bias.Xdata) * M_PI / 180 / 14.3f;
 	source_data.gyro_y = ((float)imu963ra_gyro_y + Gyro_Bias.Ydata) * M_PI / 180 / 14.3f;
 	source_data.gyro_z = ((float)imu963ra_gyro_z + Gyro_Bias.Zdata) * M_PI / 180 / 14.3f;
+	
+	if(abs((int)imu963ra_gyro_z + Gyro_Bias.Zdata)<10)
+	{
+		source_data.gyro_z = 0;
+	}
 
 	angle_x += (source_data.gyro_x / 3.33);
 	angle_y += (source_data.gyro_y / 3.33);

@@ -14,9 +14,9 @@
 
 int32 duty1=0,duty2=0,duty3=0,duty4=0;//电机PWM值
 float Incremental_kp=0.9, Incremental_ki=2.4, Incremental_kd=0;//增量式PID，控制电机输出值
-float Angel_kp=0.06 , Angel_ki=0 , Angel_kd=0.4 ;//角度环
-float Position_kp=0.08,Position_ki=0,Position_kd=0;
-float correct_kp=0.08,correct_ki=0,correct_kd=0;
+float Angel_kp=0.08 , Angel_ki=0 , Angel_kd=0.4 ;//角度环
+float Position_kp=0.1,Position_ki=0,Position_kd=0;
+float correct_kp=0.1,correct_ki=0,correct_kd=2;
 
 
 //积分法计算位移参数

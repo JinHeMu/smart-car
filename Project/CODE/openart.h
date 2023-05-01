@@ -13,6 +13,7 @@ extern uint8 ART1_mode;
 extern uint8 point_num; // 数据个数
 extern int8 ART1_CORRECT_X;
 extern int8 ART1_CORRECT_Y;
+extern int8 ART1_CORRECT_Angle;
 // extern char discern_kind[2];
 // extern int ART1_flag;
 // extern int Max_points;
