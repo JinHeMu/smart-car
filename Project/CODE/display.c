@@ -40,21 +40,21 @@ void Menu_key_set(void)
 
 	rt_mb_recv(display_mailbox, &mb_data, RT_WAITING_NO); // 接受按键发送过来的邮件
 
-	if ((mb_data == 1)) // 按下按键1
+	if ((mb_data == 2)) // 按下按键1
 	{
 		ips114_clear(WHITE);
 		func_index = table[func_index].next; // 按键next按下后的索引号
 		mb_data = 0; // 邮箱数据清除
 	}
 
-	if ((mb_data == 2))
+	if ((mb_data == 3))
 	{
 		ips114_clear(WHITE);
 		func_index = table[func_index].enter; // 按键enter按下后的索引号
 		mb_data = 0; // 邮箱数据清除
 	}
 
-	if (mb_data == 3)
+	if (mb_data == 4)
 	{
 		ips114_clear(WHITE);
 		func_index = table[func_index].back; // 按键back按下后的索引号
@@ -187,18 +187,22 @@ void GUI_route_value()
 void display_entry(void *parameter)
 {
 
-//		car.target_angle = 90;
-//	rt_thread_mdelay(2000);
-//	car.target_angle = 180;
-//	rt_thread_mdelay(2000);
-//	car.target_angle = 0;
-//	rt_thread_mdelay(2000);
-//	car.target_angle = -90;
-//	rt_thread_mdelay(1000);
-//	car.target_angle = -45;
-//	rt_thread_mdelay(2000);
-//	car.target_angle = 0;
-//	rt_thread_mdelay(2000);
+	// car.target_angle = 40;
+	// rt_thread_mdelay(2000);
+	// car.target_angle = 20;
+	// rt_thread_mdelay(2000);
+	// car.target_angle = 90;
+	// rt_thread_mdelay(2000);
+	// car.target_angle = 180;
+	// rt_thread_mdelay(2000);
+	// car.target_angle = 0;
+	// rt_thread_mdelay(2000);
+	// car.target_angle = -90;
+	// rt_thread_mdelay(1000);
+	// car.target_angle = -45;
+	// rt_thread_mdelay(2000);
+	// car.target_angle = 0;
+	// rt_thread_mdelay(2000);
 
 	while (1)
 	{

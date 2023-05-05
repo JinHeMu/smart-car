@@ -38,30 +38,25 @@ rt_sem_t arrive_sem;    // 到达
 rt_sem_t carry_sem;     // 搬运
 rt_sem_t recognize_sem; // 识别
 
+rt_thread_t route_planning_th; // 路径规划线程
+// rt_thread_t arrive_point_th;//到达点位线程
+rt_thread_t correct_th;          // 矫正线程
+rt_thread_t carry_th;            // 搬运线程
+rt_thread_t dynamic_planning_th; // 动态规划线程
+
 /**************************************************************************
 函数功能：求两点间的距离
 入口参数：当前位置 目标位置
 返回值：两点距离
 **************************************************************************/
-#define DISTANCE_HISTORY_SIZE 5
 
 float distance(float current_x, float current_y, float target_x, float target_y) {
-    static float distance_history[DISTANCE_HISTORY_SIZE] = {0}; // 初始化为0
-    static int history_index = 0;
+
     float det_x = target_x * 20 - current_x;
     float det_y = target_y * 20 - current_y;
     float current_distance = sqrt(det_x * det_x + det_y * det_y);
 
-    distance_history[history_index] = current_distance;
-    history_index = (history_index + 1) % DISTANCE_HISTORY_SIZE;
-
-    float sum = 0;
-    for (int i = 0; i < DISTANCE_HISTORY_SIZE; i++) {
-        sum += distance_history[i];
-    }
-    float average_distance = sum / DISTANCE_HISTORY_SIZE;
-
-    return average_distance;
+    return current_distance;
 }
 
 
@@ -215,8 +210,9 @@ void traverse_points()
 
         if (point == point_num / 2)
         {
-            car.target_x = 5;
-            car.target_y = 5;
+            car_move(5, 5, 0, 1);
+            rt_thread_delete(route_planning_th);
+            
         }
         else
         {
@@ -230,8 +226,8 @@ void traverse_points()
         car_move(car.target_x, car.target_y, 0, 1);
 
         rt_thread_mdelay(2000);
-        //				rt_sem_release(arrive_sem);
-        rt_sem_release(correct_sem); // 到达后发送矫正信号
+        rt_sem_release(arrive_sem);
+//        rt_sem_release(correct_sem); // 到达后发送矫正信号
     }
 }
 
@@ -257,14 +253,18 @@ void correct_entry(void *param)
         rt_kprintf("correcting!!!\n");
         ART1_mode = 2;               // art矫正模式
         uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
-        rt_thread_mdelay(5);
+        rt_thread_mdelay(20);
+
+
+        // car.target_angle = ART1_CORRECT_Angle;
 
         while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
         {
 
             rt_thread_mdelay(5);
-            car.Speed_X = -picture_x_pid((int)ART1_CORRECT_X, 0);
-            car.Speed_Y = picture_y_pid((int)ART1_CORRECT_Y, 0);
+            car.Speed_X = -correct_x_pid((int)ART1_CORRECT_X, 0);
+            car.Speed_Y = correct_y_pid((int)ART1_CORRECT_Y, 0);
+            
 
             //             rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
         }
@@ -273,9 +273,14 @@ void correct_entry(void *param)
         car.current_x = car.target_x; // 更新当前坐标
         car.current_y = car.target_y;
 
+        // rt_kprintf("current_x: %d, current_y : %d\n", car.current_x, car.current_y);
+
+        car.MileageX = car.target_x; // 更新当前坐标
+        car.MileageY = car.target_y;
+
         
-        arm_carry();
-        arm_down();
+        // arm_carry();
+        // arm_down();
         // ART1_mode = 3;//告诉openart该识别图片了
         // rt_sem_release(recognize_sem);
         // rt_sem_release(correct_sem);
@@ -388,11 +393,7 @@ void dynamic_planning_entry(void *param)
 
 void route_planning_init()
 {
-    rt_thread_t route_planning_th; // 路径规划线程
-    // rt_thread_t arrive_point_th;//到达点位线程
-    rt_thread_t correct_th;          // 矫正线程
-    rt_thread_t carry_th;            // 搬运线程
-    rt_thread_t dynamic_planning_th; // 动态规划线程
+
 
     arrive_sem = rt_sem_create("arrive_sem", 1, RT_IPC_FLAG_FIFO);         // 到达信号量，接受就开始跑点
     uart_point_sem = rt_sem_create("uart_point_sem", 0, RT_IPC_FLAG_FIFO); // 接收坐标信号量

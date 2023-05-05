@@ -10,6 +10,7 @@
 // 收'D' ART1纠正角度帧尾 也是识别成功标志位
 
 
+
 uint8 ART1_uart_rx_buffer;
 lpuart_transfer_t ART1_receivexfer;
 lpuart_handle_t ART1_g_lpuartHandle;
@@ -22,6 +23,7 @@ uint8 ART1_POINT_Y[40];
 int8 ART1_CORRECT_X;
 int8 ART1_CORRECT_Y;
 int8 ART1_CORRECT_Angle;
+int8 ART1_CORRECT_Boundary_Angle;
 
 char classified[10];
 
@@ -139,6 +141,13 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					count++; // 统计接到数据的个数  前二分之一为x坐标， 后二分之一为y坐标
 				}
 			}
+		}else if (ART1_mode == 4)
+		{
+			
+			ART1_CORRECT_Boundary_Angle = ART1_uart_rx_buffer;
+			rt_kprintf("Angle: %d\n", ART1_CORRECT_Boundary_Angle);
+
+
 		}
 	handle->rxDataSize = ART1_receivexfer.dataSize; // 还原缓冲区长度
 	handle->rxData = ART1_receivexfer.data;			// 还原缓冲区地址
