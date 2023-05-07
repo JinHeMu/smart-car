@@ -6,6 +6,8 @@ import seekfree
 import math
 import sensor, image, time
 
+lcd = seekfree.LCD180(2)#显示屏
+lcd.full()
 
 LED(4).on()#照明
 
@@ -20,7 +22,7 @@ def openart_init():
     sensor.set_brightness(800)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
-    sensor.set_auto_whitebal(True,(0,0,0))
+    sensor.set_auto_whitebal(False,(0,0,0))
 
 
 #for i in range(5):
@@ -39,11 +41,13 @@ def snapshot(count):
         x, y, w, h = b.rect()  # 设置剪裁区域的左上角坐标和宽度、高度
 
         img_copy = img.copy()
-        #img_copy.draw_rectangle((x,y,w,h), color=(255, 0, 0), thickness=3)
+        img.draw_rectangle(b.rect(), color = (255, 0, 0), scale = 1, thickness = 2)
+
         img_cropped = img_copy.copy(roi=b.rect())
+        lcd.show_image(img, 320, 240, zoom=2)
 
         # 保存裁剪后的图像
-        img_cropped.save("/picture/cropped%d.jpg" % count)
+        img_cropped.save("/picture/cucumber/%d.jpg" % count)
 
 
         # img1 = img.rotation_corr(0,0,0,0,0,1,60,corners).replace(vflip=True,  hmirror=False,  transpose=False)
@@ -54,12 +58,13 @@ def main():
     count = 1
     while(True):
         if(count > 101) :
+            lcd.show_str('OVER', 0, 60)
             break
         else:
             img = sensor.snapshot()
             snapshot(count)
             count += 1
-            time.sleep(1)
+            time.sleep(0.5)
 
 
 

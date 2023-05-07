@@ -11,7 +11,7 @@ global pos_perx,uart_flag
 line = None
 pos_perx = []
 uart_flag = 0
-threshold = [(87, 100, -128, 24, -25, 125)]#色块检测阈值
+threshold = [(45, 100, -128, 24, -25, 125)]#色块检测阈值
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -96,54 +96,63 @@ def picture_correct():
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True,(0,0,0))
 
-    img = sensor.snapshot()
+
 
     dis_X = 0
     dis_Y = 0
     distance = 0
 
+    q_list = [0] * 5  # the length of the list is set to 10
+
     while True:
         img = sensor.snapshot()
 
 
-        for b in img.find_blobs(threshold,pixels_threshold=400,area_threshold=400,margin= 1,merge=True,invert=0):
-
+        for b in img.find_blobs(threshold, pixels_threshold=400, area_threshold=400, margin=1, merge=True, invert=0):
             #寻找角点
-            corners = b.corners()
+            corners = b.min_corners()
+            point_corners = tuple(sorted(corners))
             for corner in corners:
                 img.draw_circle(corner[0], corner[1], 5, color=(0, 255, 0))
+            x0, y0 = point_corners[3]
+            x1, y1 = point_corners[2]
+            x2, y2 = point_corners[1]
+            x3, y3 = point_corners[0]
 
-            x1, y1 = corners[0]
-            x2, y2 = corners[1]
-            x3, y3 = corners[2]
-            x4, y4 = corners[3]
+            len1 = (x0 - x1) ** 2 + (y0 - y1) ** 2
+            len2 = (x1 - x3) ** 2 + (y1 - y3) ** 2
 
-            dis_x_1 = x1-x3
-            dis_x_2 = x4-x2
-            dis_y_1 = y1-y3
-            dis_y_2 = y4-y2
-            a1 = math.atan2(dis_y_1, dis_x_1)
-            a2 = math.atan2(dis_x_2, dis_y_2)
-            angle1 = a1 / math.pi*180 - 180
-            angle2 = (a2 / math.pi * 180 - 45) if dis_x_2 > 0 else (90 + (a2 / math.pi * 180 - 45))
+            if len1 > len2:
+                if x1 == x0:
+                    q = 0.5 * math.pi
+                else:
+                    q = math.atan((y1 - y0) / (x1 - x0))
+            else:
+                if x1 == x3:
+                    q = 0.5 * math.pi
+                else:
+                    q = math.atan((y3 - y1) / (x3 - x1))
 
-            print("angle1 : %d  angle4 : %d\n" % (angle1, angle2))
+            # add the new value of q to the list and remove the oldest value
+            q_list = q_list[1:] + [q]
 
-            #寻找中心点
-            img.draw_rectangle(b.rect(), color = (255, 0, 0), scale = 1, thickness = 2)
-            img_x = (int)(b.rect()[0] + b.rect()[2] / 2)
-            img_y = (int)(b.rect()[1] + b.rect()[3] / 2)
-            img.draw_circle(img_x, img_y, 5, color=(0, 255, 0))
-            dis_X = img_x - 80
-            dis_Y = img_y - 63
+            # calculate the moving average of the last 10 values of q
+            q_filtered = int((sum(q_list) / len(q_list))*60)
+
+            print("angle:%d" % q_filtered)
+
+
+            img.draw_circle(b.cx(), b.cy(), 5, color=(0, 255, 0))
+            dis_X = b.cx() - 80
+            dis_Y = b.cy() - 63
             print("disx:%d , disy:%d" % (dis_X, dis_Y))
 
             #发送数据
-            uart.write("C")
-            uart.write("%c" % dis_X)
-            uart.write("%c" % dis_Y)
-            uart.write("%c" % int(angle2))
-            uart.write("D")
+            #uart.write("C")
+            #uart.write("%c" % dis_X)
+            #uart.write("%c" % dis_Y)
+            #uart.write("%c" % q_filtered)
+            #uart.write("D")
             lcd.show_image(img, 160, 120, zoom=0)
             distance = math.sqrt((dis_X ** 2) + (dis_Y ** 2))
             if distance < 10:
@@ -229,28 +238,28 @@ def main():
     while(True):
         img = sensor.snapshot()
         #boundary_correct()
-        #picture_correct()
+        picture_correct()
 
 
-        uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
-        if (uart_num):
-            uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
-            if(uart_str.decode() == "A"):
-                print("A")
-                while(uart_flag != 1):
-                    find_coordinates()
-                
-            elif(uart_str.decode() == "B"):
-                print("B")
-                picture_correct()
-                
-            elif(uart_str.decode() == "C"):
-                print("C")
-                recognize_pic(labels, net)
-                
-        else:
-            img = sensor.snapshot()
-            lcd.show_image(img, 320, 240, zoom=2)
+        #uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
+        #if (uart_num):
+            #uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
+            #if(uart_str.decode() == "A"):
+                #print("A")
+                #while(uart_flag != 1):
+                    #find_coordinates()
+
+            #elif(uart_str.decode() == "B"):
+                #print("B")
+                #picture_correct()
+
+            #elif(uart_str.decode() == "C"):
+                #print("C")
+                #recognize_pic(labels, net)
+
+        #else:
+            #img = sensor.snapshot()
+            #lcd.show_image(img, 320, 240, zoom=2)
 
 
 
