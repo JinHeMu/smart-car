@@ -256,17 +256,18 @@ void correct_entry(void *param)
         rt_thread_mdelay(20);
 
 
-        // car.target_angle = ART1_CORRECT_Angle;
+        
 
-        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
+        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0 || abs(ART1_CORRECT_Angle) > 5))
         {
 
             rt_thread_mdelay(5);
+						car.target_angle = ART1_CORRECT_Angle;
             car.Speed_X = -correct_x_pid((int)ART1_CORRECT_X, 0);
             car.Speed_Y = correct_y_pid((int)ART1_CORRECT_Y, 0);
             
 
-            //             rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
+            rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
         }
         rt_mb_send(buzzer_mailbox, 500); // 给buzzer_mailbox发送100
 
@@ -283,10 +284,11 @@ void correct_entry(void *param)
         // arm_down();
         // ART1_mode = 3;//告诉openart该识别图片了
         // rt_sem_release(recognize_sem);
-        // rt_sem_release(correct_sem);
+       
 
         rt_thread_mdelay(1000);
-        rt_sem_release(arrive_sem);
+				rt_sem_release(correct_sem);
+//        rt_sem_release(arrive_sem);
     }
 }
 
@@ -395,9 +397,9 @@ void route_planning_init()
 {
 
 
-    arrive_sem = rt_sem_create("arrive_sem", 1, RT_IPC_FLAG_FIFO);         // 到达信号量，接受就开始跑点
+    arrive_sem = rt_sem_create("arrive_sem", 0, RT_IPC_FLAG_FIFO);         // 到达信号量，接受就开始跑点
     uart_point_sem = rt_sem_create("uart_point_sem", 0, RT_IPC_FLAG_FIFO); // 接收坐标信号量
-    correct_sem = rt_sem_create("correct_sem", 0, RT_IPC_FLAG_FIFO);       // 矫正信号量，接受就开始矫正
+    correct_sem = rt_sem_create("correct_sem", 1, RT_IPC_FLAG_FIFO);       // 矫正信号量，接受就开始矫正
     recognize_sem = rt_sem_create("recognize_sem", 0, RT_IPC_FLAG_FIFO);   // 识别信号量，告诉单片机已经识别，接受就开始搬运
     carry_sem = rt_sem_create("carry_sem", 0, RT_IPC_FLAG_FIFO);           // 搬运信号量，接受即已经搬运到相应点位
 

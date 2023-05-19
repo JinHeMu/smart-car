@@ -11,7 +11,7 @@ global pos_perx,uart_flag
 line = None
 pos_perx = []
 uart_flag = 0
-threshold = [(45, 100, -128, 24, -25, 125)]#色块检测阈值
+threshold = [(70, 100, -128, 24, -25, 125)]#色块检测阈值
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -122,37 +122,38 @@ def picture_correct():
             len1 = (x0 - x1) ** 2 + (y0 - y1) ** 2
             len2 = (x1 - x3) ** 2 + (y1 - y3) ** 2
 
-            if len1 > len2:
-                if x1 == x0:
-                    q = 0.5 * math.pi
-                else:
-                    q = math.atan((y1 - y0) / (x1 - x0))
+            if x1 == x0:
+                q = 0
             else:
-                if x1 == x3:
-                    q = 0.5 * math.pi
-                else:
-                    q = math.atan((y3 - y1) / (x3 - x1))
+                q = math.atan((x1 - x0) / (y1 - y0))
+                #print(x1 - x0, y1 - y0)
 
-            # add the new value of q to the list and remove the oldest value
-            q_list = q_list[1:] + [q]
+            # if len1 > len2:
+            #     if x1 == x0:
+            #         q = 0.5 * math.pi
+            #     else:
+            #         q = math.atan((y1 - y0) / (x1 - x0))
+            # else:
+            #     if x1 == x3:
+            #         q = 0.5 * math.pi
+            #     else:
+            #         q = math.atan((y3 - y1) / (x3 - x1))
 
-            # calculate the moving average of the last 10 values of q
-            q_filtered = int((sum(q_list) / len(q_list))*60)
-
-            print("angle:%d" % q_filtered)
+            q = int(q * 60)
+            #print("angle:%d" % q)
 
 
             img.draw_circle(b.cx(), b.cy(), 5, color=(0, 255, 0))
             dis_X = b.cx() - 80
             dis_Y = b.cy() - 63
-            print("disx:%d , disy:%d" % (dis_X, dis_Y))
+            print("disx:%d , disy:%d, angle:%d" % (dis_X, dis_Y, q))
 
             #发送数据
-            #uart.write("C")
-            #uart.write("%c" % dis_X)
-            #uart.write("%c" % dis_Y)
-            #uart.write("%c" % q_filtered)
-            #uart.write("D")
+            uart.write("C")
+            uart.write("%c" % dis_X)
+            uart.write("%c" % dis_Y)
+            uart.write("%c" % q)
+            uart.write("D")
             lcd.show_image(img, 160, 120, zoom=0)
             distance = math.sqrt((dis_X ** 2) + (dis_Y ** 2))
             if distance < 10:
@@ -230,15 +231,16 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "model.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
-    labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
+    net_path = "model2.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    labels = [line.rstrip() for line in open("/sd/labels2.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
 
     while(True):
         img = sensor.snapshot()
+        recognize_pic(labels, net)
         #boundary_correct()
-        picture_correct()
+        #picture_correct()
 
 
         #uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
