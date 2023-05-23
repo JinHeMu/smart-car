@@ -11,7 +11,7 @@ extern double speed_tar;
 extern int32 duty1,duty2,duty3,duty4;//电机PWM值
 
 
-extern float Incremental_kp, Incremental_ki, Incremental_kd;//增量式PID，控制电机输出值
+extern float Incremental_kp[4], Incremental_ki[4], Incremental_kd[4];//增量式PID，控制电机输出值
 extern float Angel_kp, Angel_ki, Angel_kd;//角度环
 extern float Position_kp, Position_ki, Position_kd;
 

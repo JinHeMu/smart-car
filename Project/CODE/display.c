@@ -135,10 +135,6 @@ void GUI_pid_value() // 显示pid的相应数据，并且可以做相应的修改
 		ips114_showstr(0, 1, "ki:");
 		ips114_showstr(0, 2, "kd:");
 
-		ips114_showfloat(50, 0, Incremental_kp, 2, 3);
-		ips114_showfloat(50, 1, Incremental_ki, 2, 3);
-		ips114_showfloat(50, 2, Incremental_kd, 2, 3);
-
 		ips114_showstr(0, 3, "angleKp:");
 		ips114_showstr(0, 4, "angleKi:");
 		ips114_showstr(0, 5, "angleKd:");

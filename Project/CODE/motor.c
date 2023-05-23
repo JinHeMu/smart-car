@@ -13,7 +13,9 @@
 #define PWM_4 PWM1_MODULE0_CHB_D13
 
 int32 duty1=0,duty2=0,duty3=0,duty4=0;//电机PWM值
-float Incremental_kp=0.9, Incremental_ki=2.4, Incremental_kd=0;//增量式PID，控制电机输出值
+float Incremental_kp[4]={0.9, 0.9, 0.9 ,0.9};
+float Incremental_ki[4]={2.4, 2.4, 2.4, 2.4};
+float Incremental_kd[4]={0, 0, 0, 0,};//增量式PID，控制电机输出值
 float Angel_kp=0.08 , Angel_ki=0 , Angel_kd=2 ;//角度环
 float Position_kp=0.1,Position_ki=0,Position_kd=0;
 float correct_kp=0.07,correct_ki=0,correct_kd=0;
@@ -139,7 +141,7 @@ int Incremental_pid1(int Target, int Encoder)
     static float Bias,Pwm,Integral_bias,Last_Bias;
     Bias=(float)(Target - Encoder);
     Integral_bias+=Bias;
-    Pwm=Incremental_kp*Bias+Incremental_ki*Integral_bias+Incremental_kd*(Bias-Last_Bias);
+    Pwm=Incremental_kp[0]*Bias+Incremental_ki[0]*Integral_bias+Incremental_kd[0]*(Bias-Last_Bias);
     Last_Bias=Bias;
     return (int)Pwm;
 }
@@ -149,7 +151,7 @@ int Incremental_pid2(int Target, int Encoder)
     static float Bias,Pwm,Integral_bias,Last_Bias;
     Bias=(float)(Target - Encoder);
     Integral_bias+=Bias;
-    Pwm=Incremental_kp*Bias+Incremental_ki*Integral_bias+Incremental_kd*(Bias-Last_Bias);
+    Pwm=Incremental_kp[1]*Bias+Incremental_ki[1]*Integral_bias+Incremental_kd[1]*(Bias-Last_Bias);
     Last_Bias=Bias;
     return (int)Pwm;
 }
@@ -160,7 +162,7 @@ int Incremental_pid3(int Target, int Encoder)
     static float Bias,Pwm,Integral_bias,Last_Bias;
     Bias=(float)(Target - Encoder);
     Integral_bias+=Bias;
-    Pwm=Incremental_kp*Bias+Incremental_ki*Integral_bias+Incremental_kd*(Bias-Last_Bias);
+    Pwm=Incremental_kp[2]*Bias+Incremental_ki[2]*Integral_bias+Incremental_kd[2]*(Bias-Last_Bias);
     Last_Bias=Bias;
     return (int)Pwm;
 }
@@ -171,7 +173,7 @@ int Incremental_pid4(int Target, int Encoder)
     static float Bias,Pwm,Integral_bias,Last_Bias;
     Bias=(float)(Target - Encoder);
     Integral_bias+=Bias;
-    Pwm=Incremental_kp*Bias+Incremental_ki*Integral_bias+Incremental_kd*(Bias-Last_Bias);
+    Pwm=Incremental_kp[3]*Bias+Incremental_ki[3]*Integral_bias+Incremental_kd[3]*(Bias-Last_Bias);
     Last_Bias=Bias;
     return (int)Pwm;
 }
