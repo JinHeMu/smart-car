@@ -31,6 +31,7 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 ////			//给予小车速度，通过解算自动输出到电机来形成相应的速度
 ////			// parm1 y轴速度 parm2 x轴速度
 ////			
+//			car_omni(car.Speed_X,car.Speed_Y,car.Speed_Z); 
 			car_omni(car.Speed_X,car.Speed_Y,car.Speed_Z); 
 
 

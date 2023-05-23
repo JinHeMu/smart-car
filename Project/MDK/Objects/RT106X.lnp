@@ -183,9 +183,7 @@
 ".\objects\timer_pit.o"
 ".\objects\filter.o"
 ".\objects\carmove.o"
-".\objects\a4.o"
 ".\objects\openart.o"
-".\objects\icm20602.o"
 --library_type=microlib --diag_suppress 6314,6329 --strict --scatter ".\scf\MIMXRT1064xxxxx_flexspi_nor.scf"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

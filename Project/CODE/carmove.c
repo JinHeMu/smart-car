@@ -44,6 +44,9 @@ rt_thread_t correct_th;          // 矫正线程
 rt_thread_t carry_th;            // 搬运线程
 rt_thread_t dynamic_planning_th; // 动态规划线程
 
+
+int pic_dis = 0 ;
+
 /**************************************************************************
 函数功能：求两点间的距离
 入口参数：当前位置 目标位置
@@ -66,9 +69,9 @@ float distance(float current_x, float current_y, float target_x, float target_y)
 // 获得目标角度
 float get_angle(void)
 {
-    static float temp;
-    temp = car.target_angle = atan2((car.target_x - car.current_x), (car.target_y - car.current_y)) * 180 / PI;
-    return temp;
+    static float pic_dis;
+    pic_dis = car.target_angle = atan2((car.target_x - car.current_x), (car.target_y - car.current_y)) * 180 / PI;
+    return pic_dis;
 }
 
 /**************************************************************************
@@ -226,8 +229,8 @@ void traverse_points()
         car_move(car.target_x, car.target_y, 0, 1);
 
         rt_thread_mdelay(2000);
-        rt_sem_release(arrive_sem);
-//        rt_sem_release(correct_sem); // 到达后发送矫正信号
+//        rt_sem_release(arrive_sem);
+        rt_sem_release(correct_sem); // 到达后发送矫正信号
     }
 }
 
@@ -254,20 +257,45 @@ void correct_entry(void *param)
         ART1_mode = 2;               // art矫正模式
         uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
         rt_thread_mdelay(20);
+				
 
 
         
 
-        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0 || abs(ART1_CORRECT_Angle) > 5))
+        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 ||  (ART1_CORRECT_X == 0 &&ART1_CORRECT_Y == 0)  ||  abs(ART1_CORRECT_Angle) > 5)
         {
 
-            rt_thread_mdelay(5);
-						car.target_angle = ART1_CORRECT_Angle;
-            car.Speed_X = -correct_x_pid((int)ART1_CORRECT_X, 0);
-            car.Speed_Y = correct_y_pid((int)ART1_CORRECT_Y, 0);
-            
+            rt_thread_mdelay(30);
+            pic_dis = (int)distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0);
+//						rt_kprintf("%d\n",pic_dis);
+//						car.target_angle = ART1_CORRECT_Angle;
+//            car.Speed_X = -correct_x_pid((int)ART1_CORRECT_X, 0);
+//            car.Speed_Y = correct_y_pid((int)ART1_CORRECT_Y, 0);
 
-            rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
+            if(pic_dis>65)
+            {
+                car.correct_speed = 6;
+            }
+            else if(pic_dis<=65 && pic_dis>45)
+            {
+                car.correct_speed = 5.5;
+            }
+            else if(pic_dis<=45 && pic_dis>25)
+            {
+                car.correct_speed = 5;
+            }
+            else if (pic_dis<=25 && pic_dis>10)
+            {
+                car.correct_speed=6;
+            }
+						else
+						{
+							car.correct_speed = 0;
+						}
+            car.Speed_X = car.correct_speed * ART1_CORRECT_X / 100;
+            car.Speed_Y = -car.correct_speed * ART1_CORRECT_Y / 100;
+//            car.target_angle = ART1_CORRECT_Angle;
+//            rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
         }
         rt_mb_send(buzzer_mailbox, 500); // 给buzzer_mailbox发送100
 
@@ -284,11 +312,10 @@ void correct_entry(void *param)
         // arm_down();
         // ART1_mode = 3;//告诉openart该识别图片了
         // rt_sem_release(recognize_sem);
-       
-
+    
         rt_thread_mdelay(1000);
-				rt_sem_release(correct_sem);
-//        rt_sem_release(arrive_sem);
+//				rt_sem_release(correct_sem);
+       rt_sem_release(arrive_sem);
     }
 }
 
@@ -397,9 +424,9 @@ void route_planning_init()
 {
 
 
-    arrive_sem = rt_sem_create("arrive_sem", 0, RT_IPC_FLAG_FIFO);         // 到达信号量，接受就开始跑点
+    arrive_sem = rt_sem_create("arrive_sem", 1, RT_IPC_FLAG_FIFO);         // 到达信号量，接受就开始跑点
     uart_point_sem = rt_sem_create("uart_point_sem", 0, RT_IPC_FLAG_FIFO); // 接收坐标信号量
-    correct_sem = rt_sem_create("correct_sem", 1, RT_IPC_FLAG_FIFO);       // 矫正信号量，接受就开始矫正
+    correct_sem = rt_sem_create("correct_sem", 0, RT_IPC_FLAG_FIFO);       // 矫正信号量，接受就开始矫正
     recognize_sem = rt_sem_create("recognize_sem", 0, RT_IPC_FLAG_FIFO);   // 识别信号量，告诉单片机已经识别，接受就开始搬运
     carry_sem = rt_sem_create("carry_sem", 0, RT_IPC_FLAG_FIFO);           // 搬运信号量，接受即已经搬运到相应点位
 

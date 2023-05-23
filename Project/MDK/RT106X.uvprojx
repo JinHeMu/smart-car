@@ -2276,16 +2276,6 @@
               <FilePath>..\CODE\carmove.h</FilePath>
             </File>
             <File>
-              <FileName>A4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CODE\A4.c</FilePath>
-            </File>
-            <File>
-              <FileName>A4.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODE\A4.h</FilePath>
-            </File>
-            <File>
               <FileName>openart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CODE\openart.c</FilePath>
@@ -2294,16 +2284,6 @@
               <FileName>openart.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CODE\openart.h</FilePath>
-            </File>
-            <File>
-              <FileName>icm20602.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CODE\icm20602.c</FilePath>
-            </File>
-            <File>
-              <FileName>icm20602.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODE\icm20602.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -4578,16 +4558,6 @@
               <FilePath>..\CODE\carmove.h</FilePath>
             </File>
             <File>
-              <FileName>A4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CODE\A4.c</FilePath>
-            </File>
-            <File>
-              <FileName>A4.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODE\A4.h</FilePath>
-            </File>
-            <File>
               <FileName>openart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\CODE\openart.c</FilePath>
@@ -4596,16 +4566,6 @@
               <FileName>openart.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CODE\openart.h</FilePath>
-            </File>
-            <File>
-              <FileName>icm20602.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CODE\icm20602.c</FilePath>
-            </File>
-            <File>
-              <FileName>icm20602.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODE\icm20602.h</FilePath>
             </File>
           </Files>
         </Group>

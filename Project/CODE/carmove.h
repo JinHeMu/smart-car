@@ -11,6 +11,7 @@ typedef struct Pose_car {
     double Speed_X;
     double Speed_Y;
     double Speed_Z;
+    float correct_speed;
     //µ±«∞Œª÷√
     float current_x;
     float current_y;

@@ -22,10 +22,10 @@ float correct_kp=0.07,correct_ki=0,correct_kd=0;
 //积分法计算位移参数
 
 //电机目标速度
-int speed_tar_1 = 0;
-int speed_tar_2 = 0;
-int speed_tar_3 = 0;
-int speed_tar_4 = 0;
+double speed_tar_1 = 0;
+double speed_tar_2 = 0;
+double speed_tar_3 = 0;
+double speed_tar_4 = 0;
 
 double speed_tar = 0;//单位m 目标速度 0.0086*encoder encoder = speed * 116.279 cm/s
 
@@ -50,14 +50,7 @@ void car_omni(float x, float y, float z)//全向移动逆运算
     speed_tar_2= y + x - z;
     speed_tar_3= y + x + z;
     speed_tar_4= y - x - z;
-//通过方向速度来解算出电机速度
-//	  speed_tar_1= x - y + z;
-//    speed_tar_2= x + y - z;
-//    speed_tar_3= x + y + z;
-//    speed_tar_4= x - y - z;
-	
-	
-	//
+
 }
 
 

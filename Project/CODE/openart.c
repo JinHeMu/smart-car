@@ -101,9 +101,9 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					ART1_CORRECT_X = ART1_dat[0];
 					ART1_CORRECT_Y = ART1_dat[1];
 					ART1_CORRECT_Angle = ART1_dat[2];
-					rt_kprintf("x:%d", ART1_CORRECT_X);
-					rt_kprintf("y:%d\n", ART1_CORRECT_Y);
-					rt_kprintf("Angle:%d\n", ART1_CORRECT_Angle);
+//					rt_kprintf("x:%d", ART1_CORRECT_X);
+//					rt_kprintf("y:%d\n", ART1_CORRECT_Y);
+//					rt_kprintf("Angle:%d\n", ART1_CORRECT_Angle);
 
 					rxstate = 0;
 				}

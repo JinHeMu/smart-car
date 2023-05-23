@@ -18,7 +18,7 @@ uart = UART(2, baudrate=115200) #串口
 lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
-LED(4).on()#照明
+LED(4).off()#照明
 
 
 
@@ -231,37 +231,37 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "model2.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "modle2.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels2.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
 
     while(True):
         img = sensor.snapshot()
-        recognize_pic(labels, net)
-        #boundary_correct()
-        #picture_correct()
+        # recognize_pic(labels, net)
+        # boundary_correct()
+        # picture_correct()
 
 
-        #uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
-        #if (uart_num):
-            #uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
-            #if(uart_str.decode() == "A"):
-                #print("A")
-                #while(uart_flag != 1):
-                    #find_coordinates()
+        uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
+        if (uart_num):
+            uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
+            if(uart_str.decode() == "A"):
+                print("A")
+                while(uart_flag != 1):
+                    find_coordinates()
 
-            #elif(uart_str.decode() == "B"):
-                #print("B")
-                #picture_correct()
+            elif(uart_str.decode() == "B"):
+                print("B")
+                picture_correct()
 
-            #elif(uart_str.decode() == "C"):
-                #print("C")
-                #recognize_pic(labels, net)
+            elif(uart_str.decode() == "C"):
+                print("C")
+                recognize_pic(labels, net)
 
-        #else:
-            #img = sensor.snapshot()
-            #lcd.show_image(img, 320, 240, zoom=2)
+        else:
+            img = sensor.snapshot()
+            lcd.show_image(img, 320, 240, zoom=2)
 
 
 
