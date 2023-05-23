@@ -55,8 +55,8 @@ int pic_dis = 0 ;
 
 float distance(float current_x, float current_y, float target_x, float target_y) {
 
-    float det_x = target_x * 20 - current_x;
-    float det_y = target_y * 20 - current_y;
+    float det_x = target_x  - current_x;
+    float det_y = target_y  - current_y;
     float current_distance = sqrt(det_x * det_x + det_y * det_y);
 
     return current_distance;
@@ -98,7 +98,7 @@ void car_move(float tar_x, float tar_y, float tar_angle, uint8 flag)
     else
     {
         // 全向移动
-        while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 10) // 持续运动
+        while (distance(car.MileageX, car.MileageY, tar_x*20, tar_y*20) > 10) // 持续运动
         {
             car.target_angle = 0;
             car.Speed_X = picture_x_pid((int)car.MileageX, (int)car.target_x * 20);
@@ -215,7 +215,6 @@ void traverse_points()
         {
             car_move(5, 5, 0, 1);
             rt_thread_delete(route_planning_th);
-            
         }
         else
         {
@@ -304,8 +303,8 @@ void correct_entry(void *param)
 
         // rt_kprintf("current_x: %d, current_y : %d\n", car.current_x, car.current_y);
 
-        car.MileageX = car.target_x; // 更新当前坐标
-        car.MileageY = car.target_y;
+        car.MileageX = car.target_x*20; // 更新当前坐标
+        car.MileageY = car.target_y*20;
 
         
         // arm_carry();
