@@ -13,8 +13,8 @@
 #define PWM_4 PWM1_MODULE0_CHB_D13
 
 int32 duty1=0,duty2=0,duty3=0,duty4=0;//电机PWM值
-float Incremental_kp[4]={0.9, 0.9, 0.9 ,0.9};
-float Incremental_ki[4]={2.4, 2.4, 2.4, 2.4};
+float Incremental_kp[4]={6.5, 6.5, 6.5 ,6.5};
+float Incremental_ki[4]={0.20, 0.20, 0.20,0.20};
 float Incremental_kd[4]={0, 0, 0, 0,};//增量式PID，控制电机输出值
 float Angel_kp=0.08 , Angel_ki=0 , Angel_kd=2 ;//角度环
 float Position_kp=0.1,Position_ki=0,Position_kd=0;

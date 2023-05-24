@@ -202,8 +202,18 @@ void display_entry(void *parameter)
 
 	while (1)
 	{
+		car.Speed_X = 10;car.Speed_Y = 10;rt_thread_mdelay(2000);
+		
+		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
+		
+		car.Speed_X = -10;car.Speed_Y = -10;rt_thread_mdelay(2000);
+		
+		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
+		
+		
+			
 
-		Menu_key_set();
+//		Menu_key_set();
 	}
 }
 

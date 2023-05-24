@@ -19,9 +19,21 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 			// rt_kprintf("x:%d", (int)car.Speed_X);
 			// rt_kprintf("y:%d\n", (int)car.Speed_Y);
     }
+		
+		if(0 == (time%20))//每0.02s采集一次
+    {
+			
+			motor_control(1);
+			rt_kprintf("%d\n",RC_encoder2);
+				
+    }
+		
+		
+		
 
     if(0 == (time%5))//0.005s采集一次
     {
+			
 			Mahony_computeAngles();//采集陀螺仪数据
 			
 			car.Speed_Z=angel_pid((int)angle_z, (int)car.target_angle);//omnimove模式下目标方向一直为0
@@ -33,12 +45,10 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 ////			
 //			car_omni(car.Speed_X,car.Speed_Y,car.Speed_Z); 
 			car_omni(car.Speed_X,car.Speed_Y,car.Speed_Z); 
-
-
             //小车右为x，小车上为y
-			// car_omni(5,0,0); 
+//				car_omni(20,0,0); 
 //			rt_kprintf("%d\n",RC_encoder2);
-//			rt_kprintf("%d\n",duty2);
+
 			
 
 			

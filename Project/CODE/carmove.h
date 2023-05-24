@@ -49,7 +49,7 @@ extern uint8 running_mode;//小车运行模式
 extern rt_sem_t recognize_sem;
 
 void route_planning_init();
-
+void car_move(float tar_x, float tar_y, float tar_angle, uint8 flag);
 void uart_coordinate_transforming(uint8 ART1_POINT_X[15], uint8 ART1_POINT_Y[15], uint8 num);
 void static_planning(struct point* arr, int size);
 
