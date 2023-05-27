@@ -183,37 +183,44 @@ void GUI_route_value()
 void display_entry(void *parameter)
 {
 
-	// car.target_angle = 40;
-	// rt_thread_mdelay(2000);
-	// car.target_angle = 20;
-	// rt_thread_mdelay(2000);
-	// car.target_angle = 90;
-	// rt_thread_mdelay(2000);
-	// car.target_angle = 180;
-	// rt_thread_mdelay(2000);
-	// car.target_angle = 0;
-	// rt_thread_mdelay(2000);
-	// car.target_angle = -90;
-	// rt_thread_mdelay(1000);
-	// car.target_angle = -45;
-	// rt_thread_mdelay(2000);
-	// car.target_angle = 0;
-	// rt_thread_mdelay(2000);
+//	car.target_angle = 40;
+//	rt_thread_mdelay(5000);
+//	car.target_angle = 20;
+//	rt_thread_mdelay(5000);
+//	car.target_angle = 90;
+//	rt_thread_mdelay(5000);
+//	car.target_angle = 180;
+//	rt_thread_mdelay(5000);
+//	car.target_angle = 0;
+//	rt_thread_mdelay(5000);
+//	car.target_angle = -90;
+//	rt_thread_mdelay(1000);
+//	car.target_angle = -45;
+//	rt_thread_mdelay(5000);
+//	car.target_angle = 0;
+//	rt_thread_mdelay(5000);
 
 	while (1)
 	{
-		car.Speed_X = 10;car.Speed_Y = 10;rt_thread_mdelay(2000);
-		
-		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
-		
-		car.Speed_X = -10;car.Speed_Y = -10;rt_thread_mdelay(2000);
-		
-		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
-		
-		
-			
+//		car.Speed_X = 10;car.Speed_Y = 10;rt_thread_mdelay(5000);
+//		
+//		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
+//		
+//		car.Speed_X = -10;car.Speed_Y = -10;rt_thread_mdelay(5000);
+//		
+//		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
+//		
+//			car.target_angle = 40;rt_thread_mdelay(5000);
+//			car.target_angle = 20;rt_thread_mdelay(5000);
+//			car.target_angle = 0;rt_thread_mdelay(5000);
+//			car.target_angle = 180;rt_thread_mdelay(5000);
+//			car.target_angle = 160;rt_thread_mdelay(5000);
+//			car.target_angle = 140;rt_thread_mdelay(5000);
+//			car.target_angle = -45;rt_thread_mdelay(5000);
+//			car.target_angle = 0;rt_thread_mdelay(5000);
+//			
 
-//		Menu_key_set();
+		Menu_key_set();
 	}
 }
 

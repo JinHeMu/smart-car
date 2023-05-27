@@ -16,9 +16,9 @@ int32 duty1=0,duty2=0,duty3=0,duty4=0;//电机PWM值
 float Incremental_kp[4]={6.5, 6.5, 6.5 ,6.5};
 float Incremental_ki[4]={0.20, 0.20, 0.20,0.20};
 float Incremental_kd[4]={0, 0, 0, 0,};//增量式PID，控制电机输出值
-float Angel_kp=0.08 , Angel_ki=0 , Angel_kd=2 ;//角度环
+float Angel_kp=0.4 , Angel_ki=0 , Angel_kd=5 ;//角度环
 float Position_kp=0.1,Position_ki=0,Position_kd=0;
-float correct_kp=0.07,correct_ki=0,correct_kd=0;
+float correct_kp=0.3,correct_ki=0,correct_kd=0;
 
 
 //积分法计算位移参数
@@ -195,7 +195,7 @@ int angel_pid(int NowAngel,int TargetAngel){
     Integral_current_error+=current_error;
     Speed_Z=Angel_kp*current_error+Angel_ki*Integral_current_error+Angel_kd*(current_error-Last_current_error);
     Last_current_error=current_error;
-    // rt_kprintf("%d\n",(int)(Speed_Z*1000));
+//     rt_kprintf("%d\n",(int)(Speed_Z*1000));
 
     if(Speed_Z>=10)
         Speed_Z=10;

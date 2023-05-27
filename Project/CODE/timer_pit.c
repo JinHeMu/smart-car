@@ -13,7 +13,7 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
     if(0 == (time%100))//每0.1s采集一次
     {
         //采集编码器数据
-        encoder_get();
+        
 //			rt_kprintf("x:%d", (int)car.MileageX);
 ////			rt_kprintf("y:%d\n", (int)car.MileageY);
 			// rt_kprintf("x:%d", (int)car.Speed_X);
@@ -22,9 +22,9 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 		
 		if(0 == (time%20))//每0.02s采集一次
     {
-			
+			encoder_get();
 			motor_control(1);
-			rt_kprintf("%d\n",RC_encoder2);
+//			rt_kprintf("%d\n",RC_encoder2);
 				
     }
 		
@@ -36,8 +36,9 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 			
 			Mahony_computeAngles();//采集陀螺仪数据
 			
-			car.Speed_Z=angel_pid((int)angle_z, (int)car.target_angle);//omnimove模式下目标方向一直为0
-            // rt_kprintf("angle:%d\n", angle_z);
+//			car.Speed_Z=angel_pid((int)angle_z, (int)car.target_angle);//omnimove模式下目标方向一直为0
+			
+//       rt_kprintf("angle:%d\n", (int)angle_z);
 ////			rt_kprintf("%d\n",(int)car.target_angle);
 ////			
 ////			//给予小车速度，通过解算自动输出到电机来形成相应的速度
