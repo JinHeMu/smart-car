@@ -98,7 +98,8 @@
 #include "filter.h"
 #include "carmove.h"
 #include "imu963.h"
-#include "openart.h"
+#include "openart1.h"
+#include "openart2.h"
 
 #endif
 

@@ -235,7 +235,7 @@ void traverse_points()
 
 void route_planning_entry(void *param)
 {
-    rt_sem_take(uart_point_sem, RT_WAITING_FOREVER);
+    rt_sem_take(uart_corrdinate_sem, RT_WAITING_FOREVER);
     uart_coordinate_transforming(ART1_POINT_X, ART1_POINT_Y, point_num / 2);
     static_planning(tar_point, point_num / 2);
     for (int i = 0; i < point_num / 2; i++)
@@ -424,7 +424,7 @@ void route_planning_init()
 
 
     arrive_sem = rt_sem_create("arrive_sem", 0, RT_IPC_FLAG_FIFO);         // 到达信号量，接受就开始跑点
-    uart_point_sem = rt_sem_create("uart_point_sem", 0, RT_IPC_FLAG_FIFO); // 接收坐标信号量
+    uart_corrdinate_sem = rt_sem_create("uart_corrdinate_sem", 0, RT_IPC_FLAG_FIFO); // 接收坐标信号量
     correct_sem = rt_sem_create("correct_sem", 1, RT_IPC_FLAG_FIFO);       // 矫正信号量，接受就开始矫正
     recognize_sem = rt_sem_create("recognize_sem", 0, RT_IPC_FLAG_FIFO);   // 识别信号量，告诉单片机已经识别，接受就开始搬运
     carry_sem = rt_sem_create("carry_sem", 0, RT_IPC_FLAG_FIFO);           // 搬运信号量，接受即已经搬运到相应点位

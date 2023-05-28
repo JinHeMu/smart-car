@@ -2276,14 +2276,24 @@
               <FilePath>..\CODE\carmove.h</FilePath>
             </File>
             <File>
-              <FileName>openart.c</FileName>
+              <FileName>openart2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\CODE\openart.c</FilePath>
+              <FilePath>..\CODE\openart2.c</FilePath>
             </File>
             <File>
-              <FileName>openart.h</FileName>
+              <FileName>openart2.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\CODE\openart.h</FilePath>
+              <FilePath>..\CODE\openart2.h</FilePath>
+            </File>
+            <File>
+              <FileName>openart1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\openart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>openart1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\openart1.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -4558,14 +4568,24 @@
               <FilePath>..\CODE\carmove.h</FilePath>
             </File>
             <File>
-              <FileName>openart.c</FileName>
+              <FileName>openart2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\CODE\openart.c</FilePath>
+              <FilePath>..\CODE\openart2.c</FilePath>
             </File>
             <File>
-              <FileName>openart.h</FileName>
+              <FileName>openart2.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\CODE\openart.h</FilePath>
+              <FilePath>..\CODE\openart2.h</FilePath>
+            </File>
+            <File>
+              <FileName>openart1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\openart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>openart1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\openart1.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -12,7 +12,9 @@
         "seekfree_imu963ra.h": "c",
         "zf_spi.h": "c",
         "imu963.h": "c",
-        "seekfree_ips114_spi.h": "c"
+        "seekfree_ips114_spi.h": "c",
+        "openart1.h": "c",
+        "openart2.h": "c"
     },
     "idf.flashType": "UART",
     "idf.portWin": "COM5",

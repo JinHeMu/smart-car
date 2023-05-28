@@ -1,4 +1,4 @@
-#include "openart.h"
+#include "openart1.h"
 
 // 串口收发个字母的含义
 // 发'G' ART1开始识别
@@ -15,7 +15,7 @@ uint8 ART1_uart_rx_buffer;
 lpuart_transfer_t ART1_receivexfer;
 lpuart_handle_t ART1_g_lpuartHandle;
 
-uint8 ART1_mode=1;//模式1位识别坐标点 模式2矫正位姿 模式3识别图片 模式4边线矫正
+uint8 ART1_mode=2;//模式1位识别坐标点 模式2矫正位姿 模式3识别图片 模式4边线矫正
 uint8 ART1_dat[82]; // 前一半x后一半y
 uint8 ART1_POINT_X[40];
 uint8 ART1_POINT_Y[40];
@@ -29,7 +29,7 @@ char classified[10];
 
 uint8 point_num = 0; // 数据个数
 
-rt_sem_t uart_point_sem;//识别坐标点后信号量
+rt_sem_t uart_corrdinate_sem;//识别坐标点后信号量
 //rt_sem_t key2_sem;
 //rt_sem_t key3_sem;
 //rt_sem_t key4_sem;
@@ -74,7 +74,7 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 							ART1_POINT_Y[temp-point_num/2] = ART1_dat[temp];
 						}			 
 					}
-					rt_sem_release(uart_point_sem);//发送已经识别完毕坐标纸的信号量
+					rt_sem_release(uart_corrdinate_sem);//发送已经识别完毕坐标纸的信号量
 					rxstate = 0;
 				}
 				else//没有接收到帧尾，获取坐标点
@@ -157,7 +157,7 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 void ART1_UART_Init(void)
 {
 	uart_init(USART_4, 115200, UART4_TX_C16, UART4_RX_C17);
-	NVIC_SetPriority(LPUART4_IRQn, 3); // 设置串口中断优先级 范围0-15 越小优先级越高
+	NVIC_SetPriority(LPUART4_IRQn, 0); // 设置串口中断优先级 范围0-15 越小优先级越高
 	uart_rx_irq(USART_4, 1);
 	uart_tx_irq(USART_4, 1);
 	// 配置串口接收的缓冲区及缓冲区长度
