@@ -176,7 +176,7 @@ void GUI_imu_ra_value() // 显示陀螺仪相关数据
 
 void GUI_route_value()
 {
-	ips114_showstr(0,0, "current_point:");ips114_showint8(110, 0, (int)car.current_x);ips114_showstr(160,0, ":");ips114_showint8(170, 0, (int)car.current_y);
+	// ips114_showstr(0,0, "current_point:");ips114_showint8(110, 0, (int)car.current_x);ips114_showstr(160,0, ":");ips114_showint8(170, 0, (int)car.current_y);
 	ips114_showstr(0,1, "target_point:");ips114_showint8(110, 1, (int)car.target_x);ips114_showstr(160,1, ":");ips114_showint8(170, 1, (int)car.target_y);
 
 }

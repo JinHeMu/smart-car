@@ -27,12 +27,9 @@ void GUI_imu_ra_value();
 void GUI_route_value();
 void GUI_imu_ra();
  
- 
+
 void  Menu_key_set(void);
  
-
-
-
 void display_init(void);
 
 #endif
