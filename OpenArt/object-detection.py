@@ -31,10 +31,11 @@ def object_detection(net, face_detect):
             h = y2 - y1
             x1 = int((x1-0.1)*img.width())
             y1 = int(y1*img.height())
+            img.draw_cross(x1 ,y1, size=5, color=(255, 0, 0))
             w = int(w*img.width())
             h = int(h*img.height())
 
-            angle = -int(math.atan((x1+w//2- 160) / (y1+h//2 - 240)) * 60)
+            angle =-int(math.atan((x1+w//2 - 160) / (y1+h//2 - 240)) * 60)
             dis = int(math.sqrt(((x1+w//2 - 160) ** 2) + ((y1+h//2 - 240)** 2)))
 
             img.draw_string(x1+w//2, y1+h//2, "Angle:" + str(angle), color = (255, 0, 0), scale = 2, mono_space = False)

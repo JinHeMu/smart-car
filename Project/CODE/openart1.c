@@ -15,7 +15,7 @@ uint8 ART1_uart_rx_buffer;
 lpuart_transfer_t ART1_receivexfer;
 lpuart_handle_t ART1_g_lpuartHandle;
 
-uint8 ART1_mode=2;//模式1位识别坐标点 模式2矫正位姿 模式3识别图片 模式4边线矫正
+uint8 ART1_mode=0;//模式1位识别坐标点 模式2矫正位姿 模式3识别图片 模式4边线矫正
 uint8 ART1_dat[82]; // 前一半x后一半y
 uint8 ART1_POINT_X[40];
 uint8 ART1_POINT_Y[40];

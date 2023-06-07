@@ -81,17 +81,41 @@ int get_angle(float current_x, float current_y, float target_x, float target_y)
 **************************************************************************/
 void car_move(float tar_x, float tar_y)
 {
-    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 5) // 持续运动
+		rt_kprintf("MOVEING !!! \n");
+    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 20) // 持续运动
     {
         car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x);//cm
         car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
+				
     }
+		rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+		car.Speed_X = 0;
+		car.Speed_Y = 0;
+		rt_thread_mdelay(1000);
 }
 
 void car_turn(float angle)
 {
+    
+		if(car.current_angle > 360)
+		{
+			car.current_angle -= 360;
+		}
+		else if(car.current_angle < -360)
+		{
+			car.current_angle += 360;
+		}else
+		{
+			car.current_angle += angle;
+		}
+}
+
+void car_turnto(float angle)
+{
     car.current_angle = angle;
 }
+
+
 
 /**************************************************************************
 函数功能：将串口接受的字符坐标转化成数字坐标
@@ -179,7 +203,8 @@ void route_planning_entry(void *param)
     rt_sem_take(uart_corrdinate_sem, RT_WAITING_FOREVER);
     uart_coordinate_transforming(ART1_POINT_X, ART1_POINT_Y, point_num / 2);
     static_planning(tar_point, point_num / 2);
-
+		int point = 0;
+	
     for (int i = 0; i < point_num / 2; i++)
     {
         rt_kprintf("x:%d", tar_point[i].x);
@@ -189,7 +214,7 @@ void route_planning_entry(void *param)
 
     while (1)
     {
-        int point = 0;
+        
 
         rt_sem_take(arrive_sem, RT_WAITING_FOREVER); // 接受到达信号量
         rt_kprintf("arriveing!!!\n");
@@ -211,7 +236,6 @@ void route_planning_entry(void *param)
 
         car_move(car.target_x, car.target_y);
 
-        rt_thread_mdelay(2000);
         //        rt_sem_release(arrive_sem);
         rt_sem_release(correct_sem); // 到达后发送矫正信号
     }
@@ -225,14 +249,15 @@ void correct_entry(void *param)
         rt_kprintf("correcting!!!\n");
         ART1_mode = 2;               // art矫正模式
         uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
+				car_turn(ART1_CORRECT_Angle);
         rt_thread_mdelay(20);
 
-        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 5 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0) || abs(ART1_CORRECT_Angle) > 5)
+        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 5 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
         {
 
             rt_thread_mdelay(5);
             pic_dis = (int)distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0);
-            rt_kprintf("%d\n", pic_dis);
+            //rt_kprintf("%d\n", pic_dis);
             //						car.target_angle = ART1_CORRECT_Angle;
             //            car.Speed_X = -correct_x_pid((int)ART1_CORRECT_X, 0);
             //            car.Speed_Y = correct_y_pid((int)ART1_CORRECT_Y, 0);
@@ -259,7 +284,7 @@ void correct_entry(void *param)
             }
             car.Speed_X = car.correct_speed * ART1_CORRECT_X / 100;
             car.Speed_Y = -car.correct_speed * ART1_CORRECT_Y / 100;
-            car.Speed_Z = ART1_CORRECT_Angle / 5;
+            //car.Speed_Z = ART1_CORRECT_Angle / 5;
             //            rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
         }
         //        rt_mb_send(buzzer_mailbox, 500); // 给buzzer_mailbox发送100
@@ -267,17 +292,18 @@ void correct_entry(void *param)
 
         // rt_kprintf("current_x: %d, current_y : %d\n", car.current_x, car.current_y);
 
-        car.MileageX = car.target_x * 20; // 更新当前坐标
-        car.MileageY = car.target_y * 20;
+        car.MileageX = car.target_x; // 更新当前坐标
+        car.MileageY = car.target_y;
 
-        // arm_carry();
-        // arm_down();
+       arm_carry();
+//			car_move(60,280);
+       arm_down();
         // ART1_mode = 3;//告诉openart该识别图片了
         // rt_sem_release(recognize_sem);
 
-        rt_thread_mdelay(1000);
-        rt_sem_release(correct_sem);
-        //       rt_sem_release(arrive_sem);
+//        rt_thread_mdelay(1000);
+//        rt_sem_release(correct_sem);
+      rt_sem_release(arrive_sem);
     }
 }
 
@@ -380,7 +406,33 @@ void carry_entry(void *param)
 
 void obj_detection_entry(void *param)
 {   
-    rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER);
+    //rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER);
+		rt_kprintf("DETECT !!!\n");
+
+	while(1)
+	{	 
+		
+
+		rt_kprintf("dis:%d ", ART2_dis);
+		rt_kprintf("ang:%d\n", ART2_angle);
+   	if(ART2_angle > 40)
+    {
+        car_turn(-1);
+    }
+    if (ART2_angle < -40)
+    {
+        car_turn(1);
+    }
+		if(ART2_dis > 60)
+    {
+        car.Speed_Y = 0.5;
+    }else
+    {
+        car.Speed_Y = 0;
+    }
+		rt_thread_mdelay(200);
+		
+	}
     
 }
 
@@ -401,10 +453,11 @@ void car_start_init(void)
 
     carry_th = rt_thread_create("carry_th", carry_entry, RT_NULL, 1024, 28, 10);
 
-    obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 28, 10);
+    obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 27, 10);
 
     uart_putchar(USART_4, 0x41); // 发送A告诉该识别A4纸了
     rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
+		rt_thread_startup(obj_detection_th);
 }

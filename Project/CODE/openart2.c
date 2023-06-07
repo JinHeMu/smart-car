@@ -14,7 +14,7 @@ void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 	
 	static uint8 rxstate = 0;
 	static uint8 count = 0;	
-//	rt_kprintf("%d\n", ART2_uart_rx_buffer);
+	//rt_kprintf("%d\n", ART2_uart_rx_buffer);
 	if (kStatus_LPUART_RxIdle == status)
 	{
 		
@@ -33,10 +33,11 @@ void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 
 				ART2_dis = ART2_dat[0];
 				ART2_angle = ART2_dat[1];
-				rt_kprintf("dis:%d\n", ART2_dis);
-				rt_kprintf("ang:%d\n", ART2_angle);
+
+				//rt_sem_release(obj_detection_sem);
 				//					rt_kprintf("Angle:%d\n", ART1_CORRECT_Angle);
 				rxstate = 0;
+				
 			}
 			else // 没有接收到帧尾
 			{

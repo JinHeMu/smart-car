@@ -231,16 +231,16 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "modle2.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
-    labels = [line.rstrip() for line in open("/sd/labels2.txt")]   # 鍔犺浇鏍囩
-    net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
+    #net_path = "mobilenet_v2-2023-06-03T04-14-30.049Z_in-int8_out-int8.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    #labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
+    #net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
 
     while(True):
         img = sensor.snapshot()
         # recognize_pic(labels, net)
-        # boundary_correct()
-        # picture_correct()
+        # # boundary_correct()
+        # # picture_correct()
 
 
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺

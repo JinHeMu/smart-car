@@ -1,6 +1,6 @@
 #include "motor.h"
 
-#define PWM_LIMIT 10000 // 限幅，必须注意安全
+#define PWM_LIMIT 6000// 限幅，必须注意安全
 
 #define DIR_1 D0
 #define DIR_2 D1
@@ -15,14 +15,9 @@
 int32 duty1 = 0, duty2 = 0, duty3 = 0, duty4 = 0; // 电机PWM值
 float Incremental_kp[4] = {6.5, 6.5, 6.5, 6.5};
 float Incremental_ki[4] = {0.20, 0.20, 0.20, 0.20};
-float Incremental_kd[4] = {
-    0,
-    0,
-    0,
-    0,
-};                                                // 增量式PID，控制电机输出值
+float Incremental_kd[4] = { 0,0, 0, 0,};                                                // 增量式PID，控制电机输出值
 float Angel_kp = 0.4, Angel_ki = 0, Angel_kd = 5; // 角度环
-float Position_kp = 0.1, Position_ki = 0, Position_kd = 0;
+float Position_kp = 0.05, Position_ki = 0, Position_kd = 0;
 float correct_kp = 0.3, correct_ki = 0, correct_kd = 0;
 
 // 积分法计算位移参数

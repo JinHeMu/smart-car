@@ -31,32 +31,35 @@ void magnet_appeal(void)
 void arm_init(void)
 {		
     pwm_init(SMOTOR1_PIN, 50, SMOTOR1_CENTER);
-	gpio_init(MAGNET_PIN, GPO, 0, GPIO_PIN_CONFIG);      //单片机端口D0 初始化DIR_1          GPIO
+		gpio_init(MAGNET_PIN, GPO, 0, GPIO_PIN_CONFIG);      //单片机端口D0 初始化DIR_1          GPIO
+		smotor1_angle(90);
+		rt_thread_mdelay(500);
 //    pwm_init(SMOTOR2_PIN, 50, 0);
 //    pwm_init(SMOTOR3_PIN, 50, 0);
 }
 
- void smotor1_control(int16 angle)
+ void smotor1_angle(int angle)
  {
      pwm_duty(SMOTOR1_PIN, 1100 + angle*33);
  }
 
  void arm_carry(void)
  {
-	smotor1_control(90);
-	rt_thread_mdelay(1000);
+	
+	smotor1_angle(0);
 	magnet_appeal();
-	smotor1_control(0);
+	rt_thread_mdelay(1000);
+	smotor1_angle(90);
 	rt_thread_mdelay(1000);
  }
 
 
  void arm_down(void)
  {
-	smotor1_control(90);
+	smotor1_angle(0);
 	rt_thread_mdelay(1000);
 	magnet_release();
-	smotor1_control(0);
+	smotor1_angle(90);
 	rt_thread_mdelay(1000);
  }
 

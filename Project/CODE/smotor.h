@@ -8,6 +8,7 @@ void arm_init(void);
 void arm_carry(void);
 void arm_down(void);
 void arm_box(void);
+void smotor1_angle(int angle);
 
 
 //void smotor2_control(int16 duty);

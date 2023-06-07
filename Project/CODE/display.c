@@ -183,22 +183,15 @@ void GUI_route_value()
 void display_entry(void *parameter)
 {
 
-//	car.target_angle = 40;
+//	car_turnto(180);
 //	rt_thread_mdelay(5000);
-//	car.target_angle = 20;
+//	car_turnto(90);
 //	rt_thread_mdelay(5000);
-//	car.target_angle = 90;
+//	car_turnto(-90);
 //	rt_thread_mdelay(5000);
-//	car.target_angle = 180;
-//	rt_thread_mdelay(5000);
-//	car.target_angle = 0;
-//	rt_thread_mdelay(5000);
-//	car.target_angle = -90;
-//	rt_thread_mdelay(1000);
-//	car.target_angle = -45;
-//	rt_thread_mdelay(5000);
-//	car.target_angle = 0;
-//	rt_thread_mdelay(5000);
+//	car_turnto(0);
+//	arm_carry();
+
 
 	while (1)
 	{
@@ -220,7 +213,10 @@ void display_entry(void *parameter)
 //			car.target_angle = 0;rt_thread_mdelay(5000);
 //			
 
-		Menu_key_set();
+//		Menu_key_set();
+		GUI_motor_value();
+
+//			car_move(0,0);
 	}
 }
 

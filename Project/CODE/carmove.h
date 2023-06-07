@@ -48,9 +48,12 @@ typedef struct point{
 extern Pose_car car;
 extern uint8 running_mode;//小车运行模式
 extern rt_sem_t recognize_sem;
+extern rt_sem_t obj_detection_sem;
 
 void car_start_init(void);
 void car_move(float tar_x, float tar_y);
+void car_turn(float angle);
+void car_turnto(float angle);
 void uart_coordinate_transforming(uint8 ART1_POINT_X[15], uint8 ART1_POINT_Y[15], uint8 num);
 void static_planning(struct point* arr, int size);
 
