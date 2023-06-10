@@ -191,6 +191,16 @@ void display_entry(void *parameter)
 //	rt_thread_mdelay(5000);
 //	car_turnto(0);
 //	arm_carry();
+	//car_turn(30);
+	
+//	car_move(100,0);
+//	car_move(300,0);
+//	car_move(0,300);
+//	car_move(0,0);
+	
+//	car_turnto(20);
+//	car_move(100,0);
+
 
 
 	while (1)

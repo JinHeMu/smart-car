@@ -18,15 +18,16 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 ////			rt_kprintf("y:%d\n", (int)car.MileageY);
 			// rt_kprintf("x:%d", (int)car.Speed_X);
 			// rt_kprintf("y:%d\n", (int)car.Speed_Y);
-
+				
 
     }
 		
 		if(0 == (time%20))//每0.02s采集一次
     {
+		
 			encoder_get();
 			motor_control(1);
-//			rt_kprintf("%d,%d,%d\n",(int)car.MileageX,(int)car.MileageY, (int)sqrt(car.MileageX * car.MileageX + car.MileageY * car.MileageY));
+			rt_kprintf("%d,%d,%d\n",(int)car.MileageX,(int)car.MileageY, (int)sqrt(car.MileageX * car.MileageX + car.MileageY * car.MileageY));
 
 //			rt_kprintf("%d\n",RC_encoder2);
 				
@@ -38,10 +39,13 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
     if(0 == (time%5))//0.005s采集一次
     {
 			
-	Mahony_computeAngles();//采集陀螺仪数据
-			
-	car.Speed_Z=angel_pid((int)angle_z, (int)car.current_angle);//omnimove模式下目标方向一直为0	
-	car_omni(car.Speed_X,car.Speed_Y,car.Speed_Z); 
+			Mahony_computeAngles();//采集陀螺仪数据
+			car.Speed_Z=angel_pid((int)angle_z, (int)car.current_angle);//omnimove模式下目标方向一直为0	
+			car_omni(car.Speed_X,car.Speed_Y,car.Speed_Z); 
+			//car_omni_angle(car.Speed_X,car.Speed_Y,car.Speed_Z);
+//					x *= cos(car.current_angle);
+//		y *= cos(car.current_angle);
+			//rt_kprintf("%d,%d,%d\n", (int)car.Speed_X,(int)car.Speed_Y,(int)car.Speed_Z);
 //	car_omni(car.Speed_X,5,car.Speed_Z); 
 
 

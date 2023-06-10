@@ -228,24 +228,24 @@ void bluetooth_ch9141_uart_callback (LPUART_Type *base, lpuart_handle_t *handle,
 //		rt_kprintf(" i have a message");
 
 	bluetooth_ch9141_read_buff(data_buffer, 32);                 // ?¨¦????¡¦¨½?????? ???????????? BLUETOOTH_CH9141_BUFFER_SIZE ¡Á??? 64 ¡Á??
-	switch(data_buffer[0]-48)
-	{
-//		case 1 : Angel_KP+=0.05;break;
-//		case 2 : Angel_KI+=0.05;break;
-//		case 3 : Angel_KD+=0.05;break;
-//		case 4 : Angel_KP-=0.05;break;
-//		case 5 : Angel_KI-=0.05;break;
-//		case 6 : Angel_KD-=0.05;break;
-//		
-        case 0: car_stop();rt_kprintf("car_stop, data = %d ... \n", 0);car_stop();break;
-        case 8: car_ahead();rt_kprintf("car_ahead, data = %d ... \n", 1);car_ahead();break;
-        case 2: car_back();rt_kprintf("car_back, data = %d ... \n", 2);car.Speed_X=-10;car.Speed_Y=0;break;
-        case 4: car_lsideWay(); rt_kprintf("car_lsideWay, data = %d ... \n", 3);car.Speed_X=0;car.Speed_Y=10;break;
-        case 6: car_rsideWay(); rt_kprintf("car_rsideWay, data = %d ... \n", 4);car.Speed_X=0;car.Speed_Y=-10;break;
-        case 7: car_diagonal(); rt_kprintf("car_diagonal, data = %d ... \n", 5);car.Speed_X=0;car.Speed_Y=0;break;
-        case 5: car_turnround(); rt_kprintf("car_turnround, data = %d ... \n", 6);car.Speed_X=0;car.Speed_Y=0;break;
-        case 9: car_anticlockwise(); rt_kprintf("car_anticlockwise, data = %d ... \n", 7);car.Speed_X=0;car.Speed_Y=0;break;
-    }
+//	switch(data_buffer[0]-48)
+//	{
+////		case 1 : Angel_KP+=0.05;break;
+////		case 2 : Angel_KI+=0.05;break;
+////		case 3 : Angel_KD+=0.05;break;
+////		case 4 : Angel_KP-=0.05;break;
+////		case 5 : Angel_KI-=0.05;break;
+////		case 6 : Angel_KD-=0.05;break;
+////		
+////        case 0: car_stop();rt_kprintf("car_stop, data = %d ... \n", 0);car_stop();break;
+////        case 8: car_ahead();rt_kprintf("car_ahead, data = %d ... \n", 1);car_ahead();break;
+////        case 2: car_back();rt_kprintf("car_back, data = %d ... \n", 2);car.Speed_X=-10;car.Speed_Y=0;break;
+////        case 4: car_lsideWay(); rt_kprintf("car_lsideWay, data = %d ... \n", 3);car.Speed_X=0;car.Speed_Y=10;break;
+////        case 6: car_rsideWay(); rt_kprintf("car_rsideWay, data = %d ... \n", 4);car.Speed_X=0;car.Speed_Y=-10;break;
+////        case 7: car_diagonal(); rt_kprintf("car_diagonal, data = %d ... \n", 5);car.Speed_X=0;car.Speed_Y=0;break;
+////        case 5: car_turnround(); rt_kprintf("car_turnround, data = %d ... \n", 6);car.Speed_X=0;car.Speed_Y=0;break;
+////        case 9: car_anticlockwise(); rt_kprintf("car_anticlockwise, data = %d ... \n", 7);car.Speed_X=0;car.Speed_Y=0;break;
+//    }
 }
 
 //-------------------------------------------------------------------------------------------------------------------

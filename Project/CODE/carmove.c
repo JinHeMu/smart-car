@@ -17,6 +17,26 @@
 车载：玉米，葡萄，茄子
 **************************************************************************/
 
+
+/**************************************************************************
+
+ *      蚕豆（5， 27）        橙子（15， 27）        白菜（25， 27）
+
+番薯（-2，25）                                                  花生（37， 25）
+
+
+榴莲（-2， 17）                                                 苹果（37， 17）
+
+
+黄瓜（-2， 9）                                                  辣椒（37， 9）
+
+        水稻（5， -2）        香蕉（15， -2）        萝卜（25， -2）
+
+车载：玉米，葡萄，茄子
+**************************************************************************/
+
+
+
 /**************************************************************************
 1.读取坐标，保存在相应的数组中
 2.路径规划，每次都以最近的点位，重新排列一个新的点位
@@ -38,11 +58,13 @@ rt_sem_t arrive_sem;    // 到达
 rt_sem_t carry_sem;     // 搬运
 rt_sem_t recognize_sem; // 识别
 rt_sem_t obj_detection_sem; //目标检测
+//rt_sem_t move_sem; 
 
 rt_thread_t route_planning_th; // 路径规划线程
 rt_thread_t correct_th;          // 矫正线程
 rt_thread_t carry_th;            // 搬运线程
 rt_thread_t obj_detection_th; 
+//rt_thread_t move_th;
 
 int pic_dis = 0;
 
@@ -85,14 +107,30 @@ void car_move(float tar_x, float tar_y)
     while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 20) // 持续运动
     {
         car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x);//cm
-        car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
-				
-    }
+        car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);	
+    }	
+			car.Speed_X = 0;
+			car.Speed_Y = 0;
 		rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
-		car.Speed_X = 0;
-		car.Speed_Y = 0;
-		rt_thread_mdelay(1000);
+		rt_thread_delay(1000); // ?? 1 ??
+		rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX,(int)car.MileageY);
+
 }
+
+//void car_move(float tar_x, float tar_y)
+//{
+//		rt_kprintf("MOVEING !!! \n");
+//    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 20) // 持续运动
+//    {
+//        car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x);//cm
+//        car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
+//				
+//    }		
+//		rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+//		//rt_thread_delay(1000); // ?? 1 ??
+//		rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX,(int)car.MileageY);
+
+//}
 
 void car_turn(float angle)
 {
@@ -272,11 +310,11 @@ void correct_entry(void *param)
             }
             else if (pic_dis <= 45 && pic_dis > 25)
             {
-                car.correct_speed = 16;
+                car.correct_speed = 12;
             }
             else if (pic_dis <= 25 && pic_dis > 5)
             {
-                car.correct_speed = 15;
+                car.correct_speed = 10;
             }
             else
             {
@@ -294,107 +332,136 @@ void correct_entry(void *param)
 
         car.MileageX = car.target_x; // 更新当前坐标
         car.MileageY = car.target_y;
+				rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
 
        arm_carry();
-//			car_move(60,280);
+				car_move(20,20);
        arm_down();
-        // ART1_mode = 3;//告诉openart该识别图片了
         // rt_sem_release(recognize_sem);
 
 //        rt_thread_mdelay(1000);
 //        rt_sem_release(correct_sem);
-      rt_sem_release(arrive_sem);
+				rt_sem_release(arrive_sem);
+
+//				rt_sem_release(recognize_sem);
+				
     }
 }
 
 void carry_entry(void *param)
 {
+	
     while (1)
     {
+				rt_sem_take(recognize_sem, RT_WAITING_FOREVER); // 接受识别信号量
+				ART1_mode = 3;
         // rt_sem_take(carry_sem, RT_WAITING_FOREVER);
-        rt_sem_take(recognize_sem, RT_WAITING_FOREVER); // 接受识别信号量
-        uart_putchar(USART_4, 0x43);
-        rt_thread_mdelay(5);
-
+				uart_putchar(USART_4, 0x43);
+				rt_thread_mdelay(1000);
         if (strcmp(classified, "bean") == 0)
         {
             rt_kprintf("This is a bean.\n");
             arm_carry();
-            // 到达指定位置，寻找下一个点，到达下一个点
-            car.target_x = 5;
-            car.target_y = 27;
-            rt_sem_release(arrive_sem);
-            rt_sem_release(carry_sem);
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "corn") == 0)
         {
             rt_kprintf("This is a corn.\n");
-            arm_box();
+                                    arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "peanut") == 0)
         {
             rt_kprintf("This is a peanut.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "potato") == 0)
         {
             rt_kprintf("This is a potato.\n");
             arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "rice") == 0)
         {
             rt_kprintf("This is a rice.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "apple") == 0)
         {
             rt_kprintf("This is an apple.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
-        else if (strcmp(classified, "banana") == 0)
+        else if (strcmp(classified, "bannana") == 0)
         {
             rt_kprintf("This is a banana.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "grape") == 0)
         {
             rt_kprintf("This is a grape.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "durian") == 0)
         {
             rt_kprintf("This is a durian.\n");
-            arm_box();
+                                    arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "orange") == 0)
         {
             rt_kprintf("This is an orange.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "cucumber") == 0)
         {
             rt_kprintf("This is a cucumber.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "eggplant") == 0)
         {
             rt_kprintf("This is an eggplant.\n");
-            arm_box();
+						arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "pepper") == 0)
         {
             rt_kprintf("This is a pepper.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "cabbage") == 0)
         {
             rt_kprintf("This is a cabbage.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else if (strcmp(classified, "radish") == 0)
         {
             rt_kprintf("This is a radish.\n");
-            arm_carry();
+                        arm_carry();
+						car_move(20,20);
+						arm_down();
         }
         else
         {
@@ -406,7 +473,7 @@ void carry_entry(void *param)
 
 void obj_detection_entry(void *param)
 {   
-    //rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER);
+    rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER);
 		rt_kprintf("DETECT !!!\n");
 
 	while(1)
@@ -441,11 +508,12 @@ void obj_detection_entry(void *param)
 void car_start_init(void)
 {
 
-    arrive_sem = rt_sem_create("arrive_sem", 0, RT_IPC_FLAG_FIFO);                   // 到达信号量，接受就开始跑点
+    arrive_sem = rt_sem_create("arrive_sem", 1, RT_IPC_FLAG_FIFO);                   // 到达信号量，接受就开始跑点
     uart_corrdinate_sem = rt_sem_create("uart_corrdinate_sem", 0, RT_IPC_FLAG_FIFO); // 接收坐标信号量
     correct_sem = rt_sem_create("correct_sem", 0, RT_IPC_FLAG_FIFO);                 // 矫正信号量，接受就开始矫正
     recognize_sem = rt_sem_create("recognize_sem", 0, RT_IPC_FLAG_FIFO);             // 识别信号量，告诉单片机已经识别，接受就开始搬运
-    carry_sem = rt_sem_create("carry_sem", 0, RT_IPC_FLAG_FIFO);                     // 搬运信号量，接受即已经搬运到相应点位
+    carry_sem = rt_sem_create("carry_sem", 0, RT_IPC_FLAG_FIFO);  	// 搬运信号量，接受即已经搬运到相应点位
+		//move_sem = rt_sem_create("move_sem", 0, RT_IPC_FLAG_FIFO);
 
     route_planning_th = rt_thread_create("route_planning_th", route_planning_entry, RT_NULL, 1024, 28, 10);
 
@@ -453,11 +521,12 @@ void car_start_init(void)
 
     carry_th = rt_thread_create("carry_th", carry_entry, RT_NULL, 1024, 28, 10);
 
-    obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 27, 10);
+    obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 28, 10);
+		//move_th = rt_thread_create("move_th", move_entry, RT_NULL, 1024, 26, 10);
 
     uart_putchar(USART_4, 0x41); // 发送A告诉该识别A4纸了
     rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
-		rt_thread_startup(obj_detection_th);
+		//rt_thread_startup(obj_detection_th);
 }

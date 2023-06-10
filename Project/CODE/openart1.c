@@ -132,7 +132,7 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 						classified[temp] = ART1_dat[temp];
 					}
 					
-					rt_sem_release(recognize_sem);//识别卡片后发送识别信号量
+					//rt_sem_release(recognize_sem);//识别卡片后发送识别信号量
 					rxstate = 0;
 				}
 				else//没有接收到帧尾，获取坐标点

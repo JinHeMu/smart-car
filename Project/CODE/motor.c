@@ -13,14 +13,25 @@
 #define PWM_4 PWM1_MODULE0_CHB_D13
 
 int32 duty1 = 0, duty2 = 0, duty3 = 0, duty4 = 0; // 电机PWM值
+//float Incremental_kp[4] = {6.5, 6.5, 6.5, 6.5};
+//float Incremental_ki[4] = {0.20, 0.20, 0.20, 0.20};
+//float Incremental_kd[4] = {0,0,0,0};      // 增量式PID，控制电机输出值
+
 float Incremental_kp[4] = {6.5, 6.5, 6.5, 6.5};
-float Incremental_ki[4] = {0.20, 0.20, 0.20, 0.20};
-float Incremental_kd[4] = { 0,0, 0, 0,};                                                // 增量式PID，控制电机输出值
+float Incremental_ki[4] = {0.2, 0.2,0.2, 0.2};
+float Incremental_kd[4] = {0,0,0,0};     
+
 float Angel_kp = 0.4, Angel_ki = 0, Angel_kd = 5; // 角度环
-float Position_kp = 0.05, Position_ki = 0, Position_kd = 0;
+//float Position_kp = 0.05, Position_ki = 0, Position_kd = 0;
+float Position_kp = 0.1, Position_ki = 0, Position_kd = 0;
 float correct_kp = 0.3, correct_ki = 0, correct_kd = 0;
 
 // 积分法计算位移参数
+
+float vy1 = 0;float vy2 = 0;
+float vx1 = 0;float vx2 = 0;
+float vy = 0;float vx = 0;
+
 
 // 电机目标速度
 double speed_tar_1 = 0;
@@ -49,6 +60,26 @@ void car_omni(float x, float y, float z) // 全向移动逆运算
     speed_tar_2 = y + x - z;
     speed_tar_3 = y + x + z;
     speed_tar_4 = y - x - z;
+	
+}
+
+void car_omni_angle(float x, float y, float z) // 全向移动逆运算
+{
+
+		vy1 = y *cos(abs(car.current_angle));
+		vy2 = y *sin(abs(car.current_angle));
+		
+		vx1 = x *sin(abs(car.current_angle));
+		vx2 = x *cos(abs(car.current_angle));
+	
+		vy = vy1 + vx1;
+		vx = -vy2 +vx2;
+	
+    speed_tar_1 = vy - vx + z;
+    speed_tar_2 = vy + vx - z;
+    speed_tar_3 = vy + vx + z;
+    speed_tar_4 = vy - vx - z;
+	
 }
 
 void car_ahead()
@@ -138,6 +169,7 @@ int Incremental_pid1(int Target, int Encoder)
     static float Bias, Pwm, Integral_bias, Last_Bias;
     Bias = (float)(Target - Encoder);
     Integral_bias += Bias;
+		Integral_bias = limit(Integral_bias, PWM_LIMIT);
     Pwm = Incremental_kp[0] * Bias + Incremental_ki[0] * Integral_bias + Incremental_kd[0] * (Bias - Last_Bias);
     Last_Bias = Bias;
     return (int)Pwm;
@@ -148,6 +180,7 @@ int Incremental_pid2(int Target, int Encoder)
     static float Bias, Pwm, Integral_bias, Last_Bias;
     Bias = (float)(Target - Encoder);
     Integral_bias += Bias;
+		Integral_bias = limit(Integral_bias, PWM_LIMIT);
     Pwm = Incremental_kp[1] * Bias + Incremental_ki[1] * Integral_bias + Incremental_kd[1] * (Bias - Last_Bias);
     Last_Bias = Bias;
     return (int)Pwm;
@@ -158,6 +191,7 @@ int Incremental_pid3(int Target, int Encoder)
     static float Bias, Pwm, Integral_bias, Last_Bias;
     Bias = (float)(Target - Encoder);
     Integral_bias += Bias;
+		Integral_bias = limit(Integral_bias, PWM_LIMIT);
     Pwm = Incremental_kp[2] * Bias + Incremental_ki[2] * Integral_bias + Incremental_kd[2] * (Bias - Last_Bias);
     Last_Bias = Bias;
     return (int)Pwm;
@@ -168,6 +202,7 @@ int Incremental_pid4(int Target, int Encoder)
     static float Bias, Pwm, Integral_bias, Last_Bias;
     Bias = (float)(Target - Encoder);
     Integral_bias += Bias;
+		Integral_bias = limit(Integral_bias, PWM_LIMIT);
     Pwm = Incremental_kp[3] * Bias + Incremental_ki[3] * Integral_bias + Incremental_kd[3] * (Bias - Last_Bias);
     Last_Bias = Bias;
     return (int)Pwm;
@@ -268,11 +303,16 @@ void pid_calculate(void)
     duty2 = Incremental_pid2(speed_tar_2 * 116, RC_encoder2);
     duty3 = Incremental_pid3(speed_tar_3 * 116, RC_encoder3);
     duty4 = Incremental_pid4(speed_tar_4 * 116, RC_encoder4);
-
+	
+//		rt_kprintf("%d,%d,%d,%d   ", duty1,duty2,duty3,duty4);
+//		rt_kprintf("%d,%d,%d,%d   ", RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4);
+//		rt_kprintf("%d,%d,%d,%d\n", (int)speed_tar_1*116,(int)speed_tar_2*116,(int)speed_tar_3*116,(int)speed_tar_4*116);
+	
     duty1 = limit(duty1, PWM_LIMIT);
     duty2 = limit(duty2, PWM_LIMIT);
     duty3 = limit(duty3, PWM_LIMIT);
     duty4 = limit(duty4, PWM_LIMIT);
+	
 }
 
 void motor_control(bool run)

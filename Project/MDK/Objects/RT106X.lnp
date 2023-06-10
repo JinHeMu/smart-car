@@ -1,7 +1,7 @@
 --cpu Cortex-M7.fp.dp
+".\objects\pin_mux.o"
 ".\objects\board.o"
 ".\objects\clock_config.o"
-".\objects\pin_mux.o"
 ".\objects\generic_list.o"
 ".\objects\serial_manager.o"
 ".\objects\serial_port_uart.o"

@@ -18,6 +18,7 @@ extern float Position_kp, Position_ki, Position_kd;
 void motor_init(void);
 void motor_control(bool run);
 void car_omni(float x, float y, float z);
+void car_omni_angle(float x, float y, float z);
 
 
 int angel_pid(int NowAngel,int TargetAngel);

@@ -236,35 +236,35 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "6.7-epoch20-int8.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "6.10-epoch20.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
 
     while(True):
         img = sensor.snapshot()
-        #recognize_pic(labels, net)
+        recognize_pic(labels, net)
         # # boundary_correct()
-        # # picture_correct()
-        uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
-        if (uart_num):
-            uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
-            #print(uart_str.decode())
-            if(uart_str.decode() == "A"):
-                print("A")
-                while(uart_flag != 1):
-                    find_coordinates()
+        #picture_correct()
+        #uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
+        #if (uart_num):
+            #uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
+            ##print(uart_str.decode())
+            #if(uart_str.decode() == "A"):
+                #print("A")
+                #while(uart_flag != 1):
+                    #find_coordinates()
 
-            elif(uart_str.decode() == "B"):
-                print("B")
-                picture_correct()
+            #elif(uart_str.decode() == "B"):
+                #print("B")
+                #picture_correct()
 
-            elif(uart_str.decode() == "C"):
-                print("C")
-                recognize_pic(labels, net)
+            #elif(uart_str.decode() == "C"):
+                #print("C")
+                #recognize_pic(labels, net)
 
-        else:
-            img = sensor.snapshot()
+        #else:
+            #img = sensor.snapshot()
 
 
 

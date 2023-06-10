@@ -38,6 +38,18 @@ void omni_mileage() // 计算全方位移动距离
   // car.MileageZ += (float)(detaz*MileageKz);
 }
 
+
+//void omni_mileage_angle() // 计算全方位移动距离
+//{
+//  float detax = 0, detay = 0, detaz = 0;
+//  detay = (float)(RC_encoder1 + RC_encoder2 + RC_encoder3 + RC_encoder4) / 4;  // y轴移动速度
+//  detax = (float)(-RC_encoder1 + RC_encoder2 + RC_encoder3 - RC_encoder4) / 4; // x轴移动速度
+//  detaz = (float)(RC_encoder1 - RC_encoder2 + RC_encoder3 - RC_encoder4) / 4;
+//  car.MileageX += (float)(detax * MileageKx); // 单位cm
+//  car.MileageY += (float)(detay * MileageKy); // 单位cm
+//  // car.MileageZ += (float)(detaz*MileageKz);
+//}
+
 void encoder_get(void)
 {
 

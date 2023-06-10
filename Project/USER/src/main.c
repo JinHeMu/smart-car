@@ -23,8 +23,9 @@ void main()
 	button_init();	//³õÊ¼»¯°´¼ü
 
 	motor_init();
+//	magnet_appeal();
 
-	car_start_init();
+	//car_start_init();
 
 	
 	
