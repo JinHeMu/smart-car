@@ -27,7 +27,7 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 		
 			encoder_get();
 			motor_control(1);
-			rt_kprintf("%d,%d,%d\n",(int)car.MileageX,(int)car.MileageY, (int)sqrt(car.MileageX * car.MileageX + car.MileageY * car.MileageY));
+			//rt_kprintf("%d,%d,%d\n",(int)car.MileageX,(int)car.MileageY, (int)sqrt(car.MileageX * car.MileageX + car.MileageY * car.MileageY));
 
 //			rt_kprintf("%d\n",RC_encoder2);
 				

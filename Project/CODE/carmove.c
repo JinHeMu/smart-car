@@ -275,6 +275,9 @@ void route_planning_entry(void *param)
         car_move(car.target_x, car.target_y);
 
         //        rt_sem_release(arrive_sem);
+				ART1_mode = 2;               // art矫正模式
+        uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
+				rt_thread_mdelay(1000);
         rt_sem_release(correct_sem); // 到达后发送矫正信号
     }
 }
@@ -285,12 +288,11 @@ void correct_entry(void *param)
     {
         rt_sem_take(correct_sem, RT_WAITING_FOREVER); // 获取矫正信号
         rt_kprintf("correcting!!!\n");
-        ART1_mode = 2;               // art矫正模式
-        uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
-				car_turn(ART1_CORRECT_Angle);
-        rt_thread_mdelay(20);
 
-        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 5 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
+				car_turn(ART1_CORRECT_Angle);
+        
+
+        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
         {
 
             rt_thread_mdelay(5);
@@ -302,19 +304,19 @@ void correct_entry(void *param)
 
             if (pic_dis > 65)
             {
-                car.correct_speed = 18;
+                car.correct_speed = 10;
             }
             else if (pic_dis <= 65 && pic_dis > 45)
             {
-                car.correct_speed = 17;
+                car.correct_speed = 9;
             }
             else if (pic_dis <= 45 && pic_dis > 25)
             {
-                car.correct_speed = 12;
+                car.correct_speed = 8;
             }
             else if (pic_dis <= 25 && pic_dis > 5)
             {
-                car.correct_speed = 10;
+                car.correct_speed = 7;
             }
             else
             {
@@ -333,17 +335,13 @@ void correct_entry(void *param)
         car.MileageX = car.target_x; // 更新当前坐标
         car.MileageY = car.target_y;
 				rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+				
 
-       arm_carry();
-				car_move(20,20);
-       arm_down();
-        // rt_sem_release(recognize_sem);
 
-//        rt_thread_mdelay(1000);
-//        rt_sem_release(correct_sem);
-				rt_sem_release(arrive_sem);
-
-//				rt_sem_release(recognize_sem);
+				ART1_mode = 3;
+				uart_putchar(USART_4, 0x43);
+				rt_thread_mdelay(1000);
+				rt_sem_release(recognize_sem);
 				
     }
 }
@@ -354,10 +352,7 @@ void carry_entry(void *param)
     while (1)
     {
 				rt_sem_take(recognize_sem, RT_WAITING_FOREVER); // 接受识别信号量
-				ART1_mode = 3;
-        // rt_sem_take(carry_sem, RT_WAITING_FOREVER);
-				uart_putchar(USART_4, 0x43);
-				rt_thread_mdelay(1000);
+
         if (strcmp(classified, "bean") == 0)
         {
             rt_kprintf("This is a bean.\n");
@@ -375,7 +370,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, "peanut") == 0)
         {
             rt_kprintf("This is a peanut.\n");
-                        arm_carry();
+            arm_carry();
 						car_move(20,20);
 						arm_down();
         }
@@ -459,7 +454,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, "radish") == 0)
         {
             rt_kprintf("This is a radish.\n");
-                        arm_carry();
+            arm_carry();
 						car_move(20,20);
 						arm_down();
         }
@@ -468,6 +463,7 @@ void carry_entry(void *param)
             rt_kprintf("Unknown classification.\n");
             // 直接去下一个点位
         }
+				rt_sem_release(arrive_sem);
     }
 }
 

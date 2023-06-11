@@ -9,7 +9,7 @@ import sensor, image, time
 global pos_perx
 line = None
 pos_perx = []
-uart_flag = 0
+find_coordinates_flag = 1
 correct_flag = 1
 recognize_flag = 1
 
@@ -40,52 +40,65 @@ def openart_init():
 #寻找A4纸坐标，并发送A4纸坐标
 def find_coordinates():
     global pos_perx
-    global uart_flag
-    pos_nowx = []
-    pos_y = []
 
-    img = sensor.snapshot()
-    for r in img.find_rects(threshold=3000):
-        #寻找矩形
-        if r.w() > 120 and r.w() < 180 and r.h() > 70 and r.h() < 130:
-            #获取角点，并进行变换
-            corners = r.corners()
-            img1 = img.rotation_corr(0,0,0,0,0,1,60,corners).replace(vflip=True,  hmirror=False,  transpose=False)
-            #寻找圆点
-            for c in img1.find_circles((5,5,300,220),x_stride = 2, y_stride = 1,threshold=1500, x_margin=10, y_margin=10, r_margin=5, r_min=1,
-                                    r_max=5, r_step=1):
-                img1.draw_circle(c.x(), c.y(), c.r(), color=(255, 0, 0))
-                #计算坐标点
-                posx = (float(c.x())) / 315 * 35 + 1
-                posy = 25 - ((float(c.y())-1) / 235 * 25) + 1
+    sensor.reset()
+    sensor.set_pixformat(sensor.RGB565)
+    sensor.set_framesize(sensor.QVGA)
+    sensor.set_brightness(1000)
+    sensor.skip_frames(20)
+    sensor.set_auto_gain(False)
+    sensor.set_auto_whitebal(False,(0,0,0))
 
-                pos_nowx.append(int(posx)) #将坐标点添加至数组
-                pos_y.append(int(posy))
 
-                img1.draw_string(c.x() - 5, c.y() - 10, "(" + str(int(posx)) + "," + str(int(posy)) + ")",
-                                color=(0, 0, 255), scale=1, mono_space=False)
-                lcd.show_image(img1, 320, 240, zoom=2)
+    find_coordinates_flag = 1
 
-            result_x = sorted(pos_nowx) #重新排列当前数组
-            if(result_x == pos_perx ): #如果当前数组等于上一次，则发送数据
-                uart.write("A")  # 发送包头
-                for i in range(len(pos_nowx)):
-                    uart.write("%c" % (pos_nowx[i]))
-                    time.sleep_ms(10)
+    while find_coordinates_flag :
+        pos_nowx = []
+        pos_y = []
+        img = sensor.snapshot()
+        for r in img.find_rects(threshold=3000):
+            #寻找矩形
+            if r.w() > 120 and r.w() < 180 and r.h() > 70 and r.h() < 130:
+                #获取角点，并进行变换
+                corners = r.corners()
+                img1 = img.rotation_corr(0,0,0,0,0,1,60,corners).replace(vflip=True,  hmirror=False,  transpose=False)
+                #寻找圆点
+                for c in img1.find_circles((5,5,300,220),x_stride = 2, y_stride = 1,threshold=1500, x_margin=10, y_margin=10, r_margin=5, r_min=1,
+                                        r_max=5, r_step=1):
+                    img1.draw_circle(c.x(), c.y(), c.r(), color=(255, 0, 0))
+                    #计算坐标点
+                    posx = (float(c.x())) / 315 * 35 + 1
+                    posy = 25 - ((float(c.y())-1) / 235 * 25) + 1
 
-                for i in range(len(pos_y)):
-                    uart.write("%c" % (pos_y[i]))
-                    time.sleep_ms(10)
+                    pos_nowx.append(int(posx)) #将坐标点添加至数组
+                    pos_y.append(int(posy))
 
-                uart.write("Y")  # 发送包尾
-                    # 串口发送成功标志位
-                print(pos_nowx)
-                print(pos_y)
-                print("OK")
-                uart_flag = 1
-                break
-            else:
-                pos_perx = result_x
+                    img1.draw_string(c.x() - 5, c.y() - 10, "(" + str(int(posx)) + "," + str(int(posy)) + ")",
+                                    color=(0, 0, 255), scale=1, mono_space=False)
+                    lcd.show_image(img1, 320, 240, zoom=2)
+
+                result_x = sorted(pos_nowx) #重新排列当前数组
+                if(result_x == pos_perx ): #如果当前数组等于上一次，则发送数据
+                    uart.write("A")  # 发送包头
+                    for i in range(len(pos_nowx)):
+                        uart.write("%c" % (pos_nowx[i]))
+                        time.sleep_ms(10)
+
+                    for i in range(len(pos_y)):
+                        uart.write("%c" % (pos_y[i]))
+                        time.sleep_ms(10)
+
+                    uart.write("Y")  # 发送包尾
+                        # 串口发送成功标志位
+                    print(pos_nowx)
+                    print(pos_y)
+                    print("OK")
+                    find_coordinates_flag = 0
+                    break
+                else:
+                    pos_perx = result_x
+                    lcd.show_image(img1, 320, 240, zoom=2)
+
 
 
 #图片矫正函数
@@ -99,14 +112,10 @@ def picture_correct():
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True,(0,0,0))
 
-
-
     dis_X = 0
     dis_Y = 0
     distance = 0
     correct_flag = 1
-
-    q_list = [0] * 5  # the length of the list is set to 10
 
     while correct_flag:
         img = sensor.snapshot()
@@ -119,7 +128,6 @@ def picture_correct():
                 img.draw_circle(corner[0], corner[1], 5, color=(0, 255, 0))
             x0, y0 = point_corners[3]
             x1, y1 = point_corners[2]
-            x2, y2 = point_corners[1]
             x3, y3 = point_corners[0]
 
             len1 = (x0 - x1) ** 2 + (y0 - y1) ** 2
@@ -161,8 +169,6 @@ def picture_correct():
             distance = math.sqrt((dis_X ** 2) + (dis_Y ** 2))
             if distance < 10:
                 correct_flag = 0
-                break
-            img = sensor.snapshot()
 
 #边线矫正函数
 def boundary_correct():
@@ -190,6 +196,8 @@ def boundary_correct():
                 angle -= 180
             uart.write("%c" % angle)
             print("Line Angle: ", angle)
+        else :
+            lcd.show_image(img, 320, 240, zoom=2)
 
 
 
@@ -234,6 +242,7 @@ def recognize_pic(labels, net):
 
 
 
+
 def main():
     openart_init()
     net_path = "6.7-epoch20-int8.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
@@ -252,8 +261,7 @@ def main():
             #print(uart_str.decode())
             if(uart_str.decode() == "A"):
                 print("A")
-                while(uart_flag != 1):
-                    find_coordinates()
+                find_coordinates()
 
             elif(uart_str.decode() == "B"):
                 print("B")
@@ -264,7 +272,7 @@ def main():
                 recognize_pic(labels, net)
 
         else:
-            img = sensor.snapshot()
+            lcd.show_image(img, 320, 240, zoom=2)
 
 
 
