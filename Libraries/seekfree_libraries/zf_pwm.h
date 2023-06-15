@@ -51,7 +51,7 @@ typedef enum
                         
     PWM2_MODULE2_CHB_C11=2*40+5*4,  PWM2_MODULE2_CHB_E11,   //PWM2 子模块2 通道B  引脚可选范围
     PWM2_MODULE2_CHA_C10=2*40+5*5,  PWM2_MODULE2_CHA_E10,   //PWM2 子模块2 通道A  引脚可选范围
-                        
+                 
     PWM2_MODULE3_CHB_B1 =2*40+5*6,  PWM2_MODULE3_CHB_C19,   PWM2_MODULE3_CHB_D3,    PWM2_MODULE3_CHB_E20,                       //PWM2 子模块3 通道B  引脚可选范围
     PWM2_MODULE3_CHA_B0 =2*40+5*7,  PWM2_MODULE3_CHA_C18,   PWM2_MODULE3_CHA_D2,    PWM2_MODULE3_CHA_E19,   PWM2_MODULE3_CHA_B9,//PWM2 子模块3 通道A  引脚可选范围
     

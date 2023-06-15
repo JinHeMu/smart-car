@@ -13,7 +13,7 @@ sensor.skip_frames(time = 20)
 #sensor.set_auto_whitebal(False,(0,0x80,0))  # must turn this off to prevent image washout...
 clock = time.clock()
 
-net_path = "mobilenet_v2-2023-05-22T06-12-38.755Z_in-int8_out-int8.tflite"                                  # ĺŽäšć¨ĄĺçčˇŻĺž?
+net_path = "6.13-epoch40.tflite"                                  # ĺŽäšć¨ĄĺçčˇŻĺž?
 labels = [line.rstrip() for line in open("/sd/labels.txt")]   # ĺ č˝˝ć ç­ž
 net = tf.load(net_path, load_to_fb=True)                                  # ĺ č˝˝ć¨Ąĺ
 
@@ -21,13 +21,13 @@ net = tf.load(net_path, load_to_fb=True)                                  # ĺ
 
 while(True):
     img = sensor.snapshot()
-    threshold = [(23, 100, -128, 127, -30, 127)]
+    threshold = [(50, 100, -128, 127, -30, 127)]
 
     for b in img.find_blobs(threshold,pixels_threshold=400,area_threshold=400,margin= 1,merge=True,invert=0):
 
         img.draw_rectangle(b.rect(), color = (255, 0, 0), scale = 1, thickness = 2)
 
-        img1 = img.copy()                           
+        img1 = img.copy(1,1,b.rect())
 
 
         for obj in tf.classify(net , img1, min_scale=1.0, scale_mul=0.5, x_overlap=0.0, y_overlap=0.0):

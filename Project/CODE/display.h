@@ -26,6 +26,8 @@ void GUI_pid_value();
 void GUI_imu_ra_value();
 void GUI_route_value();
 void GUI_imu_ra();
+void GUI_arm();
+void GUI_arm_value();
  
 
 void  Menu_key_set(void);

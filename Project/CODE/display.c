@@ -21,12 +21,15 @@ Menu_table table[30] =
 		{1, 2, 5, 0, (*GUI_motor)},	 // 二级界面 电机相关参数
 		{2, 3, 6, 0, (*GUI_pid)},	 // 二级界面 pid值
 		{3, 4, 7, 0, (*GUI_imu_ra)}, // 二级界面 陀螺仪值
-		{4, 1, 8, 0, (*GUI_route)},
+		{4, 5, 8, 0, (*GUI_route)},
+		{5, 1, 9, 0, (*GUI_arm)},
 
-		{5, 1, 1, 1, (*GUI_motor_value)},  // 三级界面：motor_value
-		{6, 2, 2, 2, (*GUI_pid_value)},	   // 三级界面：pid_value
-		{7, 3, 3, 3, (*GUI_imu_ra_value)}, // 三级界面：imu_ra_value_value
-		{8, 4, 4, 4, (*GUI_route_value)}, // 三级界面：imu_ra_value_value
+		{6, 1, 1, 1, (*GUI_motor_value)},  // 三级界面：motor_value
+		{7, 2, 2, 2, (*GUI_pid_value)},	   // 三级界面：pid_value
+		{8, 3, 3, 3, (*GUI_imu_ra_value)}, // 三级界面
+		{9, 4, 4, 4, (*GUI_route_value)}, // 三级界面
+		{10, 5, 5, 5, (*GUI_arm_value)}, // 三级界面：
+		
 
 
 };
@@ -40,6 +43,13 @@ void Menu_key_set(void)
 
 	rt_mb_recv(display_mailbox, &mb_data, RT_WAITING_NO); // 接受按键发送过来的邮件
 
+	if ((mb_data == 1)) // 按下按键1
+	{
+		ips114_clear(WHITE);
+		func_index = table[func_index].next; // 按键next按下后的索引号
+		mb_data = 0; // 邮箱数据清除
+	}
+	
 	if ((mb_data == 2)) // 按下按键1
 	{
 		ips114_clear(WHITE);
@@ -75,6 +85,7 @@ void GUI_motor() // 一级菜单，显示motor
 	ips114_showstr(0, 1, "    pid");
 	ips114_showstr(0, 2, "    imu_ra");
 	ips114_showstr(0, 3, "    route");
+	ips114_showstr(0, 4, "		Arm");
 }
 
 void GUI_pid() // 一级菜单，显示pid
@@ -83,6 +94,7 @@ void GUI_pid() // 一级菜单，显示pid
 	ips114_showstr(0, 1, "->> pid");
 	ips114_showstr(0, 2, "    imu_ra");
 	ips114_showstr(0, 3, "    route");
+	ips114_showstr(0, 4, "		Arm");
 }
 
 void GUI_imu_ra()
@@ -92,6 +104,7 @@ void GUI_imu_ra()
 	ips114_showstr(0, 1, "    pid");
 	ips114_showstr(0, 2, "->> imu_ra");
 	ips114_showstr(0, 3, "    route");
+	ips114_showstr(0, 4, "		Arm");
 }
 
 void GUI_route()
@@ -100,6 +113,17 @@ void GUI_route()
 	ips114_showstr(0, 1, "    pid");
 	ips114_showstr(0, 2, "    imu_ra");
 	ips114_showstr(0, 3, "->> route");
+	ips114_showstr(0, 4, "		Arm");
+
+}
+
+void GUI_arm()
+{
+	ips114_showstr(0, 0, "    Motor");
+	ips114_showstr(0, 1, "    Pid");
+	ips114_showstr(0, 2, "    Imu_ra");
+	ips114_showstr(0, 3, "		Route");
+	ips114_showstr(0, 4, "->> Arm");
 
 }
 
@@ -180,6 +204,23 @@ void GUI_route_value()
 	ips114_showstr(0,1, "target_point:");ips114_showint8(110, 1, (int)car.target_x);ips114_showstr(160,1, ":");ips114_showint8(170, 1, (int)car.target_y);
 
 }
+
+void GUI_arm_value()
+{
+	int angle = 0 ;
+	while(1)
+	{
+		ips114_showstr(0,1, "angle:");ips114_showint8(110, 1, angle);
+		
+		if(rt_sem_take(key2_sem, RT_WAITING_FOREVER) == RT_EOK)
+		{
+			ARM_LOW_angle(angle);
+			angle += 10;
+		}		
+	}
+	
+
+}
 void display_entry(void *parameter)
 {
 
@@ -200,11 +241,25 @@ void display_entry(void *parameter)
 	
 //	car_turnto(20);
 //	car_move(100,0);
+//	
+//		smotor1_angle(80);
+//		rt_thread_mdelay(5000);
+//		smotor1_angle(40);
+//		rt_thread_mdelay(5000);
+//		smotor1_angle(180);
+//		rt_thread_mdelay(5000);
+
+//	 pwm_duty(PWM4_MODULE2_CHA_C30, 0);
+//	 rt_thread_mdelay(2000);
+//	 pwm_duty(PWM4_MODULE2_CHA_C30, 5000);
+//	 rt_thread_mdelay(2000);
+ 
 
 
 
-	while (1)
-	{
+
+//	while (1)
+//	{
 //		car.Speed_X = 10;car.Speed_Y = 10;rt_thread_mdelay(5000);
 //		
 //		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
@@ -224,11 +279,44 @@ void display_entry(void *parameter)
 //			
 
 //		Menu_key_set();
-		GUI_motor_value();
+		//GUI_motor_value();
 
 //			car_move(0,0);
+
+		int angle_UP = 0 ;
+		int angle_LOW = 0;
+		while(1)
+		{
+			ips114_showstr(0,1, "angle_UP:");ips114_showint16(110, 1, angle_UP);
+			ips114_showstr(0,2, "angle_LOW:");ips114_showint16(110, 2, angle_LOW);
+			
+//			if(rt_sem_take(key1_sem, RT_WAITING_NO) == RT_EOK)
+//			{
+//			{angle_LOW += 90;
+//				ARM_LOW_angle(angle_LOW);
+//				
+//			}
+//			if(rt_sem_take(key2_sem, RT_WAITING_NO) == RT_EOK)
+//			{
+//				angle_LOW -= 90;
+//				ARM_LOW_angle(angle_LOW);
+//				
+//			}
+			if(rt_sem_take(key3_sem, RT_WAITING_NO) == RT_EOK)
+			{angle_UP += 30;
+				ARM_UP_angle(angle_UP);
+				
+			}
+			if(rt_sem_take(key4_sem, RT_WAITING_NO) == RT_EOK)
+			{angle_UP -= 90;
+			ARM_UP_angle(angle_UP);
+				
+			}					
+		}
 	}
-}
+
+
+//}
 
 void display_init(void)
 {

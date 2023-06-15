@@ -1,80 +1,112 @@
 #include "smotor.h"
 
-#define SMOTOR1_PIN   PWM4_MODULE2_CHA_C30       //∂®“Â≥µƒ£—∞º£∂Êª˙“˝Ω≈
-//#define SMOTOR2_PIN   PWM1_MODULE0_CHA_D12       //∂®“Â‘∆Ã®∂Êª˙1“˝Ω≈
-//#define SMOTOR3_PIN   PWM1_MODULE0_CHB_D13       //∂®“Â‘∆Ã®∂Êª˙2“˝Ω≈
+//ÂÆö‰πâÊú∫Ê¢∞ËáÇÁöÑPWM IOÂè£
+#define ARM_UP_PIN PWM1_MODULE3_CHA_B10
+#define ARM_LOW_PIN PWM4_MODULE2_CHA_C30
+#define ARM_LEFT_PIN PWM2_MODULE0_CHB_C7
+#define ARM_MID_PIN PWM2_MODULE1_CHA_C8
 
-#define SMOTOR1_CENTER  (1.5*50000/20)
-//#define SMOTOR2_CENTER  (1.5*50000/20)
-//#define SMOTOR3_CENTER  (1.5*50000/20)
-#define Maxduty            (6000)
+#define ARM_CENTER (1.5 * 50000 / 20)
 
-#define MAGNET_PIN B10
+//ÂÆö‰πâÁîµÁ£ÅÈìÅÊéßÂà∂IOÂè£
+#define MAGNET_PIN1 C30
+#define MAGNET_PIN2 C6
 
-// À¿«¯ duty1000
-// duty 4000 - 90°„ √ø3000duty - 90°„ 1°„= 33duty
-
-
-
-void magnet_release(void)
+//ÁîµÁ£ÅÈìÅÈáäÊîæ
+void magnet1_release(void)
 {
-	gpio_set(MAGNET_PIN, 0);
-	
+	gpio_set(MAGNET_PIN1, 0);
+}
+void magnet2_release(void)
+{
+	gpio_set(MAGNET_PIN2, 0);
 }
 
-void magnet_appeal(void)
+//ÁîµÁ£ÅË¥¥Âê∏Âèñ
+void magnet1_appeal(void)
 {
-	gpio_set(MAGNET_PIN, 1);
-	
+	gpio_set(MAGNET_PIN1, 1);
+}
+void magnet2_appeal(void)
+{
+	gpio_set(MAGNET_PIN2, 1);
+}
+
+//ËÆæÁΩÆÊú∫Ê¢∞ËáÇËßíÂ∫¶
+void ARM_UP_angle(int angle)
+{
+	pwm_duty(ARM_UP_PIN, 1000 + angle * 30);
+}
+
+void ARM_LOW_angle(int angle)
+{
+	pwm_duty(ARM_LOW_PIN, 1100 + +angle * 14);
+}
+
+void ARM_LEFT_angle(int angle)
+{
+	pwm_duty(ARM_LEFT_PIN, 1000 + angle * 30);
+}
+
+void ARM_MID_angle(int angle)
+{
+	pwm_duty(ARM_LOW_PIN, 1100 + +angle * 14);
+}
+
+//Êú∫Ê¢∞ËáÇÊä¨Ëµ∑
+void arm_up(void)
+{
+	ARM_LOW_angle(100);
+	ARM_UP_angle(120);
+}
+
+//Êú∫Ê¢∞ËáÇÊîæ‰∏ã
+void arm_down(void)
+{
+	ARM_LOW_angle(30);
+	rt_thread_mdelay(300);
+	ARM_UP_angle(0);
+}
+
+
+void arm_carry(void)
+{
+	ARM_UP_angle(0);
+	rt_thread_mdelay(500);
+	ARM_LOW_angle(30);
+}
+void arm_pick(void)
+{
+	ARM_LOW_angle(30);
+	rt_thread_mdelay(300);
+	ARM_UP_angle(0);
+	rt_thread_mdelay(1000);
+	ARM_LOW_angle(100);
+	ARM_UP_angle(120);
+}
+
+//Â∞ÜÂç°ÁâáÊîæÂÖ•ÁõíÂ≠ê
+void arm_box(void)
+{
+
 }
 
 void arm_init(void)
-{		
-    pwm_init(SMOTOR1_PIN, 50, SMOTOR1_CENTER);
-		gpio_init(MAGNET_PIN, GPO, 0, GPIO_PIN_CONFIG);      //µ•∆¨ª˙∂Àø⁄D0 ≥ı ºªØDIR_1          GPIO
-		smotor1_angle(90);
-		rt_thread_mdelay(500);
-//    pwm_init(SMOTOR2_PIN, 50, 0);
-//    pwm_init(SMOTOR3_PIN, 50, 0);
+{
+	pwm_init(ARM_UP_PIN, 50, ARM_CENTER);
+	pwm_init(ARM_LOW_PIN, 50, ARM_CENTER);
+	//	  pwm_init(ARM_LEFT_PIN, 50, ARM_CENTER);
+	//		pwm_init(ARM_MID_PIN, 50, ARM_CENTER);
+
+	gpio_init(MAGNET_PIN1, GPO, 0, GPIO_PIN_CONFIG);
+	gpio_init(MAGNET_PIN2, GPO, 0, GPIO_PIN_CONFIG);
+
+	ARM_UP_angle(90);
+	ARM_LOW_angle(90);	
+	//		ARM_LEFT_angle(80);
+	//		ARM_MID_angle(120);
+	rt_thread_mdelay(500);
+
+
+	
 }
-
- void smotor1_angle(int angle)
- {
-     pwm_duty(SMOTOR1_PIN, 1100 + angle*33);
- }
-
- void arm_carry(void)
- {
-	
-	smotor1_angle(0);
-	magnet_appeal();
-	rt_thread_mdelay(1000);
-	smotor1_angle(90);
-	rt_thread_mdelay(1000);
- }
-
-
- void arm_down(void)
- {
-	smotor1_angle(0);
-	rt_thread_mdelay(1000);
-	magnet_release();
-	smotor1_angle(90);
-	rt_thread_mdelay(1000);
- }
-
- void arm_box(void)
- {
-
-	
- }
-
-//void smotor2_control(int16 angle)
-//{
-//    pwm_duty(SMOTOR2_PIN, Maxduty/180*angle+777);
-//}
-
-//void smotor3_control(int16 angle)
-//{
-//    pwm_duty(SMOTOR3_PIN, Maxduty/180*angle+777);
-//}
