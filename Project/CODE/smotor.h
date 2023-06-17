@@ -5,19 +5,23 @@
 
 
 void arm_init(void);
-void arm_carry(void);
 
-void arm_box(void);
 void ARM_UP_angle(int angle);
 void ARM_LOW_angle(int angle);
-void arm_up(void);
-void arm_down(void);
-void arm_pick(void);
+void ARM_MID_angle(int angle);
+void ARM_LEFT_angle(int angle);
 
-void magnet1_appeal(void);
-void magnet1_release(void);
-void magnet2_appeal(void);
-void magnet2_release(void);
+void arm_carry(void);
+void arm_putbox(uint8 angle);
+void arm_down(void);
+void arm_closebox(void);
+void arm_openbox(void);
+
+
+void magnet_front_release(void);
+void magnet_front_appeal(void);
+void magnet_left_release(void);
+void magnet_left_appeal(void);
 
 
 //void smotor2_control(int16 duty);

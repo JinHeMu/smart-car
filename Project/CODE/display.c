@@ -258,8 +258,8 @@ void display_entry(void *parameter)
 
 
 
-//	while (1)
-//	{
+	while (1)
+	{
 //		car.Speed_X = 10;car.Speed_Y = 10;rt_thread_mdelay(5000);
 //		
 //		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
@@ -278,42 +278,48 @@ void display_entry(void *parameter)
 //			car.target_angle = 0;rt_thread_mdelay(5000);
 //			
 
-//		Menu_key_set();
+		Menu_key_set();
+	}
 		//GUI_motor_value();
 
 //			car_move(0,0);
 
-		int angle_UP = 0 ;
-		int angle_LOW = 0;
-		while(1)
-		{
-			ips114_showstr(0,1, "angle_UP:");ips114_showint16(110, 1, angle_UP);
-			ips114_showstr(0,2, "angle_LOW:");ips114_showint16(110, 2, angle_LOW);
-			
+//		int angle_UP = 0 ;
+//		int angle_LOW = 0;
+//		int angle_MID = 0 ;
+
+//		while(1)
+//		{
+//			ips114_showstr(0,1, "angle_MID:");ips114_showint16(110, 1, angle_MID);
+//			ips114_showstr(0,2, "angle_LOW:");ips114_showint16(110, 2, angle_LOW);
+////			
 //			if(rt_sem_take(key1_sem, RT_WAITING_NO) == RT_EOK)
 //			{
-//			{angle_LOW += 90;
-//				ARM_LOW_angle(angle_LOW);
+//				angle_MID += 90;
+//				ARM_MID_angle(angle_MID);
 //				
 //			}
 //			if(rt_sem_take(key2_sem, RT_WAITING_NO) == RT_EOK)
 //			{
-//				angle_LOW -= 90;
-//				ARM_LOW_angle(angle_LOW);
+//				angle_MID -= 90;
+//				ARM_MID_angle(angle_MID);
 //				
 //			}
-			if(rt_sem_take(key3_sem, RT_WAITING_NO) == RT_EOK)
-			{angle_UP += 30;
-				ARM_UP_angle(angle_UP);
-				
-			}
-			if(rt_sem_take(key4_sem, RT_WAITING_NO) == RT_EOK)
-			{angle_UP -= 90;
-			ARM_UP_angle(angle_UP);
-				
-			}					
-		}
-	}
+////			if(rt_sem_take(key3_sem, RT_WAITING_NO) == RT_EOK)
+////			{angle_UP += 30;
+////				ARM_UP_angle(angle_UP);
+////				
+////			}
+////			if(rt_sem_take(key4_sem, RT_WAITING_NO) == RT_EOK)
+////			{angle_UP -= 90;
+////			ARM_UP_angle(angle_UP);
+////				
+////			}				
+//	}
+	
+}
+
+
 
 
 //}

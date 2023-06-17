@@ -5,32 +5,32 @@
 
 
 typedef struct Pose_car {
-    //ÒÑµ½´ïµÄÄ¿±êµã
+    //ï¿½Ñµï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½
     int8_t Position_Pointer;
-    //µ±Ç°ËÙ¶È
+    //ï¿½ï¿½Ç°ï¿½Ù¶ï¿½
     double Speed_X;
     double Speed_Y;
     double Speed_Z;
     float correct_speed;
       
-    //µ±Ç°×ËÌ¬
+    //ï¿½ï¿½Ç°ï¿½ï¿½Ì¬
     float current_angle;
 
-    //Ä¿±êÎ»ÖÃ
+    //Ä¿ï¿½ï¿½Î»ï¿½ï¿½
     float target_x;
     float target_y;    
-    //Ä¿±ê×ËÌ¬
+    //Ä¿ï¿½ï¿½ï¿½ï¿½Ì¬
     float target_angle;
 
-    //Ê¶±ðºó°áÔËÎ»ÖÃ
+    //Ê¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     float target_carry_x;
     float target_carry_y;
 
 
-    //Ä¿±ê¾àÀë
+    //Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½
     float target_distanceX;
     float target_distanceY;
-    //Àï³Ì
+    //ï¿½ï¿½ï¿½
     float MileageX;
     float MileageY;
 }Pose_car;
@@ -41,12 +41,22 @@ typedef struct point{
 	uint8 y;
 }point;
 
-//extern struct point cur_point;//½öÔÚÂ·¾¶¹æ»®º¯ÊýÀïÓÃ
+typedef struct card {
+	
+	char Big_category[10];
+	char Small_category[10];
+	uint8 Box_location;
+	int16 Target_x;
+	int16 Target_y;
+
+}card;
+
+//extern struct point cur_point;//ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½æ»®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //extern struct point tar_point[point_num];
 //extern struct point TAR_POINT[point_num];
 
 extern Pose_car car;
-extern uint8 running_mode;//Ð¡³µÔËÐÐÄ£Ê½
+extern uint8 running_mode;//Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 extern rt_sem_t recognize_sem;
 extern rt_sem_t obj_detection_sem;
 

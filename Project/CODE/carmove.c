@@ -1,40 +1,6 @@
 #include "carmove.h"
 
 /**************************************************************************
-
- *      蚕豆（5， 27）        橙子（15， 27）        白菜（25， 27）
-
-番薯（-2，25）                                                  花生（37， 25）
-
-
-榴莲（-2， 17）                                                 苹果（37， 17）
-
-
-黄瓜（-2， 9）                                                  辣椒（37， 9）
-
-        水稻（5， -2）        香蕉（15， -2）        萝卜（25， -2）
-
-车载：玉米，葡萄，茄子
-**************************************************************************/
-
-/**************************************************************************
-
- *      蚕豆（5， 27）        橙子（15， 27）        白菜（25， 27）
-
-番薯（-2，25）                                                  花生（37， 25）
-
-
-榴莲（-2， 17）                                                 苹果（37， 17）
-
-
-黄瓜（-2， 9）                                                  辣椒（37， 9）
-
-        水稻（5， -2）        香蕉（15， -2）        萝卜（25， -2）
-
-车载：玉米，葡萄，茄子
-**************************************************************************/
-
-/**************************************************************************
 1.读取坐标，保存在相应的数组中
 2.路径规划，每次都以最近的点位，重新排列一个新的点位
 3.如何控制小车运动到应该到的点位，同时规划出下一个点位
@@ -61,9 +27,29 @@ rt_thread_t route_planning_th; // 路径规划线程
 rt_thread_t correct_th;        // 矫正线程
 rt_thread_t carry_th;          // 搬运线程
 rt_thread_t obj_detection_th;
+
+char taget_Big_category[10];
 // rt_thread_t move_th;
 
 int pic_dis = 0;
+
+struct card apple = {"fruit", "apple", 0, 18, 8};
+struct card bannana = {"fruit", "bannana", 0, 8, -2};
+struct card durian = {"fruit", "durian", 0, -2, 8};
+struct card grape = {"fruit", "grape", 1, 0, 0}; //车载
+struct card orange = {"fruit", "orange", 0, 8, 18};
+
+struct card cabbage = {"vegetable", "cabbage", 0, 12, 8};
+struct card cucumber = {"vegetable", "cucumber", 0, -2, 4};
+struct card eggplant = {"vegetable", "eggplant", 1, 0, 0}; //车载
+struct card radish = {"vegetable", "radish", 0, 12, -2};
+struct card pepper = {"vegetable", "pepper", 0, 18, 4};
+
+struct card corn = {"food", "corn", 1, 0, 0}; //车载
+struct card bean = {"food", "bean", 0, 4, 18};
+struct card peanut = {"food", "peanut", 0, 18, 12};
+struct card potato = {"food", "potato", 0, -2, 12};
+struct card rice = {"food", "rice", 0, 4, -2};
 
 /**************************************************************************
 函数功能：求两点间的距离
@@ -280,7 +266,7 @@ void correct_entry(void *param)
         rt_sem_take(correct_sem, RT_WAITING_FOREVER); // 获取矫正信号
         rt_kprintf("correcting!!!\n");
 
-        //car_turn(ART1_CORRECT_Angle);
+        // car_turn(ART1_CORRECT_Angle);
 
         while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
         {
@@ -339,111 +325,228 @@ void carry_entry(void *param)
     {
         rt_sem_take(recognize_sem, RT_WAITING_FOREVER); // 接受识别信号量
 
-        if (strcmp(classified, "bean") == 0)
+        if (strcmp(classified, apple.Small_category) == 0)
         {
-            rt_kprintf("This is a bean.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
+            rt_kprintf("This is a apple.\n");
+            if (strcmp(taget_Big_category, apple.Big_category))
+            {
+                apple.Box_location = 2; // 放入盒子2中
+                arm_putbox(grape.Box_location);
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(apple.Target_x * 20, apple.Target_y * 20);
+                arm_down();
+            }
         }
-        else if (strcmp(classified, "corn") == 0)
+        else if (strcmp(classified, bannana.Small_category) == 0)
         {
-            rt_kprintf("This is a corn.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
+            rt_kprintf("This is a bannana.\n");
+            if (strcmp(taget_Big_category, bannana.Big_category))
+            {
+                bannana.Box_location = 2;
+                arm_putbox(bannana.Box_location);
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(bannana.Target_x * 20, bannana.Target_y * 20);
+                arm_down();
+            }
         }
-        else if (strcmp(classified, "peanut") == 0)
+        else if (strcmp(classified, grape.Small_category) == 0)
         {
-            rt_kprintf("This is a peanut.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
-        }
-        else if (strcmp(classified, "potato") == 0)
-        {
-            rt_kprintf("This is a potato.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
-        }
-        else if (strcmp(classified, "rice") == 0)
-        {
-            rt_kprintf("This is a rice.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
-        }
-        else if (strcmp(classified, "apple") == 0)
-        {
-            rt_kprintf("This is an apple.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
-        }
-        else if (strcmp(classified, "bannana") == 0)
-        {
-            rt_kprintf("This is a banana.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
-        }
-        else if (strcmp(classified, "grape") == 0)
-        {
+            //车载
             rt_kprintf("This is a grape.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
+            arm_putbox(grape.Box_location);// 放入盒子1中
+                
         }
-        else if (strcmp(classified, "durian") == 0)
+        else if (strcmp(classified, durian.Small_category) == 0)
         {
             rt_kprintf("This is a durian.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
+            if (strcmp(taget_Big_category, durian.Big_category))
+            {
+                durian.Box_location = 2;
+               arm_putbox(durian.Box_location);
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(durian.Target_x * 20, durian.Target_y * 20);\
+                arm_down();
+            }
         }
-        else if (strcmp(classified, "orange") == 0)
+        else if (strcmp(classified, orange.Small_category) == 0)
         {
-            rt_kprintf("This is an orange.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
+            rt_kprintf("This is a orange.\n");
+            if (strcmp(taget_Big_category, orange.Big_category))
+            {
+                orange.Box_location = 2;
+                arm_putbox(orange.Box_location);
+                // 放入盒子中
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(orange.Target_x * 20, orange.Target_y * 20);
+                arm_down();
+            }
         }
-        else if (strcmp(classified, "cucumber") == 0)
-        {
-            rt_kprintf("This is a cucumber.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
-        }
-        else if (strcmp(classified, "eggplant") == 0)
-        {
-            rt_kprintf("This is an eggplant.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
-        }
-        else if (strcmp(classified, "pepper") == 0)
-        {
-            rt_kprintf("This is a pepper.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
-        }
-        else if (strcmp(classified, "cabbage") == 0)
+        else if (strcmp(classified, cabbage.Small_category) == 0)
         {
             rt_kprintf("This is a cabbage.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
+            if (strcmp(taget_Big_category, cabbage.Big_category))
+            {
+                cabbage.Box_location = 2;
+                arm_putbox(cabbage.Box_location);
+                // 放入盒子中
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(cabbage.Target_x * 20, cabbage.Target_y * 20);
+                arm_down();
+            }
         }
-        else if (strcmp(classified, "radish") == 0)
+        else if (strcmp(classified, cucumber.Small_category) == 0)
+        {
+            rt_kprintf("This is an cucumber.\n");
+            if (strcmp(taget_Big_category, cucumber.Big_category))
+            {
+                cucumber.Box_location = 2;
+                 arm_putbox(cucumber.Box_location);
+                // 放入盒子中
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(cucumber.Target_x * 20, cucumber.Target_y * 20);\
+                arm_down();
+            }
+        }
+        else if (strcmp(classified, eggplant.Small_category) == 0)
+        {
+            //车载
+            rt_kprintf("This is a eggplant.\n");
+            arm_putbox(eggplant.Box_location);// 放入盒子1中
+
+        }
+        else if (strcmp(classified, radish.Small_category) == 0)
         {
             rt_kprintf("This is a radish.\n");
-            arm_carry();
-            car_move(20, 20);
-            arm_down();
+            if (strcmp(taget_Big_category, radish.Big_category))
+            {
+                radish.Box_location = 2;
+                arm_putbox(radish.Box_location);
+                // 放入盒子中
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(radish.Target_x * 20, radish.Target_y * 20);
+                arm_down();
+            }
         }
+        else if (strcmp(classified, pepper.Small_category) == 0)
+        {
+            rt_kprintf("This is a pepper.\n");
+            if (strcmp(taget_Big_category, pepper.Big_category))
+            {
+                pepper.Box_location = 2;
+                arm_putbox(pepper.Box_location);
+                // 放入盒子中
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(pepper.Target_x * 20, pepper.Target_y * 20);
+                arm_down();
+            }
+        }
+        else if (strcmp(classified, corn.Small_category) == 0)
+        {
+            rt_kprintf("This is an corn.\n");
+            arm_putbox(corn.Box_location);// 放入盒子1中
+           
+        }
+        else if (strcmp(classified, bean.Small_category) == 0)
+        {
+            rt_kprintf("This is a bean.\n");
+            if (strcmp(taget_Big_category, bean.Big_category))
+            {
+                bean.Box_location = 2;
+                arm_putbox(bean.Box_location);
+                // 放入盒子中
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(bean.Target_x * 20, bean.Target_y * 20);
+                arm_down();
+            }
+        }
+        else if (strcmp(classified, peanut.Small_category) == 0)
+        {
+            rt_kprintf("This is an peanut.\n");
+            if (strcmp(taget_Big_category, peanut.Big_category))
+            {
+                peanut.Box_location = 2;
+                arm_putbox(peanut.Box_location);
+                // 放入盒子中
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(peanut.Target_x * 20, peanut.Target_y * 20);
+                arm_down();
+            }
+        }
+        else if (strcmp(classified, potato.Small_category) == 0)
+        {
+            rt_kprintf("This is a potato.\n");
+            if (strcmp(taget_Big_category, potato.Big_category))
+            {
+                potato.Box_location = 2;
+                arm_putbox(potato.Box_location);
+                // 放入盒子中
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(potato.Target_x * 20, potato.Target_y * 20);
+                arm_down();
+            }
+        }
+        else if (strcmp(classified, rice.Small_category) == 0)
+        {
+            rt_kprintf("This is a rice.\n");
+            if (strcmp(taget_Big_category, rice.Big_category))
+            {
+                rice.Box_location = 2;
+                 arm_putbox(rice.Box_location);
+                // 放入盒子中
+            }
+            else
+            {
+                // 搬运并放到指定位置
+                arm_carry();
+                car_move(rice.Target_x * 20, rice.Target_y * 20);
+                arm_down();
+            }
+        }
+
         else
         {
             rt_kprintf("Unknown classification.\n");
