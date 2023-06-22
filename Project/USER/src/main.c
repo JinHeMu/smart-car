@@ -4,7 +4,7 @@
 void main()
 {
 
-	rt_thread_mdelay(1000);					// 延时300ms，等待主板其他外设上电成功
+	rt_thread_mdelay(8000);					// 延时300ms，等待主板其他外设上电成功
 	gpio_init(B9, GPO, 1, GPIO_PIN_CONFIG); // 初始化B9灯
 	arm_init();
 	
@@ -25,15 +25,17 @@ void main()
 
 	motor_init();
 
-	//car_start_init();	
+	car_start_init();	
 	//arm_carry();
 
 	
 	
-	while (1)
-	{
-		gpio_toggle(B9);		
-		rt_thread_mdelay(500);
 
-	}
+
+
+		while(1)
+		{
+
+			rt_thread_mdelay(500);
+		}			
 }

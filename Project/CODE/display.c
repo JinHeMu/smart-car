@@ -2,6 +2,7 @@
 
 rt_mailbox_t display_mailbox; // 定义一个接受信息的邮箱
 
+
 void (*current_operation_index)();
 
 // typedef struct
@@ -18,11 +19,11 @@ Menu_table table[30] =
 	{
 		{0, 1, 1, 0, (*home)}, // 一级界面（主页面） 索引，向下一个，确定，退出
 
-		{1, 2, 5, 0, (*GUI_motor)},	 // 二级界面 电机相关参数
-		{2, 3, 6, 0, (*GUI_pid)},	 // 二级界面 pid值
-		{3, 4, 7, 0, (*GUI_imu_ra)}, // 二级界面 陀螺仪值
-		{4, 5, 8, 0, (*GUI_route)},
-		{5, 1, 9, 0, (*GUI_arm)},
+		{1, 2, 6, 0, (*GUI_motor)},	 // 二级界面 电机相关参数
+		{2, 3, 7, 0, (*GUI_pid)},	 // 二级界面 pid值
+		{3, 4, 8, 0, (*GUI_imu_ra)}, // 二级界面 陀螺仪值
+		{4, 5, 9, 0, (*GUI_route)},
+		{5, 1, 10, 0, (*GUI_arm)},
 
 		{6, 1, 1, 1, (*GUI_motor_value)},  // 三级界面：motor_value
 		{7, 2, 2, 2, (*GUI_pid_value)},	   // 三级界面：pid_value
@@ -224,98 +225,20 @@ void GUI_arm_value()
 void display_entry(void *parameter)
 {
 
-//	car_turnto(180);
-//	rt_thread_mdelay(5000);
-//	car_turnto(90);
-//	rt_thread_mdelay(5000);
-//	car_turnto(-90);
-//	rt_thread_mdelay(5000);
-//	car_turnto(0);
-//	arm_carry();
-	//car_turn(30);
-	
-//	car_move(100,0);
-//	car_move(300,0);
-//	car_move(0,300);
-//	car_move(0,0);
-	
-//	car_turnto(20);
-//	car_move(100,0);
-//	
-//		smotor1_angle(80);
-//		rt_thread_mdelay(5000);
-//		smotor1_angle(40);
-//		rt_thread_mdelay(5000);
-//		smotor1_angle(180);
-//		rt_thread_mdelay(5000);
 
-//	 pwm_duty(PWM4_MODULE2_CHA_C30, 0);
-//	 rt_thread_mdelay(2000);
-//	 pwm_duty(PWM4_MODULE2_CHA_C30, 5000);
-//	 rt_thread_mdelay(2000);
- 
-
-
-
-
-	while (1)
-	{
-//		car.Speed_X = 10;car.Speed_Y = 10;rt_thread_mdelay(5000);
-//		
-//		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
-//		
-//		car.Speed_X = -10;car.Speed_Y = -10;rt_thread_mdelay(5000);
-//		
-//		car.Speed_X = 0;car.Speed_Y = 0;rt_thread_mdelay(5000);
-//		
-//			car.target_angle = 40;rt_thread_mdelay(5000);
-//			car.target_angle = 20;rt_thread_mdelay(5000);
-//			car.target_angle = 0;rt_thread_mdelay(5000);
-//			car.target_angle = 180;rt_thread_mdelay(5000);
-//			car.target_angle = 160;rt_thread_mdelay(5000);
-//			car.target_angle = 140;rt_thread_mdelay(5000);
-//			car.target_angle = -45;rt_thread_mdelay(5000);
-//			car.target_angle = 0;rt_thread_mdelay(5000);
-//			
-
-		Menu_key_set();
-	}
-		//GUI_motor_value();
-
-//			car_move(0,0);
-
+//	while (1)
+//	{
+//		Menu_key_set();
 //		int angle_UP = 0 ;
 //		int angle_LOW = 0;
 //		int angle_MID = 0 ;
+//		int angle_LEFT = 0 ;
 
-//		while(1)
-//		{
-//			ips114_showstr(0,1, "angle_MID:");ips114_showint16(110, 1, angle_MID);
-//			ips114_showstr(0,2, "angle_LOW:");ips114_showint16(110, 2, angle_LOW);
-////			
-//			if(rt_sem_take(key1_sem, RT_WAITING_NO) == RT_EOK)
-//			{
-//				angle_MID += 90;
-//				ARM_MID_angle(angle_MID);
-//				
-//			}
-//			if(rt_sem_take(key2_sem, RT_WAITING_NO) == RT_EOK)
-//			{
-//				angle_MID -= 90;
-//				ARM_MID_angle(angle_MID);
-//				
-//			}
-////			if(rt_sem_take(key3_sem, RT_WAITING_NO) == RT_EOK)
-////			{angle_UP += 30;
-////				ARM_UP_angle(angle_UP);
-////				
-////			}
-////			if(rt_sem_take(key4_sem, RT_WAITING_NO) == RT_EOK)
-////			{angle_UP -= 90;
-////			ARM_UP_angle(angle_UP);
-////				
-////			}				
 //	}
+	while(1)
+{
+	Menu_key_set();
+}
 	
 }
 

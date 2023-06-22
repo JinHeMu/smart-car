@@ -87,7 +87,7 @@ int get_angle(float current_x, float current_y, float target_x, float target_y)
 void car_move(float tar_x, float tar_y)
 {
     rt_kprintf("MOVEING !!! \n");
-    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 20) // 持续运动
+    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 10) // 持续运动
     {
         car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x); // cm
         car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
@@ -376,7 +376,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                car_move(durian.Target_x * 20, durian.Target_y * 20);\
+                car_move(durian.Target_x * 20, durian.Target_y * 20);
                 arm_down();
             }
         }
@@ -427,7 +427,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                car_move(cucumber.Target_x * 20, cucumber.Target_y * 20);\
+                car_move(cucumber.Target_x * 20, cucumber.Target_y * 20);
                 arm_down();
             }
         }

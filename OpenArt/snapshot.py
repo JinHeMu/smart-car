@@ -12,7 +12,7 @@ lcd.full()
 #LED(4).on()#閻撗勬
 
 
-threshold = [(56, 100, -128, 127, -128, 127)]
+threshold = [(79, 100, -128, 127, -128, 127)]
 
 def openart_init():
 
@@ -47,7 +47,7 @@ def snapshot(count):
         lcd.show_image(img, 320, 240, zoom=2)
 
         # 娣囨繂鐡ㄧ憗浣稿閸氬海娈戦崶鎯у剼
-        img_cropped.save("/picture/bannana/%d.jpg" % count)
+        img_cropped.save("%d.jpg" % count)
 
 
         # img1 = img.rotation_corr(0,0,0,0,0,1,60,corners).replace(vflip=True,  hmirror=False,  transpose=False)

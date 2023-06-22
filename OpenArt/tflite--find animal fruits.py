@@ -7,7 +7,7 @@ from pyb import LED #ĺŻźĺĽLED
 sensor.reset()
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA) # we run out of memory if the resolution is much bigger...
-sensor.set_brightness(1000)
+sensor.set_brightness(800)
 sensor.skip_frames(time = 20)
 #sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
 #sensor.set_auto_whitebal(False,(0,0x80,0))  # must turn this off to prevent image washout...

@@ -44,12 +44,12 @@ void magnet_left_appeal(void)
 //设置机械臂角度
 void ARM_UP_angle(int angle)
 {
-	pwm_duty(ARM_LOW_PIN, 1100 + +angle * 14);
+	pwm_duty(ARM_UP_PIN, 1000 + angle * 30);
 }
 
 void ARM_LOW_angle(int angle)
 {
-	pwm_duty(ARM_LOW_PIN, 1100 + +angle * 14);
+	pwm_duty(ARM_LOW_PIN, 1000 + angle * 30);
 }
 
 void ARM_LEFT_angle(int angle)
@@ -76,28 +76,34 @@ void ARM_MID_angle(int angle)
 //机械臂将卡片放下后并抬起
 void arm_down(void)
 {	
-	ARM_LOW_angle(30);
-	rt_thread_mdelay(300);
+	
 	ARM_UP_angle(0);
+	rt_thread_mdelay(300);
+	ARM_LOW_angle(50);
+	rt_thread_mdelay(300);
 
 	magnet_front_release();
+	rt_thread_mdelay(300);
 
-	ARM_LOW_angle(60);
-	ARM_UP_angle(90);
+	ARM_LOW_angle(80);
+	ARM_UP_angle(150);
 
 }
 
 //机械臂将卡片捡起来
 void arm_carry(void)
 {
-	ARM_LOW_angle(30);
+	ARM_LOW_angle(40);
 	rt_thread_mdelay(300);
 	ARM_UP_angle(0);
+	rt_thread_mdelay(300);
 
 	magnet_front_appeal();
+	rt_thread_mdelay(300);
 
-	ARM_LOW_angle(60);
-	ARM_UP_angle(90);
+	ARM_LOW_angle(80);
+	ARM_UP_angle(160);
+	rt_thread_mdelay(500);
 
 }
 
@@ -110,28 +116,49 @@ void arm_putbox(uint8 angle)
 	ARM_MID_angle(angle*90 - 90);
 	rt_thread_mdelay(500);
 
-	ARM_LOW_angle(30);
+	ARM_LOW_angle(40);
 	rt_thread_mdelay(300);
 	ARM_UP_angle(0);
+	rt_thread_mdelay(300);
 
 	magnet_front_appeal();
+	rt_thread_mdelay(300);
 
-	ARM_LOW_angle(100);
-	ARM_UP_angle(120);
-
+	ARM_LOW_angle(80);
+	ARM_UP_angle(160);
+	rt_thread_mdelay(500);
+	
 	magnet_front_release();
 }
 
 //机械臂打开盒子
-void arm_openbox(void)
+void arm_openbox(uint8 angle)
 {
+switch (angle)
+{
+	case 1:	ARM_MID_angle(270);rt_thread_mdelay(1500);break;
+	case 2:	ARM_MID_angle(0);rt_thread_mdelay(1500);break;
+	case 3:	ARM_MID_angle(90);rt_thread_mdelay(1500);break;
+	case 4:	ARM_MID_angle(180);rt_thread_mdelay(1500);break;
+}
+
 	ARM_LEFT_angle(90);
 	rt_thread_mdelay(300);
 
 	magnet_left_appeal();
-
 	rt_thread_mdelay(300);
+
 	ARM_LEFT_angle(0);
+	rt_thread_mdelay(1000);
+
+	ARM_LEFT_angle(90);
+	rt_thread_mdelay(300);
+
+	magnet_left_release();
+
+	ARM_LEFT_angle(0);
+	rt_thread_mdelay(300);
+	
 
 }
 
@@ -155,14 +182,14 @@ void arm_init(void)
 	pwm_init(ARM_LEFT_PIN, 50, ARM_CENTER);
 	pwm_init(ARM_MID_PIN, 50, ARM_CENTER);
 
-	gpio_init(MAGNET_FRONT, GPO, 1, GPIO_PIN_CONFIG);
-	gpio_init(MAGNET_LEFT, GPO, 1, GPIO_PIN_CONFIG);
+	gpio_init(MAGNET_FRONT, GPO, 0, GPIO_PIN_CONFIG);
+	gpio_init(MAGNET_LEFT, GPO, 0, GPIO_PIN_CONFIG);
 
-	ARM_UP_angle(90);
-	ARM_LOW_angle(90);	
-	ARM_LEFT_angle(90);
-	ARM_MID_angle(90);
-	rt_thread_mdelay(500);
+	ARM_LEFT_angle(0);
+	ARM_LOW_angle(80);
+	ARM_UP_angle(130);
+	ARM_MID_angle(0);
+	rt_thread_mdelay(200);
 
 
 	
