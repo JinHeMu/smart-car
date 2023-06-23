@@ -15,7 +15,7 @@ uint8 ART1_uart_rx_buffer;
 lpuart_transfer_t ART1_receivexfer;
 lpuart_handle_t ART1_g_lpuartHandle;
 
-uint8 ART1_mode=0;//模式1位识别坐标点 模式2矫正位姿 模式3识别图片 模式4边线矫正
+uint8 ART1_mode = 1;//模式1位识别坐标点 模式2矫正位姿 模式3识别图片 模式4边线矫正
 uint8 ART1_dat[82]; // 前一半x后一半y
 uint8 ART1_POINT_X[40];
 uint8 ART1_POINT_Y[40];
@@ -50,6 +50,7 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 
 	if (kStatus_LPUART_RxIdle == status)
 	{
+			
 		if(ART1_mode==1)
 		{
 			if(rxstate == 0)
@@ -83,7 +84,8 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					point_num++; // 统计接到数据的个数  前二分之一为x坐标， 后二分之一为y坐标
 				}
 			}
-		}else if (ART1_mode == 2)
+		}
+		else if (ART1_mode == 2)
 		{
 			if(rxstate == 0)
 			{
@@ -113,7 +115,8 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					count++; // 统计接到数据的个数  前二分之一为x坐标， 后二分之一为y坐标
 				}
 			}
-		}else if (ART1_mode == 3)
+		}
+		else if (ART1_mode == 3)
 		{
 			if(rxstate == 0)
 			{
@@ -141,7 +144,8 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					count++; // 统计接到数据的个数  前二分之一为x坐标， 后二分之一为y坐标
 				}
 			}
-		}else if (ART1_mode == 4)
+		}
+		else if (ART1_mode == 4)
 		{
 			
 			ART1_CORRECT_Boundary_Angle = ART1_uart_rx_buffer;

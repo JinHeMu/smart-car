@@ -1,6 +1,6 @@
 #include "motor.h"
 
-#define PWM_LIMIT 10000// 限幅，必须注意安全
+#define PWM_LIMIT 8000// 限幅，必须注意安全
 
 #define DIR_1 D0
 #define DIR_2 D1
@@ -25,7 +25,7 @@ float Incremental_kp[4] = {150, 150, 150, 150};
 float Incremental_ki[4] = {0, 0,0, 0};
 float Incremental_kd[4] = {0,0,0,0}; 
 
-float Angel_kp = 0.4, Angel_ki = 0, Angel_kd = 5; // 角度环
+float Angel_kp = 0.2, Angel_ki = 0, Angel_kd = 1; // 角度环
 //float Position_kp = 0.05, Position_ki = 0, Position_kd = 0;
 float Position_kp = 0.1, Position_ki = 0, Position_kd = 0;
 float correct_kp = 0.3, correct_ki = 0, correct_kd = 0;

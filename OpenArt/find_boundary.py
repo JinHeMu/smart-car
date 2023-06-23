@@ -1,4 +1,4 @@
-# µ¼ÈëÐèÒªµÄ¿â
+# å¯¼å…¥éœ€è¦çš„åº“
 import sensor, image, time, math
 import os, tf
 from pyb import LED
@@ -9,9 +9,9 @@ import seekfree
 
 line = None
 
-threshold = [(55, 100, -128, 127, -30, 127)]
+threshold = [(18, 100, -34, 125, 27, 127)]
 
-uart = UART(2, baudrate=115200)  # ³õÊ¼»¯´®¿Ú ²¨ÌØÂÊÉèÖÃÎª115200 TXÊÇB12 RXÊÇB13
+uart = UART(2, baudrate=115200)  # åˆå§‹åŒ–ä¸²å£ æ³¢ç‰¹çŽ‡è®¾ç½®ä¸º115200 TXæ˜¯B12 RXæ˜¯B13
 lcd = seekfree.LCD180(2)
 lcd.full()
 
@@ -21,10 +21,10 @@ LED(4).on()
 
 
 
-# ³õÊ¼»¯ÆÁÄ»
+# åˆå§‹åŒ–å±å¹•
 def openart_init():
 
-    # ³õÊ¼»¯ÉãÏñÍ·
+    # åˆå§‹åŒ–æ‘„åƒå¤´
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
@@ -32,7 +32,7 @@ def openart_init():
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True,(0,0,0))
-    # ´ò¿ªLEDµÆ
+    # æ‰“å¼€LEDç¯
 
     #ips114.ips_init()
 
@@ -51,13 +51,14 @@ def uart_correct(img):
 
         line = img.get_regression(threshold)
 
-    # Èç¹ûÕÒµ½ÁËÏß¶Î
+    # å¦‚æžœæ‰¾åˆ°äº†çº¿æ®µ
         if line:
-            img.draw_line(line.line(), color = (255, 0, 0)) # ÔÚÍ¼ÏñÉÏ±ê³öÏß¶Î
-            angle = line.theta() # ¼ÆËãÏß¶ÎµÄ½Ç¶È
+            img.draw_line(line.line(), color = (255, 0, 0)) # åœ¨å›¾åƒä¸Šæ ‡å‡ºçº¿æ®µ
+            angle = line.theta() # è®¡ç®—çº¿æ®µçš„è§’åº¦
             if(angle > 90):
                 angle -= 180
             print("Line Angle: ", angle)
+            uart.write("%c" % angle)
 
 
 

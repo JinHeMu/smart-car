@@ -34,22 +34,22 @@ char taget_Big_category[10];
 int pic_dis = 0;
 
 struct card apple = {"fruit", "apple", 0, 18, 8};
-struct card bannana = {"fruit", "bannana", 0, 8, -2};
-struct card durian = {"fruit", "durian", 0, -2, 8};
+struct card bannana = {"fruit", "bannana", 0, 8, 0};
+struct card durian = {"fruit", "durian", 0, 0, 8};
 struct card grape = {"fruit", "grape", 1, 0, 0}; //车载
 struct card orange = {"fruit", "orange", 0, 8, 18};
 
 struct card cabbage = {"vegetable", "cabbage", 0, 12, 8};
-struct card cucumber = {"vegetable", "cucumber", 0, -2, 4};
+struct card cucumber = {"vegetable", "cucumber", 0, 0, 4};
 struct card eggplant = {"vegetable", "eggplant", 1, 0, 0}; //车载
-struct card radish = {"vegetable", "radish", 0, 12, -2};
+struct card radish = {"vegetable", "radish", 0, 12, 0};
 struct card pepper = {"vegetable", "pepper", 0, 18, 4};
 
 struct card corn = {"food", "corn", 1, 0, 0}; //车载
 struct card bean = {"food", "bean", 0, 4, 18};
 struct card peanut = {"food", "peanut", 0, 18, 12};
-struct card potato = {"food", "potato", 0, -2, 12};
-struct card rice = {"food", "rice", 0, 4, -2};
+struct card potato = {"food", "potato", 0, 0, 12};
+struct card rice = {"food", "rice", 0, 4, 0};
 
 /**************************************************************************
 函数功能：求两点间的距离
@@ -91,6 +91,7 @@ void car_move(float tar_x, float tar_y)
     {
         car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x); // cm
         car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
+				rt_thread_mdelay(20);
     }
     car.Speed_X = 0;
     car.Speed_Y = 0;
@@ -266,7 +267,8 @@ void correct_entry(void *param)
         rt_sem_take(correct_sem, RT_WAITING_FOREVER); // 获取矫正信号
         rt_kprintf("correcting!!!\n");
 
-        // car_turn(ART1_CORRECT_Angle);
+//        car_turn(ART1_CORRECT_Angle);rt_thread_mdelay(100);
+//				angle_z = 0;
 
         while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
         {
@@ -274,25 +276,25 @@ void correct_entry(void *param)
             rt_thread_mdelay(5);
             pic_dis = (int)distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0);
             // rt_kprintf("%d\n", pic_dis);
-            //						car.target_angle = ART1_CORRECT_Angle;
+            //car.target_angle = ART1_CORRECT_Angle;
             //             car.Speed_X = -correct_x_pid((int)ART1_CORRECT_X, 0);
             //             car.Speed_Y = correct_y_pid((int)ART1_CORRECT_Y, 0);
 
             if (pic_dis > 65)
             {
-                car.correct_speed = 10;
+                car.correct_speed = 5;
             }
             else if (pic_dis <= 65 && pic_dis > 45)
             {
-                car.correct_speed = 9;
+                car.correct_speed = 4;
             }
             else if (pic_dis <= 45 && pic_dis > 25)
             {
-                car.correct_speed = 8;
+                car.correct_speed = 3;
             }
             else if (pic_dis <= 25 && pic_dis > 5)
             {
-                car.correct_speed = 7;
+                car.correct_speed = 2;
             }
             else
             {
@@ -303,6 +305,9 @@ void correct_entry(void *param)
             // car.Speed_Z = ART1_CORRECT_Angle / 5;
             //             rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
         }
+				car.Speed_X = 0;
+				car.Speed_Y = 0;
+				
         //        rt_mb_send(buzzer_mailbox, 500); // 给buzzer_mailbox发送100
 
         // rt_kprintf("current_x: %d, current_y : %d\n", car.current_x, car.current_y);
@@ -324,11 +329,12 @@ void carry_entry(void *param)
     while (1)
     {
         rt_sem_take(recognize_sem, RT_WAITING_FOREVER); // 接受识别信号量
+				rt_thread_mdelay(100);
 
         if (strcmp(classified, apple.Small_category) == 0)
         {
             rt_kprintf("This is a apple.\n");
-            if (strcmp(taget_Big_category, apple.Big_category))
+            if (strcmp(taget_Big_category, apple.Big_category)== 0)
             {
                 apple.Box_location = 2; // 放入盒子2中
                 arm_putbox(grape.Box_location);
@@ -344,7 +350,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, bannana.Small_category) == 0)
         {
             rt_kprintf("This is a bannana.\n");
-            if (strcmp(taget_Big_category, bannana.Big_category))
+            if (strcmp(taget_Big_category, bannana.Big_category)== 0)
             {
                 bannana.Box_location = 2;
                 arm_putbox(bannana.Box_location);
@@ -367,7 +373,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, durian.Small_category) == 0)
         {
             rt_kprintf("This is a durian.\n");
-            if (strcmp(taget_Big_category, durian.Big_category))
+            if (strcmp(taget_Big_category, durian.Big_category)== 0)
             {
                 durian.Box_location = 2;
                arm_putbox(durian.Box_location);
@@ -383,7 +389,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, orange.Small_category) == 0)
         {
             rt_kprintf("This is a orange.\n");
-            if (strcmp(taget_Big_category, orange.Big_category))
+            if (strcmp(taget_Big_category, orange.Big_category)== 0)
             {
                 orange.Box_location = 2;
                 arm_putbox(orange.Box_location);
@@ -400,7 +406,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, cabbage.Small_category) == 0)
         {
             rt_kprintf("This is a cabbage.\n");
-            if (strcmp(taget_Big_category, cabbage.Big_category))
+            if (strcmp(taget_Big_category, cabbage.Big_category)== 0)
             {
                 cabbage.Box_location = 2;
                 arm_putbox(cabbage.Box_location);
@@ -417,10 +423,10 @@ void carry_entry(void *param)
         else if (strcmp(classified, cucumber.Small_category) == 0)
         {
             rt_kprintf("This is an cucumber.\n");
-            if (strcmp(taget_Big_category, cucumber.Big_category))
+            if (strcmp(taget_Big_category, cucumber.Big_category)== 0)
             {
                 cucumber.Box_location = 2;
-                 arm_putbox(cucumber.Box_location);
+                arm_putbox(cucumber.Box_location);
                 // 放入盒子中
             }
             else
@@ -441,7 +447,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, radish.Small_category) == 0)
         {
             rt_kprintf("This is a radish.\n");
-            if (strcmp(taget_Big_category, radish.Big_category))
+            if (strcmp(taget_Big_category, radish.Big_category)== 0)
             {
                 radish.Box_location = 2;
                 arm_putbox(radish.Box_location);
@@ -458,7 +464,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, pepper.Small_category) == 0)
         {
             rt_kprintf("This is a pepper.\n");
-            if (strcmp(taget_Big_category, pepper.Big_category))
+            if (strcmp(taget_Big_category, pepper.Big_category)== 0)
             {
                 pepper.Box_location = 2;
                 arm_putbox(pepper.Box_location);
@@ -481,7 +487,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, bean.Small_category) == 0)
         {
             rt_kprintf("This is a bean.\n");
-            if (strcmp(taget_Big_category, bean.Big_category))
+            if (strcmp(taget_Big_category, bean.Big_category)== 0)
             {
                 bean.Box_location = 2;
                 arm_putbox(bean.Box_location);
@@ -498,7 +504,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, peanut.Small_category) == 0)
         {
             rt_kprintf("This is an peanut.\n");
-            if (strcmp(taget_Big_category, peanut.Big_category))
+            if (strcmp(taget_Big_category, peanut.Big_category)== 0)
             {
                 peanut.Box_location = 2;
                 arm_putbox(peanut.Box_location);
@@ -515,7 +521,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, potato.Small_category) == 0)
         {
             rt_kprintf("This is a potato.\n");
-            if (strcmp(taget_Big_category, potato.Big_category))
+            if (strcmp(taget_Big_category, potato.Big_category)== 0)
             {
                 potato.Box_location = 2;
                 arm_putbox(potato.Box_location);
@@ -532,7 +538,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, rice.Small_category) == 0)
         {
             rt_kprintf("This is a rice.\n");
-            if (strcmp(taget_Big_category, rice.Big_category))
+            if (strcmp(taget_Big_category, rice.Big_category)== 0)
             {
                 rice.Box_location = 2;
                  arm_putbox(rice.Box_location);

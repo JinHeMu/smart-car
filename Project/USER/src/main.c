@@ -42,6 +42,24 @@ void main()
 //			car_move(0, 200);
 //			rt_thread_mdelay(3000);
 //			car_move(0, 0);
+//			rt_thread_mdelay(3000);
+//			car.current_angle = 90;
+//			rt_thread_mdelay(3000);
+//			car.current_angle = 180;
+//			rt_thread_mdelay(3000);
+//			car.current_angle = 270;
+//			rt_thread_mdelay(3000);
+//			car.current_angle = 0;
+//			car.current_angle = 20;
+//			rt_thread_mdelay(3000);
+//						car.current_angle = 40;
+//			rt_thread_mdelay(3000);
+//						car.current_angle = 220;
+//			rt_thread_mdelay(3000);
+//						car.current_angle = 0;
+//			rt_thread_mdelay(3000);
+//						car.current_angle = -90;
 			rt_thread_mdelay(3000);
+			
 		}			
 }
