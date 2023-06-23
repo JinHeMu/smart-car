@@ -13,7 +13,7 @@ find_coordinates_flag = 1
 correct_flag = 1
 recognize_flag = 1
 
-threshold = [((71, 100, -29, 127, -128, 127))]#色块检测阈值
+threshold = [((83, 100, -29, 127, -128, 127))]#色块检测阈值
 
 uart = UART(2, baudrate=115200) #串口
 

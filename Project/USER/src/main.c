@@ -35,7 +35,13 @@ void main()
 
 		while(1)
 		{
-
-			rt_thread_mdelay(500);
+//			car_move(200, 0);
+//			rt_thread_mdelay(3000);
+//			car_move(200, 200);
+//			rt_thread_mdelay(3000);
+//			car_move(0, 200);
+//			rt_thread_mdelay(3000);
+//			car_move(0, 0);
+			rt_thread_mdelay(3000);
 		}			
 }
