@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\RT106X.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\RT106X.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Fri Jun 23 21:23:34 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Fri Jun 23 23:21:22 2023
 <BR><P>
 <H3>Maximum Stack Usage =        848 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -3822,7 +3822,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[273]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;encoder_init
 </UL>
 
-<P><STRONG><a name="[f4]"></a>route_planning_entry</STRONG> (Thumb, 444 bytes, Stack size 0 bytes, carmove.o(.text.route_planning_entry))
+<P><STRONG><a name="[f4]"></a>route_planning_entry</STRONG> (Thumb, 460 bytes, Stack size 0 bytes, carmove.o(.text.route_planning_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = route_planning_entry &rArr; car_move &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[267]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_putchar

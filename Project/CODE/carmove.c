@@ -26,7 +26,7 @@ rt_sem_t obj_detection_sem; // 目标检测
 rt_thread_t route_planning_th; // 路径规划线程
 rt_thread_t correct_th;        // 矫正线程
 rt_thread_t carry_th;          // 搬运线程
-rt_thread_t obj_detection_th;
+rt_thread_t obj_detection_th;  //目标检测线程
 
 char taget_Big_category[10];
 // rt_thread_t move_th;
@@ -36,16 +36,16 @@ int pic_dis = 0;
 struct card apple = {"fruit", "apple", 0, 18, 8};
 struct card bannana = {"fruit", "bannana", 0, 8, 0};
 struct card durian = {"fruit", "durian", 0, 0, 8};
-struct card grape = {"fruit", "grape", 1, 0, 0}; //车载
+struct card grape = {"fruit", "grape", 1, 0, 0}; // 车载
 struct card orange = {"fruit", "orange", 0, 8, 18};
 
 struct card cabbage = {"vegetable", "cabbage", 0, 12, 8};
 struct card cucumber = {"vegetable", "cucumber", 0, 0, 4};
-struct card eggplant = {"vegetable", "eggplant", 1, 0, 0}; //车载
+struct card eggplant = {"vegetable", "eggplant", 1, 0, 0}; // 车载
 struct card radish = {"vegetable", "radish", 0, 12, 0};
 struct card pepper = {"vegetable", "pepper", 0, 18, 4};
 
-struct card corn = {"food", "corn", 1, 0, 0}; //车载
+struct card corn = {"food", "corn", 1, 0, 0}; // 车载
 struct card bean = {"food", "bean", 0, 4, 18};
 struct card peanut = {"food", "peanut", 0, 18, 12};
 struct card potato = {"food", "potato", 0, 0, 12};
@@ -91,7 +91,7 @@ void car_move(float tar_x, float tar_y)
     {
         car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x); // cm
         car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
-				rt_thread_mdelay(20);
+        rt_thread_mdelay(20);
     }
     car.Speed_X = 0;
     car.Speed_Y = 0;
@@ -99,21 +99,6 @@ void car_move(float tar_x, float tar_y)
     rt_thread_delay(1000);            // ?? 1 ??
     rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX, (int)car.MileageY);
 }
-
-// void car_move(float tar_x, float tar_y)
-//{
-//		rt_kprintf("MOVEING !!! \n");
-//     while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 20) // 持续运动
-//     {
-//         car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x);//cm
-//         car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
-//
-//     }
-//		rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
-//		//rt_thread_delay(1000); // ?? 1 ??
-//		rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX,(int)car.MileageY);
-
-//}
 
 void car_turn(float angle)
 {
@@ -229,6 +214,8 @@ void route_planning_entry(void *param)
     }
     rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
 
+    car_move(0, 20); // 出库
+
     while (1)
     {
 
@@ -252,10 +239,17 @@ void route_planning_entry(void *param)
 
         car_move(car.target_x, car.target_y);
 
-        //        rt_sem_release(arrive_sem);
         ART1_mode = 2;               // art矫正模式
         uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
         rt_thread_mdelay(1000);
+
+        if(ART1_CORRECT_Angle < 5)
+        {
+            car_turn(ART1_CORRECT_Angle);rt_thread_mdelay(100);
+            angle_z = 0;//重新设定陀螺仪值
+        }
+        
+        
         rt_sem_release(correct_sem); // 到达后发送矫正信号
     }
 }
@@ -267,18 +261,11 @@ void correct_entry(void *param)
         rt_sem_take(correct_sem, RT_WAITING_FOREVER); // 获取矫正信号
         rt_kprintf("correcting!!!\n");
 
-//        car_turn(ART1_CORRECT_Angle);rt_thread_mdelay(100);
-//				angle_z = 0;
-
         while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
         {
 
             rt_thread_mdelay(5);
             pic_dis = (int)distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0);
-            // rt_kprintf("%d\n", pic_dis);
-            //car.target_angle = ART1_CORRECT_Angle;
-            //             car.Speed_X = -correct_x_pid((int)ART1_CORRECT_X, 0);
-            //             car.Speed_Y = correct_y_pid((int)ART1_CORRECT_Y, 0);
 
             if (pic_dis > 65)
             {
@@ -302,15 +289,11 @@ void correct_entry(void *param)
             }
             car.Speed_X = car.correct_speed * ART1_CORRECT_X / 100;
             car.Speed_Y = -car.correct_speed * ART1_CORRECT_Y / 100;
-            // car.Speed_Z = ART1_CORRECT_Angle / 5;
-            //             rt_kprintf("Speed_X:%d, Speed_Y:%d\n", (int)car.Speed_X, (int)car.Speed_Y);
-        }
-				car.Speed_X = 0;
-				car.Speed_Y = 0;
-				
-        //        rt_mb_send(buzzer_mailbox, 500); // 给buzzer_mailbox发送100
 
-        // rt_kprintf("current_x: %d, current_y : %d\n", car.current_x, car.current_y);
+        }
+        car.Speed_X = 0;
+        car.Speed_Y = 0;
+
 
         car.MileageX = car.target_x; // 更新当前坐标
         car.MileageY = car.target_y;
@@ -329,12 +312,12 @@ void carry_entry(void *param)
     while (1)
     {
         rt_sem_take(recognize_sem, RT_WAITING_FOREVER); // 接受识别信号量
-				rt_thread_mdelay(100);
+        rt_thread_mdelay(100);
 
         if (strcmp(classified, apple.Small_category) == 0)
         {
             rt_kprintf("This is a apple.\n");
-            if (strcmp(taget_Big_category, apple.Big_category)== 0)
+            if (strcmp(taget_Big_category, apple.Big_category) == 0)
             {
                 apple.Box_location = 2; // 放入盒子2中
                 arm_putbox(grape.Box_location);
@@ -350,7 +333,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, bannana.Small_category) == 0)
         {
             rt_kprintf("This is a bannana.\n");
-            if (strcmp(taget_Big_category, bannana.Big_category)== 0)
+            if (strcmp(taget_Big_category, bannana.Big_category) == 0)
             {
                 bannana.Box_location = 2;
                 arm_putbox(bannana.Box_location);
@@ -365,18 +348,17 @@ void carry_entry(void *param)
         }
         else if (strcmp(classified, grape.Small_category) == 0)
         {
-            //车载
+            // 车载
             rt_kprintf("This is a grape.\n");
-            arm_putbox(grape.Box_location);// 放入盒子1中
-                
+            arm_putbox(grape.Box_location); // 放入盒子1中
         }
         else if (strcmp(classified, durian.Small_category) == 0)
         {
             rt_kprintf("This is a durian.\n");
-            if (strcmp(taget_Big_category, durian.Big_category)== 0)
+            if (strcmp(taget_Big_category, durian.Big_category) == 0)
             {
                 durian.Box_location = 2;
-               arm_putbox(durian.Box_location);
+                arm_putbox(durian.Box_location);
             }
             else
             {
@@ -389,7 +371,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, orange.Small_category) == 0)
         {
             rt_kprintf("This is a orange.\n");
-            if (strcmp(taget_Big_category, orange.Big_category)== 0)
+            if (strcmp(taget_Big_category, orange.Big_category) == 0)
             {
                 orange.Box_location = 2;
                 arm_putbox(orange.Box_location);
@@ -406,7 +388,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, cabbage.Small_category) == 0)
         {
             rt_kprintf("This is a cabbage.\n");
-            if (strcmp(taget_Big_category, cabbage.Big_category)== 0)
+            if (strcmp(taget_Big_category, cabbage.Big_category) == 0)
             {
                 cabbage.Box_location = 2;
                 arm_putbox(cabbage.Box_location);
@@ -423,7 +405,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, cucumber.Small_category) == 0)
         {
             rt_kprintf("This is an cucumber.\n");
-            if (strcmp(taget_Big_category, cucumber.Big_category)== 0)
+            if (strcmp(taget_Big_category, cucumber.Big_category) == 0)
             {
                 cucumber.Box_location = 2;
                 arm_putbox(cucumber.Box_location);
@@ -439,15 +421,14 @@ void carry_entry(void *param)
         }
         else if (strcmp(classified, eggplant.Small_category) == 0)
         {
-            //车载
+            // 车载
             rt_kprintf("This is a eggplant.\n");
-            arm_putbox(eggplant.Box_location);// 放入盒子1中
-
+            arm_putbox(eggplant.Box_location); // 放入盒子1中
         }
         else if (strcmp(classified, radish.Small_category) == 0)
         {
             rt_kprintf("This is a radish.\n");
-            if (strcmp(taget_Big_category, radish.Big_category)== 0)
+            if (strcmp(taget_Big_category, radish.Big_category) == 0)
             {
                 radish.Box_location = 2;
                 arm_putbox(radish.Box_location);
@@ -464,7 +445,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, pepper.Small_category) == 0)
         {
             rt_kprintf("This is a pepper.\n");
-            if (strcmp(taget_Big_category, pepper.Big_category)== 0)
+            if (strcmp(taget_Big_category, pepper.Big_category) == 0)
             {
                 pepper.Box_location = 2;
                 arm_putbox(pepper.Box_location);
@@ -481,13 +462,12 @@ void carry_entry(void *param)
         else if (strcmp(classified, corn.Small_category) == 0)
         {
             rt_kprintf("This is an corn.\n");
-            arm_putbox(corn.Box_location);// 放入盒子1中
-           
+            arm_putbox(corn.Box_location); // 放入盒子1中
         }
         else if (strcmp(classified, bean.Small_category) == 0)
         {
             rt_kprintf("This is a bean.\n");
-            if (strcmp(taget_Big_category, bean.Big_category)== 0)
+            if (strcmp(taget_Big_category, bean.Big_category) == 0)
             {
                 bean.Box_location = 2;
                 arm_putbox(bean.Box_location);
@@ -504,7 +484,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, peanut.Small_category) == 0)
         {
             rt_kprintf("This is an peanut.\n");
-            if (strcmp(taget_Big_category, peanut.Big_category)== 0)
+            if (strcmp(taget_Big_category, peanut.Big_category) == 0)
             {
                 peanut.Box_location = 2;
                 arm_putbox(peanut.Box_location);
@@ -521,7 +501,7 @@ void carry_entry(void *param)
         else if (strcmp(classified, potato.Small_category) == 0)
         {
             rt_kprintf("This is a potato.\n");
-            if (strcmp(taget_Big_category, potato.Big_category)== 0)
+            if (strcmp(taget_Big_category, potato.Big_category) == 0)
             {
                 potato.Box_location = 2;
                 arm_putbox(potato.Box_location);
@@ -538,10 +518,10 @@ void carry_entry(void *param)
         else if (strcmp(classified, rice.Small_category) == 0)
         {
             rt_kprintf("This is a rice.\n");
-            if (strcmp(taget_Big_category, rice.Big_category)== 0)
+            if (strcmp(taget_Big_category, rice.Big_category) == 0)
             {
                 rice.Box_location = 2;
-                 arm_putbox(rice.Box_location);
+                arm_putbox(rice.Box_location);
                 // 放入盒子中
             }
             else
@@ -600,8 +580,7 @@ void car_start_init(void)
     correct_sem = rt_sem_create("correct_sem", 0, RT_IPC_FLAG_FIFO);                 // 矫正信号量，接受就开始矫正
     recognize_sem = rt_sem_create("recognize_sem", 0, RT_IPC_FLAG_FIFO);             // 识别信号量，告诉单片机已经识别，接受就开始搬运
     carry_sem = rt_sem_create("carry_sem", 0, RT_IPC_FLAG_FIFO);                     // 搬运信号量，接受即已经搬运到相应点位
-                                                                                     // move_sem = rt_sem_create("move_sem", 0, RT_IPC_FLAG_FIFO);
-
+                                        
     route_planning_th = rt_thread_create("route_planning_th", route_planning_entry, RT_NULL, 1024, 28, 10);
 
     correct_th = rt_thread_create("correct_th", correct_entry, RT_NULL, 1024, 28, 10);
@@ -609,11 +588,12 @@ void car_start_init(void)
     carry_th = rt_thread_create("carry_th", carry_entry, RT_NULL, 1024, 28, 10);
 
     obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 28, 10);
-    // move_th = rt_thread_create("move_th", move_entry, RT_NULL, 1024, 26, 10);
 
-    uart_putchar(USART_4, 0x41); // 发送A告诉该识别A4纸了
+
+   
     rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
-    // rt_thread_startup(obj_detection_th);
+    // rt_thread_startup(obj_detection_th); 
+    uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 }

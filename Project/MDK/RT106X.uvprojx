@@ -2294,16 +2294,6 @@
               <FileType>5</FileType>
               <FilePath>..\CODE\openart1.h</FilePath>
             </File>
-            <File>
-              <FileName>class.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CODE\class.c</FilePath>
-            </File>
-            <File>
-              <FileName>class.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODE\class.h</FilePath>
-            </File>
           </Files>
         </Group>
       </Groups>
@@ -4594,16 +4584,6 @@
               <FileName>openart1.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CODE\openart1.h</FilePath>
-            </File>
-            <File>
-              <FileName>class.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\CODE\class.c</FilePath>
-            </File>
-            <File>
-              <FileName>class.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\CODE\class.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -180,10 +180,11 @@ def boundary_correct():
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True,(0,0,0))
-
     img = sensor.snapshot()
 
-    while True:
+    boundary_correct_flag = 1
+
+    while boundary_correct_flag:
         img = sensor.snapshot()
 
         line = img.get_regression(threshold)
@@ -196,6 +197,7 @@ def boundary_correct():
                 angle -= 180
             uart.write("%c" % angle)
             print("Line Angle: ", angle)
+            boundary_correct_flag = 0
         else :
             lcd.show_image(img, 320, 240, zoom=2)
 
@@ -270,6 +272,10 @@ def main():
             elif(uart_str.decode() == "C"):
                 print("C")
                 recognize_pic(labels, net)
+
+            elif(uart_str.decode() == "D"):
+                print("D")
+                boundary_correct()
 
         else:
             lcd.show_image(img, 320, 240, zoom=2)

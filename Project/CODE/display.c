@@ -146,10 +146,8 @@ void GUI_motor_value() // 显示电机状态，和路程状态
 	ips114_showint16(70, 2, RC_encoder3);
 	ips114_showint16(70, 3, RC_encoder4);
 	ips114_showstr(0, 4, "MileX:");
-	//				ips114_showfloat(100,4,MileageKx,1,5);
 	ips114_showfloat(60, 4, car.MileageX, 4, 2);
 	ips114_showstr(0, 5, "MileY:");
-	//				ips114_showfloat(100,5,MileageKy,1,5);
 	ips114_showfloat(60, 5, car.MileageY, 4, 2);
 }
 
@@ -195,13 +193,11 @@ void GUI_imu_ra_value() // 显示陀螺仪相关数据
 	ips114_showfloat(160, 0, angle_x, 3, 2);
 	ips114_showfloat(160, 1, angle_y, 3, 2);
 	ips114_showfloat(160, 2, angle_z, 3, 2);
-
-	//	rt_kprintf("%d,%d,%d,%d,%d,%d\n", imu963ra_acc_x,imu963ra_acc_y, imu963ra_acc_z, imu963ra_gyro_x,imu963ra_gyro_y ,imu963ra_gyro_z);
 }
 
 void GUI_route_value()
 {
-	// ips114_showstr(0,0, "current_point:");ips114_showint8(110, 0, (int)car.current_x);ips114_showstr(160,0, ":");ips114_showint8(170, 0, (int)car.current_y);
+	
 	ips114_showstr(0,1, "target_point:");ips114_showint8(110, 1, (int)car.target_x);ips114_showstr(160,1, ":");ips114_showint8(170, 1, (int)car.target_y);
 
 }
@@ -224,17 +220,6 @@ void GUI_arm_value()
 }
 void display_entry(void *parameter)
 {
-
-
-//	while (1)
-//	{
-//		Menu_key_set();
-//		int angle_UP = 0 ;
-//		int angle_LOW = 0;
-//		int angle_MID = 0 ;
-//		int angle_LEFT = 0 ;
-
-//	}
 	while(1)
 {
 	Menu_key_set();

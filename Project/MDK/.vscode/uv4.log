@@ -1,4 +1,8 @@
-Could not create/access path './.rtt-studio/Debug\' !
-*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\keil_5.33\ARM\ARMCC\Bin'
-Create Path './.rtt-studio/Debug\' failed.
-Build Time Elapsed:  00:00:00
+*** Using Compiler 'V6.15', folder: 'D:\keil_5.33\ARM\ARMCLANG\Bin'
+Build target 'nor_sdram_zf_dtcm_v6'
+compiling display.c...
+compiling carmove.c...
+linking...
+Program Size: Code=83928 RO-data=9352 RW-data=1020 ZI-data=458756  
+".\Objects\RT106X.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:03
