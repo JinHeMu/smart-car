@@ -43,36 +43,136 @@ void Menu_key_set(void)
 	rt_ubase_t mb_data; // 储存邮箱的数据
 
 	rt_mb_recv(display_mailbox, &mb_data, RT_WAITING_NO); // 接受按键发送过来的邮件
-
-	if ((mb_data == 1)) // 按下按键1
-	{
-		ips114_clear(WHITE);
-		func_index = table[func_index].next; // 按键next按下后的索引号
-		mb_data = 0; // 邮箱数据清除
-	}
 	
-	if ((mb_data == 2)) // 按下按键1
+		
+//	ips114_showfloat(60, 4, Angel_kp, 4, 2);
+	
+		if(mb_data == 1)
 	{
-		ips114_clear(WHITE);
-		func_index = table[func_index].next; // 按键next按下后的索引号
-		mb_data = 0; // 邮箱数据清除
+		car_move(0,200);
+		rt_thread_mdelay(2000);
+		
+		car_move(0,0);
+		rt_thread_mdelay(2000);
+		mb_data = 0;
 	}
 
-	if ((mb_data == 3))
-	{
-		ips114_clear(WHITE);
-		func_index = table[func_index].enter; // 按键enter按下后的索引号
-		mb_data = 0; // 邮箱数据清除
-	}
+//	if(mb_data == 1)
+//	{
+//		car_turnto(20);
+//		rt_thread_mdelay(2000);
+//		
+//		car_turnto(40);
+//		rt_thread_mdelay(2000);
+//		
+//		car_turnto(-20);
+//		rt_thread_mdelay(2000);
+//		
+//		car_turnto(-40);
+//		rt_thread_mdelay(2000);
+//		
+//		car_turnto(0);
+//		rt_thread_mdelay(2000);
+//		mb_data = 0;
+//	}
+//	
+//	if(mb_data == 2)
+//	{
+//		Angel_kp += 0.01;
+//		ips114_showfloat(60, 4, Angel_kp, 4, 2);
+//		mb_data = 0;
+//	}
 
-	if (mb_data == 4)
-	{
-		ips114_clear(WHITE);
-		func_index = table[func_index].back; // 按键back按下后的索引号
-		mb_data = 0; // 邮箱数据清除
-	}
-	current_operation_index = table[func_index].current_operation; // 执行当前索引号所对应的功能函数
-	(*current_operation_index)();								   // 执行当前操作函数
+//	
+//		if(mb_data == 3)
+//	{
+//		Angel_kp -= 0.01;
+//		ips114_showfloat(60, 4, Angel_kp, 4, 2);
+//		mb_data = 0;
+//	}
+
+//	
+//	if(mb_data == 4)
+//	{
+//		Angel_kd -= 0.1;
+//		ips114_showfloat(60, 4, Angel_kd, 4, 2);
+//		mb_data = 0;
+//	}
+
+
+//	ips114_showfloat(60, 4, Angel_kd, 4, 2);
+
+//	if(mb_data == 1)
+//	{
+//		car_turnto(20);
+//		rt_thread_mdelay(2000);
+//		
+//		car_turnto(40);
+//		rt_thread_mdelay(2000);
+//		
+//		car_turnto(-20);
+//		rt_thread_mdelay(2000);
+//		
+//		car_turnto(-40);
+//		rt_thread_mdelay(2000);
+//		
+//		car_turnto(0);
+//		rt_thread_mdelay(2000);
+//		mb_data = 0;
+//	}
+//	
+//	if(mb_data == 2)
+//	{
+//		Angel_kd += 0.01;
+//		ips114_showfloat(60, 4, Angel_kd, 4, 2);
+//		mb_data = 0;
+//	}
+
+//	
+//		if(mb_data == 3)
+//	{
+//		Angel_kd -= 0.01;
+//		ips114_showfloat(60, 4, Angel_kd, 4, 2);
+//		mb_data = 0;
+//	}
+
+//	
+//	if(mb_data == 4)
+//	{
+//		Angel_kd -= 0.1;
+//		ips114_showfloat(60, 4, Angel_kd, 4, 2);
+//		mb_data = 0;
+//	}
+
+//	if ((mb_data == 1)) // 按下按键1
+//	{
+//		ips114_clear(WHITE);
+//		func_index = table[func_index].next; // 按键next按下后的索引号
+//		mb_data = 0; // 邮箱数据清除
+//	}
+//	
+//	if ((mb_data == 2)) // 按下按键1
+//	{
+//		ips114_clear(WHITE);
+//		func_index = table[func_index].next; // 按键next按下后的索引号
+//		mb_data = 0; // 邮箱数据清除
+//	}
+
+//	if ((mb_data == 3))
+//	{
+//		ips114_clear(WHITE);
+//		func_index = table[func_index].enter; // 按键enter按下后的索引号
+//		mb_data = 0; // 邮箱数据清除
+//	}
+
+//	if (mb_data == 4)
+//	{
+//		ips114_clear(WHITE);
+//		func_index = table[func_index].back; // 按键back按下后的索引号
+//		mb_data = 0; // 邮箱数据清除
+//	}
+//	current_operation_index = table[func_index].current_operation; // 执行当前索引号所对应的功能函数
+//	(*current_operation_index)();								   // 执行当前操作函数
 }
 
 void home() // 主界面
@@ -223,6 +323,8 @@ void display_entry(void *parameter)
 	while(1)
 {
 	Menu_key_set();
+
+
 }
 	
 }

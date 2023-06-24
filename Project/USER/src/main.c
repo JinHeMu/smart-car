@@ -3,7 +3,7 @@
 void main()
 {
 
-	rt_thread_mdelay(300);					// 延时300ms，等待主板其他外设上电成功
+	rt_thread_mdelay(1000);					// 延时300ms，等待主板其他外设上电成功
 	gpio_init(B9, GPO, 1, GPIO_PIN_CONFIG); // 初始化B9灯
 
 	arm_init();
@@ -27,7 +27,10 @@ void main()
 
 	while (1)
 	{
-		gpio_toggle(B9);
+
 		rt_thread_mdelay(500);
+
+
+		
 	}
 }

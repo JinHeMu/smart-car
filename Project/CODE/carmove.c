@@ -75,7 +75,7 @@ int distance(float current_x, float current_y, float target_x, float target_y)
 int get_angle(float current_x, float current_y, float target_x, float target_y)
 {
     int angle;
-    angle = atan2((target_x - current_x), (target_y - current_y)) * 180 / PI;
+    angle = -atan2((target_x - current_x), (target_y - current_y)) * 180 / PI;
     return (int)angle;
 }
 
@@ -87,7 +87,8 @@ int get_angle(float current_x, float current_y, float target_x, float target_y)
 void car_move(float tar_x, float tar_y)
 {
     rt_kprintf("MOVEING !!! \n");
-    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 10) // 持续运动
+	
+    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 20) // 持续运动
     {
         car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x); // cm
         car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
@@ -209,10 +210,9 @@ void route_planning_entry(void *param)
 
     for (int i = 0; i < point_num / 2; i++)
     {
-        rt_kprintf("x:%d", tar_point[i].x);
-        rt_kprintf("y:%d\n", tar_point[i].y);
+        rt_kprintf("x:%d y:%d\n", tar_point[i].x, tar_point[i].y);
     }
-    rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+    rt_mb_send(buzzer_mailbox, 5000); // 给buzzer_mailbox发送100
 
     car_move(0, 20); // 出库
 
@@ -232,8 +232,7 @@ void route_planning_entry(void *param)
         {
             car.target_x = tar_point[point].x * 20; // 获取目标坐标点
             car.target_y = tar_point[point].y * 20;
-            rt_kprintf("TARGET_X%d   ", (int)car.target_x);
-            rt_kprintf("TARGET_Y%d\n", (int)car.target_y);
+            rt_kprintf("TARGET_X%d, TARGET_Y%d\n", (int)car.target_x, (int)car.target_y);
             point++; // 统计到达点数
         }
 
@@ -243,11 +242,11 @@ void route_planning_entry(void *param)
         uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
         rt_thread_mdelay(1000);
 
-        if(ART1_CORRECT_Angle < 5)
-        {
-            car_turn(ART1_CORRECT_Angle);rt_thread_mdelay(100);
-            angle_z = 0;//重新设定陀螺仪值
-        }
+//        if(ART1_CORRECT_Angle < 5)
+//        {
+//            car_turn(ART1_CORRECT_Angle);rt_thread_mdelay(100);
+//            angle_z = 0;//重新设定陀螺仪值
+//        }
         
         
         rt_sem_release(correct_sem); // 到达后发送矫正信号

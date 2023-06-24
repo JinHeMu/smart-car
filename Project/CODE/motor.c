@@ -1,6 +1,6 @@
 #include "motor.h"
 
-#define PWM_LIMIT 8000// 限幅，必须注意安全
+#define PWM_LIMIT 10000// 限幅，必须注意安全
 
 #define DIR_1 D0
 #define DIR_2 D1
@@ -22,10 +22,10 @@ int32 duty1 = 0, duty2 = 0, duty3 = 0, duty4 = 0; // 电机PWM值
 //float Incremental_kd[4] = {0,0,0,0};   
 
 float Incremental_kp[4] = {150, 150, 150, 150};
-float Incremental_ki[4] = {0, 0,0, 0};
-float Incremental_kd[4] = {0,0,0,0}; 
+float Incremental_ki[4] = {4, 4, 4, 4};
+float Incremental_kd[4] = {0, 0, 0, 0}; 
 
-float Angel_kp = 0.2, Angel_ki = 0, Angel_kd = 1; // 角度环
+float Angel_kp = 0.1, Angel_ki = 0, Angel_kd = 1; // 角度环
 //float Position_kp = 0.05, Position_ki = 0, Position_kd = 0;
 float Position_kp = 0.1, Position_ki = 0, Position_kd = 0;
 float correct_kp = 0.3, correct_ki = 0, correct_kd = 0;
@@ -170,47 +170,51 @@ void car_stop()
 
 int Incremental_pid1(int Target, int Encoder)
 {
-    static float Bias, Pwm, Integral_bias, Last_Bias;
-    Bias = (float)(Target - Encoder);
-    Integral_bias += Bias;
-		Integral_bias = limit(Integral_bias, PWM_LIMIT);
-    Pwm = Incremental_kp[0] * Bias + Incremental_ki[0] * Integral_bias + Incremental_kd[0] * (Bias - Last_Bias);
-    Last_Bias = Bias;
-    return (int)Pwm;
+    static float Bias1, Pwm1, Integral_bias1, Last_Bias1;
+    Bias1 = (float)(Target - Encoder);
+    Integral_bias1 += Bias1;
+		Integral_bias1 = limit(Integral_bias1, PWM_LIMIT);
+    Pwm1 += Incremental_kp[0] * (Bias1 - Last_Bias1) + Incremental_ki[0] * Bias1;
+    Last_Bias1 = Bias1;
+    return (int)Pwm1;
 }
 
 int Incremental_pid2(int Target, int Encoder)
 {
-    static float Bias, Pwm, Integral_bias, Last_Bias;
-    Bias = (float)(Target - Encoder);
-    Integral_bias += Bias;
-		Integral_bias = limit(Integral_bias, PWM_LIMIT);
-    Pwm = Incremental_kp[1] * Bias + Incremental_ki[1] * Integral_bias + Incremental_kd[1] * (Bias - Last_Bias);
-    Last_Bias = Bias;
-    return (int)Pwm;
+    static float Bias2, Pwm2, Integral_bias2, Last_Bias2;
+    Bias2 = (float)(Target - Encoder);
+    Integral_bias2 += Bias2;
+		Integral_bias2 = limit(Integral_bias2, PWM_LIMIT);
+    Pwm2 += Incremental_kp[0] * (Bias2 - Last_Bias2) + Incremental_ki[0] * Bias2;
+    Last_Bias2 = Bias2;
+    return (int)Pwm2;
 }
 
 int Incremental_pid3(int Target, int Encoder)
 {
-    static float Bias, Pwm, Integral_bias, Last_Bias;
-    Bias = (float)(Target - Encoder);
-    Integral_bias += Bias;
-		Integral_bias = limit(Integral_bias, PWM_LIMIT);
-    Pwm = Incremental_kp[2] * Bias + Incremental_ki[2] * Integral_bias + Incremental_kd[2] * (Bias - Last_Bias);
-    Last_Bias = Bias;
-    return (int)Pwm;
+    static float Bias3, Pwm3, Integral_bias3, Last_Bias3;
+    Bias3 = (float)(Target - Encoder);
+    Integral_bias3 += Bias3;
+		Integral_bias3 = limit(Integral_bias3, PWM_LIMIT);
+    Pwm3 += Incremental_kp[0] * (Bias3 - Last_Bias3) + Incremental_ki[0] * Bias3;
+    Last_Bias3 = Bias3;
+    return (int)Pwm3;
 }
 
 int Incremental_pid4(int Target, int Encoder)
 {
-    static float Bias, Pwm, Integral_bias, Last_Bias;
-    Bias = (float)(Target - Encoder);
-    Integral_bias += Bias;
-		Integral_bias = limit(Integral_bias, PWM_LIMIT);
-    Pwm = Incremental_kp[3] * Bias + Incremental_ki[3] * Integral_bias + Incremental_kd[3] * (Bias - Last_Bias);
-    Last_Bias = Bias;
-    return (int)Pwm;
+    static float Bias4, Pwm4, Integral_bias4, Last_Bias4;
+    Bias4 = (float)(Target - Encoder);
+    Integral_bias4 += Bias4;
+		Integral_bias4 = limit(Integral_bias4, PWM_LIMIT);
+    Pwm4 += Incremental_kp[0] * (Bias4 - Last_Bias4) + Incremental_ki[0] * Bias4;
+    Last_Bias4 = Bias4;
+    return (int)Pwm4;
 }
+
+
+
+
 
 int angel_pid(int NowAngel, int TargetAngel)
 {
@@ -237,10 +241,11 @@ int angel_pid(int NowAngel, int TargetAngel)
     Last_current_error = current_error;
     //     rt_kprintf("%d\n",(int)(Speed_Z*1000));
 
-    if (Speed_Z >= 10)
-        Speed_Z = 10;
-    if (Speed_Z <= -10)
-        Speed_Z = -10;
+    if (Speed_Z >= 5)
+        Speed_Z = 5;
+    if (Speed_Z <= -5)
+		
+        Speed_Z = -5;
     return (int)Speed_Z;
 }
 
@@ -303,20 +308,22 @@ int correct_y_pid(int16 now_y, int16 target_y)
 void pid_calculate(void)
 {
 
-    duty1 = Incremental_pid1(speed_tar_1 * 116, RC_encoder1); // 计算得到每个电机输出目标值
-    duty2 = Incremental_pid2(speed_tar_2 * 116, RC_encoder2);
-    duty3 = Incremental_pid3(speed_tar_3 * 116, RC_encoder3);
-    duty4 = Incremental_pid4(speed_tar_4 * 116, RC_encoder4);
+
+    duty1 = Incremental_pid1(speed_tar_1*102.4, RC_encoder1); // 计算得到每个电机输出目标值
+    duty2 = Incremental_pid2(speed_tar_2*102.4, RC_encoder2);
+    duty3 = Incremental_pid3(speed_tar_3*102.4, RC_encoder3);
+    duty4 = Incremental_pid4(speed_tar_4*102.4, RC_encoder4);
 	
-//		rt_kprintf("%d,%d,%d,%d   ", duty1,duty2,duty3,duty4);
-//		rt_kprintf("%d,%d,%d,%d   ", RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4);
-//		rt_kprintf("%d,%d,%d,%d\n", (int)speed_tar_1*116,(int)speed_tar_2*116,(int)speed_tar_3*116,(int)speed_tar_4*116);
+	
 	
     duty1 = limit(duty1, PWM_LIMIT);
     duty2 = limit(duty2, PWM_LIMIT);
     duty3 = limit(duty3, PWM_LIMIT);
     duty4 = limit(duty4, PWM_LIMIT);
 	
+//	
+//		rt_kprintf("%d,%d,%d,%d   ", duty1,duty2,duty3,duty4);
+//rt_kprintf("%d,%d,%d,%d\n", RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4);
 }
 
 void motor_control(bool run)

@@ -13,7 +13,7 @@ find_coordinates_flag = 1
 correct_flag = 1
 recognize_flag = 1
 
-threshold = [((69, 100, -29, 127, -128, 127))]#色块检测阈值
+threshold = [((71, 100, -31, 125, -27, 127))]#色块检测阈值
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -247,7 +247,7 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "6.13-epoch40.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "6.23-ori-120.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
