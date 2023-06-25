@@ -2,6 +2,7 @@
 
 void main()
 {
+	
 
 	rt_thread_mdelay(800);					// 延时150ms，等待主板其他外设上电成功
 	gpio_init(B9, GPO, 1, GPIO_PIN_CONFIG); // 初始化B9灯
@@ -11,7 +12,6 @@ void main()
 	display_init(); // 显示屏初始化
 
 	ART1_UART_Init();
-	ART1_mode = 1;
 	ART2_UART_Init();
 
 	encoder_init();	  // 初始化编码器
@@ -23,7 +23,12 @@ void main()
 
 	motor_init();
 
-//	car_start_init();
+	
+
+	car_start_init();
+
+	car.MileageX = 0; car.MileageY = -60;
+	ART1_mode = 1;
 
 	while (1)
 	{

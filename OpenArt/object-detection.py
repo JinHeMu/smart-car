@@ -34,18 +34,21 @@ def object_detection(net, face_detect):
             img.draw_cross(x1 ,y1, size=5, color=(255, 0, 0))
             w = int(w*img.width())
             h = int(h*img.height())
+            center_x = x1+w//2
+            center_y = y1+h//2
 
-            angle =-int(math.atan((x1+w//2 - 160) / (y1+h//2 - 240)) * 60)
-            dis = int(math.sqrt(((x1+w//2 - 160) ** 2) + ((y1+h//2 - 240)** 2)))
+            angle =-int(math.atan((center_x - 160) / (center_y - 240)) * 60)
+            dis = int(math.sqrt(((center_x - 160) ** 2) + ((center_y - 240)** 2)))
 
-            img.draw_string(x1+w//2, y1+h//2, "Angle:" + str(angle), color = (255, 0, 0), scale = 2, mono_space = False)
-            img.draw_string(x1+w//2, y1+h//2 - 30, "Dis:" + str(dis), color = (255, 0, 0), scale = 2, mono_space = False)
-            img.draw_cross(x1+w//2, y1+h//2, size=5, color=(255, 0, 0))
-            img.draw_line(160, 240, x1+w//2, y1+h//2, color=(255, 0, 0))
+            img.draw_string(center_x, center_y, "Angle:" + str(angle), color = (255, 0, 0), scale = 2, mono_space = False)
+            img.draw_string(center_x, center_y - 30, "Dis:" + str(dis), color = (255, 0, 0), scale = 2, mono_space = False)
+            img.draw_cross(center_x, center_y, size=5, color=(255, 0, 0))
+            img.draw_line(160, 240, center_x, center_y, color=(255, 0, 0))
             img.draw_rectangle((x1,y1,w,h),thickness=2)
 
             uart.write("C")
-            uart.write("%c" % dis)
+            uart.write("%c" % center_x)
+            uart.write("%c" % center_y)
             uart.write("%c" % angle)
             uart.write("D")
 
