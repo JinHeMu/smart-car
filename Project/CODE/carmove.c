@@ -75,7 +75,7 @@ int distance(float current_x, float current_y, float target_x, float target_y)
 int get_angle(float current_x, float current_y, float target_x, float target_y)
 {
     int angle;
-    angle = -atan2((target_x - current_x), (target_y - current_y)) * 180 / PI;
+    angle = atan2((target_x - current_x), (target_y - current_y)) * 180 / PI;
     return (int)angle;
 }
 
@@ -87,8 +87,7 @@ int get_angle(float current_x, float current_y, float target_x, float target_y)
 void car_move(float tar_x, float tar_y)
 {
     rt_kprintf("MOVEING !!! \n");
-	
-    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 20) // 持续运动
+    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 10) // 持续运动
     {
         car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x); // cm
         car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
@@ -210,11 +209,12 @@ void route_planning_entry(void *param)
 
     for (int i = 0; i < point_num / 2; i++)
     {
-        rt_kprintf("x:%d y:%d\n", tar_point[i].x, tar_point[i].y);
+        rt_kprintf("x:%d", tar_point[i].x);
+        rt_kprintf("y:%d\n", tar_point[i].y);
     }
-    rt_mb_send(buzzer_mailbox, 5000); // 给buzzer_mailbox发送100
+    rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
 
-    car_move(0, 20); // 出库
+    car_move(0, 60); // 出库
 
     while (1)
     {
@@ -232,7 +232,8 @@ void route_planning_entry(void *param)
         {
             car.target_x = tar_point[point].x * 20; // 获取目标坐标点
             car.target_y = tar_point[point].y * 20;
-            rt_kprintf("TARGET_X%d, TARGET_Y%d\n", (int)car.target_x, (int)car.target_y);
+            rt_kprintf("TARGET_X%d   ", (int)car.target_x);
+            rt_kprintf("TARGET_Y%d\n", (int)car.target_y);
             point++; // 统计到达点数
         }
 
@@ -248,8 +249,8 @@ void route_planning_entry(void *param)
 //            angle_z = 0;//重新设定陀螺仪值
 //        }
         
-        
         rt_sem_release(correct_sem); // 到达后发送矫正信号
+//				 rt_sem_release(arrive_sem); // 到达后发送矫正信号
     }
 }
 
@@ -258,9 +259,10 @@ void correct_entry(void *param)
     while (1)
     {
         rt_sem_take(correct_sem, RT_WAITING_FOREVER); // 获取矫正信号
+
         rt_kprintf("correcting!!!\n");
 
-        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 10 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
+        while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 5 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
         {
 
             rt_thread_mdelay(5);
@@ -268,26 +270,52 @@ void correct_entry(void *param)
 
             if (pic_dis > 65)
             {
-                car.correct_speed = 5;
+                car.correct_speed = 4;
             }
             else if (pic_dis <= 65 && pic_dis > 45)
             {
-                car.correct_speed = 4;
+                car.correct_speed = 3;
             }
             else if (pic_dis <= 45 && pic_dis > 25)
             {
-                car.correct_speed = 3;
+                car.correct_speed = 2;
             }
             else if (pic_dis <= 25 && pic_dis > 5)
             {
-                car.correct_speed = 2;
+                car.correct_speed = 1;
             }
             else
             {
                 car.correct_speed = 0;
             }
-            car.Speed_X = car.correct_speed * ART1_CORRECT_X / 100;
-            car.Speed_Y = -car.correct_speed * ART1_CORRECT_Y / 100;
+						
+						if(car.correct_speed * ART1_CORRECT_X > 100)
+						{
+							car.Speed_X = 100;
+						}else if(car.correct_speed * ART1_CORRECT_X < -100)
+						{
+							car.Speed_X = -100;
+						}else
+						{
+							car.Speed_X = car.correct_speed * ART1_CORRECT_X ;
+						}
+						
+						if(car.correct_speed * ART1_CORRECT_Y > 100)
+						{
+							car.Speed_Y = -100;
+						}else if(car.correct_speed * ART1_CORRECT_Y < -100)
+						{
+							car.Speed_Y = 100;
+						}else
+						{
+							car.Speed_Y = -car.correct_speed * ART1_CORRECT_Y;
+						}
+							
+
+            
+        
+						
+						rt_kprintf("%d,%d\n", (int)car.Speed_X, (int)car.Speed_Y);
 
         }
         car.Speed_X = 0;
@@ -297,11 +325,13 @@ void correct_entry(void *param)
         car.MileageX = car.target_x; // 更新当前坐标
         car.MileageY = car.target_y;
         rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+				
 
         ART1_mode = 3;
         uart_putchar(USART_4, 0x43);
         rt_thread_mdelay(1000);
         rt_sem_release(recognize_sem);
+//				rt_sem_release(correct_sem);
     }
 }
 

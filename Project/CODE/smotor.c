@@ -115,14 +115,17 @@ void arm_putbox(uint8 angle)
 	//盒子转动 1-0；2-90 3-180 4-270
 	ARM_MID_angle(angle*90 - 90);
 	rt_thread_mdelay(500);
+	
 
-	ARM_LOW_angle(40);
+	ARM_UP_angle(90);
 	rt_thread_mdelay(300);
-	ARM_UP_angle(0);
+	ARM_LOW_angle(45);
+	rt_thread_mdelay(300);
+	ARM_UP_angle(5);
 	rt_thread_mdelay(300);
 
 	magnet_front_appeal();
-	rt_thread_mdelay(300);
+	rt_thread_mdelay(500);
 
 	ARM_LOW_angle(80);
 	ARM_UP_angle(160);
@@ -186,8 +189,8 @@ void arm_init(void)
 	gpio_init(MAGNET_LEFT, GPO, 0, GPIO_PIN_CONFIG);
 
 	ARM_LEFT_angle(90);
-	ARM_LOW_angle(90);
-	ARM_UP_angle(150);
+	ARM_LOW_angle(80);
+	ARM_UP_angle(180);
 	ARM_MID_angle(0);
 	rt_thread_mdelay(200);
 

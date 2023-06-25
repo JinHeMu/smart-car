@@ -25,8 +25,8 @@ def uart_correct(img):
         img_x = (int)(b.rect()[0] + b.rect()[2] / 2)  # 图像中心的x值b
         img_y = (int)(b.rect()[1] + b.rect()[3] / 2)  # 图像中心的y值
         img.draw_circle(img_x, img_y, 5, color=(0, 255, 0))  # 给矩形中心绘制一个小圆 便于观察矩形中心是否识别正确
-        dis_X = img_x - 88
-        dis_Y = img_y - 90
+        dis_X = img_x - 81
+        dis_Y = img_y - 62
         print("disx:%d , disy:%d" % (dis_X, dis_Y))
         uart.write("C")
         uart.write("%c" % dis_X)

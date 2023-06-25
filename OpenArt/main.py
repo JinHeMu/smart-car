@@ -13,7 +13,7 @@ find_coordinates_flag = 1
 correct_flag = 1
 recognize_flag = 1
 
-threshold = [((71, 100, -31, 125, -27, 127))]#色块检测阈值
+threshold = [((80, 100, -31, 125, -27, 127))]#色块检测阈值
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -155,8 +155,8 @@ def picture_correct():
 
 
             img.draw_circle(b.cx(), b.cy(), 5, color=(0, 255, 0))
-            dis_X = b.cx() - 80
-            dis_Y = b.cy() - 63
+            dis_X = b.cx() - 91
+            dis_Y = b.cy() - 70
             print("disx:%d , disy:%d, angle:%d" % (dis_X, dis_Y, q))
 
             #发送数据
@@ -167,7 +167,7 @@ def picture_correct():
             uart.write("D")
             lcd.show_image(img, 160, 120, zoom=0)
             distance = math.sqrt((dis_X ** 2) + (dis_Y ** 2))
-            if distance < 10:
+            if distance < 5:
                 correct_flag = 0
 
 #边线矫正函数
@@ -256,7 +256,7 @@ def main():
         img = sensor.snapshot()
         #recognize_pic(labels, net)
         # # boundary_correct()
-        # # picture_correct()
+        ##picture_correct()
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if (uart_num):
             uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
