@@ -188,8 +188,8 @@ void arm_init(void)
 	gpio_init(MAGNET_FRONT, GPO, 0, GPIO_PIN_CONFIG);
 	gpio_init(MAGNET_LEFT, GPO, 0, GPIO_PIN_CONFIG);
 
-	ARM_LEFT_angle(90);
-	ARM_LOW_angle(80);
+	ARM_LEFT_angle(80);
+	ARM_LOW_angle(90);
 	ARM_UP_angle(180);
 	ARM_MID_angle(0);
 	rt_thread_mdelay(200);

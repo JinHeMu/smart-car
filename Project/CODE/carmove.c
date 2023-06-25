@@ -84,13 +84,66 @@ int get_angle(float current_x, float current_y, float target_x, float target_y)
 入口参数：目标坐标
 返回值：无
 **************************************************************************/
+//void car_move(float tar_x, float tar_y)
+//{
+//    rt_kprintf("MOVEING !!! \n");
+//    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 10) // 持续运动
+//    {
+//        car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x); // cm
+//        car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
+//        rt_thread_mdelay(20);
+//    }
+//    car.Speed_X = 0;
+//    car.Speed_Y = 0;
+//    rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+//    rt_thread_delay(1000);            // ?? 1 ??
+//    rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX, (int)car.MileageY);
+//}
+
+
+// void car_move(float tar_x, float tar_y)
+// {
+//     rt_kprintf("MOVEING !!! \n");
+//     while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 10) // 持续运动
+//     {
+//         car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x); // cm
+//         car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
+//         rt_thread_mdelay(20);
+//     }
+//     car.Speed_X = 0;
+//     car.Speed_Y = 0;
+//     rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+//     rt_thread_delay(1000);            // ?? 1 ??
+//     rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX, (int)car.MileageY);
+// }
+
+
 void car_move(float tar_x, float tar_y)
 {
     rt_kprintf("MOVEING !!! \n");
-    while (distance(car.MileageX, car.MileageY, tar_x, tar_y) > 10) // 持续运动
+    static int angle;
+    static int dis;
+    static float Speed_X;
+    static float Speed_Y;
+    angle = get_angle(car.MileageX, car.MileageY, tar_x, tar_y);
+    dis = distance(car.MileageX, car.MileageY, tar_x, tar_y);
+    while (dis > 10) // 持续运动
     {
-        car.Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x); // cm
-        car.Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
+        if(dis > 200)
+        {
+           Speed_X = picture_x_pid((int)car.MileageX, (int)tar_x); // cm
+           Speed_Y = picture_y_pid((int)car.MileageY, (int)tar_y);
+
+        }else if(100 < dis < 200)
+        {
+            Speed_X = 200 * cos(angle);
+           Speed_Y = 200 * sin(angle);
+        }else
+        {
+            Speed_X = 200 * cos(angle);
+            Speed_Y = 200 * sin(angle);
+        }
+
         rt_thread_mdelay(20);
     }
     car.Speed_X = 0;
@@ -99,6 +152,11 @@ void car_move(float tar_x, float tar_y)
     rt_thread_delay(1000);            // ?? 1 ??
     rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX, (int)car.MileageY);
 }
+
+
+
+
+
 
 void car_turn(float angle)
 {

@@ -44,61 +44,49 @@ void Menu_key_set(void)
 
 	rt_mb_recv(display_mailbox, &mb_data, RT_WAITING_NO); // 接受按键发送过来的邮件
 	
+		if ((mb_data == 1)) // 按下按键1
+	{
+		car_turnto(40); 
+		rt_thread_mdelay(2000);
+		car_turnto(-40); 
+		rt_thread_mdelay(2000);
+		car_turnto(0); 
+		rt_thread_mdelay(2000);
+		
+		
+		ips114_showint16(0, 0, car.Speed_X);
+		
+		mb_data = 0; // 邮箱数据清除
+	}
+
 //		if ((mb_data == 1)) // 按下按键1
 //	{
-//		car_turnto(20); 
-//		rt_thread_mdelay(2000);
-//		car_turnto(40); 
-//		rt_thread_mdelay(2000);
-//		car_turnto(90); 
-//		rt_thread_mdelay(2000);
-//		car_turnto(-90); 
-//		rt_thread_mdelay(2000);
-//		car_turnto(0); 
-//		rt_thread_mdelay(2000);
-//		
-//		
-//		ips114_showint16(0, 0, car.Speed_X);
+//		car_move(200,0); 
+//		rt_thread_mdelay(3000);
+//		car_move(200,200); 
+//		rt_thread_mdelay(3000);
+//		car_move(0,200); 
+//		rt_thread_mdelay(3000);
+//		car_move(0,0); 
+//		rt_thread_mdelay(3000);
+
 //		
 //		mb_data = 0; // 邮箱数据清除
 //	}
-
-		if ((mb_data == 1)) // 按下按键1
-	{
-		car_move(200,0); 
-		rt_thread_mdelay(3000);
-		car_move(200,200); 
-		rt_thread_mdelay(3000);
-		car_move(0,200); 
-		rt_thread_mdelay(3000);
-		car_move(0,0); 
-		rt_thread_mdelay(3000);
-
-		
-		mb_data = 0; // 邮箱数据清除
-	}
 	
-			if ((mb_data == 1)) // 按下按键1
-	{
-
-
-
-		
-		mb_data = 0; // 邮箱数据清除
-	}
 
 
 	
 	if ((mb_data == 2)) // 按下按键1
 	{
-		Position_kp += 1;
-		ips114_showfloat(60, 4, Position_kp, 4, 2);
+		Angel_kp += 0.5;
+		ips114_showfloat(60, 4, Angel_kp, 4, 2);
 		mb_data = 0; // 邮箱数据清除
 	}
 
 	if ((mb_data == 3))
 	{
-		Angel_kd-= 1;
+		Angel_kd-= 0.1;
 		ips114_showfloat(60, 5, Angel_kd, 4, 2);
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -106,7 +94,7 @@ void Menu_key_set(void)
 	if (mb_data == 4)
 	{
 
-		Angel_kd+= 5;
+		Angel_kd+= 0.1;
 		ips114_showfloat(60, 5, Angel_kd, 4, 2);
 		mb_data = 0; // 邮箱数据清除
 	}

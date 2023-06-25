@@ -3,7 +3,7 @@
 void main()
 {
 
-	rt_thread_mdelay(8000);					// 延时300ms，等待主板其他外设上电成功
+	rt_thread_mdelay(800);					// 延时150ms，等待主板其他外设上电成功
 	gpio_init(B9, GPO, 1, GPIO_PIN_CONFIG); // 初始化B9灯
 
 	arm_init();
@@ -23,27 +23,27 @@ void main()
 
 	motor_init();
 
-	car_start_init();
+//	car_start_init();
 
 	while (1)
 	{
-		gpio_toggle(B9);
-		rt_thread_mdelay(500);
-//		car.Speed_X = 200; 
+////		gpio_toggle(B9);
+////		rt_thread_mdelay(500);
+//		car.Speed_X = 150; 
 //		rt_thread_mdelay(3000);
 //		car.Speed_X = 0;
 //		rt_thread_mdelay(3000);
-//		car.Speed_Y = 200; 
+//		car.Speed_Y = 150; 
 //		rt_thread_mdelay(3000);
 //		car.Speed_Y = 0;
 //		rt_thread_mdelay(3000);
-//		car.Speed_X = -200; 
+//		car.Speed_X = -150; 
 //		rt_thread_mdelay(3000);
 //		car.Speed_X = 0;
 //		rt_thread_mdelay(3000);
-//		car.Speed_Y = -200; 
+//		car.Speed_Y = -150; 
 //		rt_thread_mdelay(3000);
 //		car.Speed_Y = 0;
-//		rt_thread_mdelay(3000);
+		rt_thread_mdelay(3000);
 	}
 }
