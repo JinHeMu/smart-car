@@ -93,13 +93,19 @@ void arm_down(void)
 //机械臂将卡片捡起来
 void arm_carry(void)
 {
-	ARM_LOW_angle(40);
+	ARM_UP_angle(90);
 	rt_thread_mdelay(300);
-	ARM_UP_angle(0);
+	ARM_LOW_angle(50);
+	rt_thread_mdelay(300);	
+	ARM_UP_angle(5);
 	rt_thread_mdelay(300);
+	ARM_LOW_angle(43);
+	rt_thread_mdelay(300);
+
 
 	magnet_front_appeal();
 	rt_thread_mdelay(300);
+	
 
 	ARM_LOW_angle(80);
 	ARM_UP_angle(160);
@@ -119,19 +125,29 @@ void arm_putbox(uint8 angle)
 
 	ARM_UP_angle(90);
 	rt_thread_mdelay(300);
-	ARM_LOW_angle(45);
+	ARM_LOW_angle(43);
 	rt_thread_mdelay(300);
 	ARM_UP_angle(5);
 	rt_thread_mdelay(300);
 
 	magnet_front_appeal();
 	rt_thread_mdelay(500);
-
-	ARM_LOW_angle(80);
-	ARM_UP_angle(160);
-	rt_thread_mdelay(500);
+	
+	
+	ARM_LOW_angle(60);
+	rt_thread_mdelay(300);
+	ARM_UP_angle(180);
+	rt_thread_mdelay(300);
+	ARM_LOW_angle(90);
+	rt_thread_mdelay(300);
 	
 	magnet_front_release();
+	rt_thread_mdelay(300);
+	
+	ARM_LOW_angle(80);
+	rt_thread_mdelay(300);
+	
+	
 }
 
 //机械臂打开盒子
@@ -188,8 +204,8 @@ void arm_init(void)
 	gpio_init(MAGNET_FRONT, GPO, 0, GPIO_PIN_CONFIG);
 	gpio_init(MAGNET_LEFT, GPO, 0, GPIO_PIN_CONFIG);
 
-	ARM_LEFT_angle(80);
-	ARM_LOW_angle(90);
+	ARM_LEFT_angle(0);
+	ARM_LOW_angle(80);
 	ARM_UP_angle(180);
 	ARM_MID_angle(0);
 	rt_thread_mdelay(200);

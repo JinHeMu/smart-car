@@ -153,6 +153,11 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 			
 			ART1_CORRECT_Boundary_Angle = ART1_uart_rx_buffer;
 			rt_kprintf("Angle: %d\n", ART1_CORRECT_Boundary_Angle);
+			if(abs(ART1_CORRECT_Boundary_Angle)>0 && abs(ART1_CORRECT_Boundary_Angle) < 45)
+			{
+				angle_z = ART1_CORRECT_Boundary_Angle;
+			}
+			
 
 
 		}

@@ -63,22 +63,33 @@ void imura_zeroBias()
 void ARHS_getValues()
 {
 	// ÍÓÂÝÒÇ½Ç¶È×ª»¡¶È
-	float filtered_gyro_x = slidingFilter(((float)imu963ra_gyro_x + Gyro_Bias.Xdata) * M_PI / 180 / 14.3f);
-	float filtered_gyro_y = slidingFilter(((float)imu963ra_gyro_y + Gyro_Bias.Ydata) * M_PI / 180 / 14.3f);
+//	float filtered_gyro_x = slidingFilter(((float)imu963ra_gyro_x + Gyro_Bias.Xdata) * M_PI / 180 / 14.3f);
+//	float filtered_gyro_y = slidingFilter(((float)imu963ra_gyro_y + Gyro_Bias.Ydata) * M_PI / 180 / 14.3f);
 	float filtered_gyro_z = slidingFilter(((float)imu963ra_gyro_z + Gyro_Bias.Zdata) * M_PI / 180 / 14.3f);
 	
-	source_data.acc_x = imu963ra_acc_x;
-	source_data.acc_y = imu963ra_acc_y;
-	source_data.acc_z = imu963ra_acc_z;
+//	source_data.gyro_x = (float)(imu963ra_gyro_x + Gyro_Bias.Xdata) * M_PI / 180 / 14.3f;
+//	source_data.gyro_y = (float)(imu963ra_gyro_y + Gyro_Bias.Ydata) * M_PI / 180 / 14.3f;
+//	source_data.gyro_z = (float)(imu963ra_gyro_z + Gyro_Bias.Zdata) * M_PI / 180 / 14.3f;
 	
-	if(abs((int)imu963ra_gyro_z + Gyro_Bias.Zdata)<30)
+	
+//	source_data.acc_x = imu963ra_acc_x;
+//	source_data.acc_y = imu963ra_acc_y;
+//	source_data.acc_z = imu963ra_acc_z;
+	
+//	rt_kprintf("%d\n", (int)(filtered_gyro_z * 10000));
+	
+	if(abs(filtered_gyro_z * 10000) < 50)
 	{
-		source_data.gyro_z = 0;
+		filtered_gyro_z = 0;
 	}
 
-    angle_x += (filtered_gyro_x / 3.33);
-    angle_y += (filtered_gyro_y / 3.33);
+//    angle_x += (filtered_gyro_x / 3.33);
+//    angle_y += (filtered_gyro_y / 3.33);
     angle_z += (filtered_gyro_z / 3.33);
+	
+//	  angle_x += (source_data.gyro_x / 3.33);
+//    angle_y += (source_data.gyro_y / 3.33);
+//    angle_z += (source_data.gyro_z / 3.33);
 
 	if (angle_z >= 360)
 	{

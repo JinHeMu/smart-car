@@ -47,12 +47,12 @@ def object_detection(net, face_detect):
             img.draw_rectangle((x1,y1,w,h),thickness=2)
 
             uart.write("C")
-            uart.write("%c" % center_x)
-            uart.write("%c" % center_y)
+            uart.write("%c" % (center_x - 160))
+            uart.write("%c" % (-(center_y - 240)))
             uart.write("%c" % angle)
             uart.write("D")
 
-            print("dis:%d, angle:%d" % (dis, angle))
+            print("dis:%d, angle:%d, center_x:%d, center_y:%d" % (dis, angle, center_x - 160, -(center_y - 240)))
 
 def main():
     openart_init()
