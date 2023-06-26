@@ -13,22 +13,21 @@
 #define PWM_4 PWM1_MODULE0_CHB_D13
 
 int32 duty1 = 0, duty2 = 0, duty3 = 0, duty4 = 0; // 电机PWM值
+
 //float Incremental_kp[4] = {6.5, 6.5, 6.5, 6.5};
 //float Incremental_ki[4] = {0.20, 0.20, 0.20, 0.20};
 //float Incremental_kd[4] = {0,0,0,0};      // 增量式PID，控制电机输出值
 
-//float Incremental_kp[4] = {6.5, 6.5, 6.5, 6.5};
-//float Incremental_ki[4] = {0.2, 0.2,0.2, 0.2};
-//float Incremental_kd[4] = {0,0,0,0};   
+
 
 float Incremental_kp[4] = {270, 270, 270, 270};
 float Incremental_ki[4] = {8, 8 , 8, 8};
 float Incremental_kd[4] = {0,0,0,0}; 
 
 float Angel_kp = 6, Angel_ki = 0, Angel_kd = 24; // 角度环
-//float Angel_kp = 0, Angel_ki = 0, Angel_kd = 0; // 角度环
+
 //float Position_kp = 0.05, Position_ki = 0, Position_kd = 0;
-float Position_kp = 1.5, Position_ki = 0, Position_kd = 0;
+float Position_kp = 1.5, Position_ki = 0, Position_kd = 0.3;
 float correct_kp = 0, correct_ki = 0, correct_kd = 0;
 
 // 积分法计算位移参数

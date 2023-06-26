@@ -32,6 +32,7 @@ rt_thread_t correct_th;        // 矫正线程
 rt_thread_t carry_th;          // 搬运线程
 rt_thread_t obj_detection_th;  // 目标检测线程
 rt_thread_t back_th;           // 回库线程
+rt_thread_t boundary_th;       // 边线矫正线程
 
 char taget_Big_category[10];
 // rt_thread_t move_th;
@@ -127,11 +128,15 @@ void car_move(float tar_x, float tar_y)
 {
     rt_kprintf("MOVING!!!\n");
 
+
+
     float target_distance = distance(car.MileageX, car.MileageY, tar_x, tar_y);
     float current_distance = target_distance;
     float acceleration = 0.02; // 加速度，可根据实际情况调整
     float max_speed = 1;       // 最大速度，可根据实际情况调整
     float current_speed = 0;
+
+    uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
 
     while (current_distance > 10) // 持续运动
     {
@@ -693,6 +698,34 @@ void obj_detection_entry(void *param)
     }
 }
 
+
+ void boundary_th_entry(void *param)
+ {
+    while(1)
+    {
+        // if(ART1_CORRECT_Boundary_Angle != 0)
+        // {
+        //     car_turn(ART1_CORRECT_Boundary_Angle);//转向边线角度
+        //     rt_thread_mdelay(100);//延时，让小车及时转向
+        //     angle_z = 0;//使陀螺仪数值归0
+        //     ART1_CORRECT_Boundary_Angle = 0;//边线角度归0
+        // }
+        if(ART1_CORRECT_Boundary_Angle != 0)
+        {
+            angle_z = (ART1_CORRECT_Boundary_Angle);//转向边线角度
+
+            ART1_CORRECT_Boundary_Angle = 0;//边线角度归0
+        }
+        else
+        {
+            rt_thread_mdelay(500);
+        }
+    }
+
+ }
+
+
+
 void back_th_entry(void *param)
 {
     while (1)
@@ -737,9 +770,13 @@ void car_start_init(void)
 
     back_th = rt_thread_create("back_th", back_th_entry, RT_NULL, 1024, 28, 10);
 
+    boundary_th = rt_thread_create("boundary_th", boundary_th_entry, RT_NULL, 1024, 27, 10);
+
     rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
+    // rt_thread_startup(boundary_th);
+    // rt_thread_startup(back_th);
     // rt_thread_startup(obj_detection_th);
     uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 }

@@ -13,7 +13,8 @@ find_coordinates_flag = 1
 correct_flag = 1
 recognize_flag = 1
 
-threshold = [((80, 100, -31, 125, -27, 127))]#色块检测阈值
+card_threshold = [((80, 100, -31, 125, -27, 127))]#色块检测阈值
+boundary_threshold = [((18, 100, -34, 125, 27, 127))]#色块检测阈值
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -120,7 +121,7 @@ def picture_correct():
     while correct_flag:
         img = sensor.snapshot()
 
-        for b in img.find_blobs(threshold, pixels_threshold=400, area_threshold=400, margin=1, merge=True, invert=0):
+        for b in img.find_blobs(card_threshold, pixels_threshold=400, area_threshold=400, margin=1, merge=True, invert=0):
             #寻找角点
             corners = b.min_corners()
             point_corners = tuple(sorted(corners))
@@ -187,7 +188,7 @@ def boundary_correct():
     while boundary_correct_flag:
         img = sensor.snapshot()
 
-        line = img.get_regression(threshold)
+        line = img.get_regression(boundary_threshold)
 
     # 如果找到了线段
         if line:
@@ -199,6 +200,8 @@ def boundary_correct():
             print("Line Angle: ", angle)
             boundary_correct_flag = 0
         else :
+            uart.write("%c" % 0)
+            print("Line Angle: ", angle)
             lcd.show_image(img, 320, 240, zoom=2)
 
 
@@ -219,7 +222,7 @@ def recognize_pic(labels, net):
     while recognize_flag:
         img = sensor.snapshot()
 
-        for b in img.find_blobs(threshold,pixels_threshold=400,area_threshold=400,margin= 1,merge=True,invert=0):
+        for b in img.find_blobs(card_threshold,pixels_threshold=400,area_threshold=400,margin= 1,merge=True,invert=0):
 
             img.draw_rectangle(b.rect(), color = (255, 0, 0), scale = 1, thickness = 2)
 

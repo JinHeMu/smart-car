@@ -30,7 +30,7 @@ void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 		else if (rxstate == 1)
 		{
 			if (ART2_uart_rx_buffer == 'D') // 接收到帧尾
-			{
+			{ 
 
 				ART2_center_x = ART2_dat[0];
 				ART2_center_y = ART2_dat[1];

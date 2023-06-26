@@ -23,7 +23,7 @@ uint8 ART1_POINT_Y[40];
 int8 ART1_CORRECT_X;
 int8 ART1_CORRECT_Y;
 int8 ART1_CORRECT_Angle;
-int8 ART1_CORRECT_Boundary_Angle;
+int8 ART1_CORRECT_Boundary_Angle=0;
 
 char classified[10];
 
