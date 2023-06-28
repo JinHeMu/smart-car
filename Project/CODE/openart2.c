@@ -4,8 +4,8 @@ uint8 ART2_uart_rx_buffer;
 lpuart_transfer_t ART2_receivexfer;
 lpuart_handle_t ART2_g_lpuartHandle;
 
-int16 ART2_center_x = 0;
-int16 ART2_center_y = 0;
+int8 ART2_center_x = 0;
+int8 ART2_center_y = 0;
 int8 ART2_angle = 0;
 int8 ART2_dat[10];
 uint8 ART2_mode = 0;
@@ -15,7 +15,7 @@ void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 
 	static uint8 rxstate = 0;
 	static uint8 count = 0;
-	// rt_kprintf("%d\n", ART2_uart_rx_buffer);
+	//rt_kprintf("%d\n", ART2_uart_rx_buffer);
 	if (kStatus_LPUART_RxIdle == status)
 	{
 		if (ART2_mode)
@@ -36,7 +36,7 @@ void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					ART2_center_x = ART2_dat[0];
 					ART2_center_y = ART2_dat[1];
 					ART2_angle = ART2_dat[2];
-					rt_kprintf("center_x:%d, center_y: %d\n",  ART2_dat[0], ART2_dat[1]);
+					
 
 					// rt_sem_release(obj_detection_sem);
 					//					rt_kprintf("Angle:%d\n", ART1_CORRECT_Angle);

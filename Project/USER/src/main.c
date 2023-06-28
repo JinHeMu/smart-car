@@ -27,7 +27,7 @@ void main()
 
 	
 
-	//car_start_init();
+	car_start_init();
 
 	car.MileageX = 0; car.MileageY = 0;
 	ART1_mode = 1;

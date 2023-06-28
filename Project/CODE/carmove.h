@@ -56,7 +56,6 @@ typedef struct card {
 //extern struct point TAR_POINT[point_num];
 
 extern Pose_car car;
-extern uint8 running_mode;//С������ģʽ
 extern rt_sem_t recognize_sem;
 extern rt_sem_t obj_detection_sem;
 

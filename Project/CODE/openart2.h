@@ -3,8 +3,8 @@
 
 #include "headfile.h"
 
-extern int16 ART2_center_x;
-extern int16 ART2_center_y;
+extern int8 ART2_center_x;
+extern int8 ART2_center_y;
 extern int8 ART2_angle;
 extern uint8 ART2_mode;
 
