@@ -8,53 +8,52 @@ int16 ART2_center_x = 0;
 int16 ART2_center_y = 0;
 int8 ART2_angle = 0;
 int8 ART2_dat[10];
+uint8 ART2_mode = 0;
 
 void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData)
 {
 
-	
 	static uint8 rxstate = 0;
-	static uint8 count = 0;	
-	//rt_kprintf("%d\n", ART2_uart_rx_buffer);
+	static uint8 count = 0;
+	// rt_kprintf("%d\n", ART2_uart_rx_buffer);
 	if (kStatus_LPUART_RxIdle == status)
 	{
-		
-		if (rxstate == 0)
+		if (ART2_mode)
 		{
-			if (ART2_uart_rx_buffer == 'C') // 接受到帧头
+			if (rxstate == 0)
 			{
-				rxstate = 1;
-				count = 0;
+				if (ART2_uart_rx_buffer == 'C') // 接受到帧头
+				{
+					rxstate = 1;
+					count = 0;
+				}
+			}
+			else if (rxstate == 1)
+			{
+				if (ART2_uart_rx_buffer == 'D') // 接收到帧尾
+				{
+
+					ART2_center_x = ART2_dat[0];
+					ART2_center_y = ART2_dat[1];
+					ART2_angle = ART2_dat[2];
+					rt_kprintf("center_x:%d, center_y: %d\n",  ART2_dat[0], ART2_dat[1]);
+
+					// rt_sem_release(obj_detection_sem);
+					//					rt_kprintf("Angle:%d\n", ART1_CORRECT_Angle);
+					rxstate = 0;
+				}
+				else // 没有接收到帧尾
+				{
+					ART2_dat[count] = ART2_uart_rx_buffer;
+					count++;
+				}
 			}
 		}
-		else if (rxstate == 1)
-		{
-			if (ART2_uart_rx_buffer == 'D') // 接收到帧尾
-			{ 
 
-				ART2_center_x = ART2_dat[0];
-				ART2_center_y = ART2_dat[1];
-				ART2_angle = ART2_dat[2];
-
-				//rt_sem_release(obj_detection_sem);
-				//					rt_kprintf("Angle:%d\n", ART1_CORRECT_Angle);
-				rxstate = 0;
-				
-			}
-			else // 没有接收到帧尾
-			{
-				ART2_dat[count] = ART2_uart_rx_buffer;
-				count++; 
-			}
-		}
-		
-	handle->rxDataSize = ART2_receivexfer.dataSize; // 还原缓冲区长度
-	handle->rxData = ART2_receivexfer.data;			// 还原缓冲区地址
-
-	}	
-}	
-	
-
+		handle->rxDataSize = ART2_receivexfer.dataSize; // 还原缓冲区长度
+		handle->rxData = ART2_receivexfer.data;			// 还原缓冲区地址
+	}
+}
 
 void ART2_UART_Init(void)
 {

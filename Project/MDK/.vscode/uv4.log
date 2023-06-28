@@ -1,6 +1,7 @@
 *** Using Compiler 'V6.15', folder: 'D:\keil_5.33\ARM\ARMCLANG\Bin'
 Build target 'nor_sdram_zf_dtcm_v6'
+compiling openart2.c...
 linking...
-Program Size: Code=81104 RO-data=7776 RW-data=800 ZI-data=458976  
+Program Size: Code=76256 RO-data=7584 RW-data=400 ZI-data=459376  
 ".\Objects\RT106X.axf" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02

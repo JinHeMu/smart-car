@@ -4,7 +4,7 @@ void main()
 {
 	
 
-	rt_thread_mdelay(8000);					// 延时150ms，等待主板其他外设上电成功
+	rt_thread_mdelay(800);					// 延时150ms，等待主板其他外设上电成功
 	gpio_init(B9, GPO, 1, GPIO_PIN_CONFIG); // 初始化B9灯
 
 	arm_init();
@@ -27,19 +27,20 @@ void main()
 
 	
 
-	car_start_init();
+	//car_start_init();
 
 	car.MileageX = 0; car.MileageY = 0;
 	ART1_mode = 1;
+	ART2_mode = 1;
 	
-	ART1_mode = 4;
-   	uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
+//	ART1_mode = 4;
+//  uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
 
 	while (1)
 	{
 		gpio_toggle(B9);
 		rt_thread_mdelay(500);
-//		car.Speed_X = -50;
+//		car.Speed_Y = 100;
 
 	}
 }
