@@ -186,6 +186,7 @@ def boundary_correct(mode):
     sensor.set_auto_whitebal(False,(0,0,0))
 
     boundary_correct_flag = 1
+    boundary_uart_flag = 0
     global uart_num
 
     if mode == 'row':
@@ -237,7 +238,13 @@ def boundary_correct(mode):
 
                                 elif (angle < 90):
                                     angle = - angle
+
+                        boundary_uart_flag = 1
+
+                        uart.write("B")
                         uart.write("%c" % angle)
+                        uart.write("%c" % boundary_uart_flag)
+                        uart.write("Y")
                         print("now:angle:%d",angle)
                         img.draw_string(10,10,"boundary", (255,0,0))
                         boundary_correct_flag = 1

@@ -16,6 +16,7 @@ extern int8 ART1_CORRECT_Y;
 extern int8 ART1_CORRECT_Angle;
 extern int8 ART1_CORRECT_Boundary_Angle;
 extern uint8 ART1_dat[82];
+extern uint8 ART1_CORRECT_Boundary_Flag;
 
 void ART1_UART_Init(void);
 

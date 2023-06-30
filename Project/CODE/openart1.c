@@ -24,6 +24,7 @@ int8 ART1_CORRECT_X;
 int8 ART1_CORRECT_Y;
 int8 ART1_CORRECT_Angle;
 int8 ART1_CORRECT_Boundary_Angle=0;
+uint8 ART1_CORRECT_Boundary_Flag=0;
 
 char classified[10];
 
@@ -150,12 +151,34 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 		}
 		else if (ART1_mode == 4)
 		{
-			
-			ART1_CORRECT_Boundary_Angle = ART1_uart_rx_buffer;
-			rt_kprintf("Angle: %d\n", ART1_CORRECT_Boundary_Angle);
-			if(abs(ART1_CORRECT_Boundary_Angle)>0 && abs(ART1_CORRECT_Boundary_Angle) < 45)
+
+			if(rxstate == 0)
 			{
-				angle_z = -ART1_CORRECT_Boundary_Angle;
+				if (ART1_uart_rx_buffer == 'B') // 接受到帧头
+				{
+					rxstate = 1;
+					count = 0;
+				}
+			}
+			else if(rxstate == 1)
+			{
+				if(ART1_uart_rx_buffer == 'Y')//接收到帧尾
+				{
+					ART1_CORRECT_Boundary_Angle = ART1_dat[0];
+					ART1_CORRECT_Boundary_Flag = ART1_dat[1];
+					if(abs(ART1_CORRECT_Boundary_Angle)>0 && abs(ART1_CORRECT_Boundary_Angle) < 45)
+					{
+						angle_z = -ART1_CORRECT_Boundary_Angle;
+					}
+					rt_kprintf("Angle: %d,FLAG:%d\n", ART1_CORRECT_Boundary_Angle,ART1_CORRECT_Boundary_Flag);
+					
+					rxstate = 0;
+				}
+				else//没有接收到帧尾，获取坐标点
+				{
+					ART1_dat[count] = ART1_uart_rx_buffer;
+					count++; // 统计接到数据的个数  前二分之一为x坐标， 后二分之一为y坐标
+				}
 			}
 			
 

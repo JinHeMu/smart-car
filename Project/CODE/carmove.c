@@ -10,8 +10,11 @@
 // 模式1  导航 纠正 识别
 // 模式2  搬运图片模式
 // 模式3  回车库
-#define field_width 35
-#define field_height 25
+// #define field_width 35
+// #define field_height 25
+
+#define field_width 18
+#define field_height 18
 
 uint8 running_mode = 0; // 小车功能模式：0为寻找坐标点模式   1为目标检测模式
 
@@ -134,7 +137,7 @@ void car_move(float tar_x, float tar_y)
     float target_distance = distance(car.MileageX, car.MileageY, tar_x, tar_y);
     float current_distance = target_distance;
     float acceleration = 0.005; // 加速度，可根据实际情况调整
-    float max_speed = 1;       // 最大速度，可根据实际情况调整
+    float max_speed = 1;        // 最大速度，可根据实际情况调整
     float current_speed = 0;
 
     //		ART1_mode = 4;
@@ -161,6 +164,55 @@ void car_move(float tar_x, float tar_y)
     rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
     rt_thread_delay(1000);            // 延时1秒
     rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX, (int)car.MileageY);
+}
+
+void car_moveto_boundry(float tar_x, float tar_y)
+{
+
+    // ---------------
+    // |
+    // |
+    // |
+    // ---------------
+
+    // 定义四条边线
+
+    ART1_mode = 4;
+
+    while (ART1_CORRECT_Boundary_Flag == 0)
+    {
+        if (tar_x < 0)
+        {
+            uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
+            rt_thread_mdelay(1000);
+            car.Speed_X = -200;
+        }
+        else if (tar_y < 0)
+        {
+            uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
+            rt_thread_mdelay(1000);
+            car.Speed_Y = -200;
+        }
+        else if (tar_x > field_width)
+        {
+            uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
+            rt_thread_mdelay(1000);
+            car.Speed_X = 200;
+        }
+        else if (tar_y > field_height)
+        {
+            uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
+            rt_thread_mdelay(1000);
+            car.Speed_Y = 200;
+        }
+
+        rt_thread_mdelay(20);
+    }
+
+    car.Speed_X = 0;
+    car.Speed_Y = 0;
+    rt_kprinf("I HAVE ARRIVED BOUNDRE!!!");
+    rt_thread_mdelay(1000);
 }
 
 void car_turn(float angle)
@@ -379,7 +431,7 @@ void correct_entry(void *param)
                 car.Speed_Y = -car.correct_speed * ART1_CORRECT_Y;
             }
 
-            //rt_kprintf("%d,%d\n", (int)car.Speed_X, (int)car.Speed_Y);
+            // rt_kprintf("%d,%d\n", (int)car.Speed_X, (int)car.Speed_Y);
         }
 
         //				car_turn(ART1_CORRECT_Angle);
@@ -421,9 +473,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
-                car_move(apple.Target_x * 20, apple.Target_y * 20);
+                car_moveto_boundry(apple.Target_x, apple.Target_y);
                 arm_down();
             }
         }
@@ -439,9 +489,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-                car_move(bannana.Target_x * 20, bannana.Target_y * 20);
+                car_moveto_boundry(bannana.Target_x, bannana.Target_y);
                 arm_down();
             }
         }
@@ -463,9 +511,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
-                car_move(durian.Target_x * 20, durian.Target_y * 20);
+                car_moveto_boundry(durian.Target_x, durian.Target_y);
                 arm_down();
             }
         }
@@ -482,9 +528,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-                car_move(orange.Target_x * 20, orange.Target_y * 20);
+                car_moveto_boundry(orange.Target_x, orange.Target_y);
                 arm_down();
             }
         }
@@ -501,9 +545,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-                car_move(cabbage.Target_x * 20, cabbage.Target_y * 20);
+                car_moveto_boundry(cabbage.Target_x, cabbage.Target_y);
                 arm_down();
             }
         }
@@ -520,9 +562,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
-                car_move(cucumber.Target_x * 20, cucumber.Target_y * 20);
+                car_moveto_boundry(cucumber.Target_x, cucumber.Target_y);
                 arm_down();
             }
         }
@@ -545,9 +585,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-                car_move(radish.Target_x * 20, radish.Target_y * 20);
+                car_moveto_boundry(radish.Target_x, radish.Target_y);
                 arm_down();
             }
         }
@@ -564,9 +602,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
-                car_move(pepper.Target_x * 20, pepper.Target_y * 20);
+                car_moveto_boundry(pepper.Target_x, pepper.Target_y);
                 arm_down();
             }
         }
@@ -588,9 +624,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-                car_move(bean.Target_x * 20, bean.Target_y * 20);
+                car_moveto_boundry(bean.Target_x, bean.Target_y);
                 arm_down();
             }
         }
@@ -607,9 +641,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
-                car_move(peanut.Target_x * 20, peanut.Target_y * 20);
+                car_moveto_boundry(peanut.Target_x, peanut.Target_y);
                 arm_down();
             }
         }
@@ -626,9 +658,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-                car_move(potato.Target_x * 20, potato.Target_y * 20);
+                car_moveto_boundry(potato.Target_x, potato.Target_y);
                 arm_down();
             }
         }
@@ -645,9 +675,7 @@ void carry_entry(void *param)
             {
                 // 搬运并放到指定位置
                 arm_carry();
-                ART1_mode = 4;
-                uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-                car_move(rice.Target_x * 20, rice.Target_y * 20);
+                car_moveto_boundry(rice.Target_x, rice.Target_y);
                 arm_down();
             }
         }
@@ -658,16 +686,14 @@ void carry_entry(void *param)
             // 直接去下一个点位
         }
 
-
-        if(running_mode == 0)
+        if (running_mode == 0)
         {
             rt_sem_release(arrive_sem);
         }
-        else if(running_mode == 1)
+        else if (running_mode == 1)
         {
             rt_sem_release(obj_detection_sem);
         }
-        
     }
 }
 
@@ -714,7 +740,7 @@ void carry_entry(void *param)
 
 void obj_detection_entry(void *param)
 {
-    //rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER);
+    // rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER);
     rt_kprintf("DETECT !!!\n");
     ART2_mode = 1;
     car_move(unknow_card_loction_x, unknow_card_loction_y);
@@ -730,33 +756,34 @@ void obj_detection_entry(void *param)
 
             rt_kprintf("x:%d,y:%d,dis:%d\n", ART2_center_x, ART2_center_y, pic_dis);
 
-            if (pic_dis > 60)//如果目标距离比较远就移动
+            if (pic_dis > 60) // 如果目标距离比较远就移动
             {
                 car.Speed_X = ART2_center_x / 5;
                 car.Speed_Y = ART2_center_y / 5;
-							
-								        ART1_mode = 2;               // art矫正模式
-									uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
-									rt_thread_mdelay(1000);
+
+
             }
-            else//如果到达目标位置就矫正
+            else // 如果到达目标位置就矫正
             {
                 car.Speed_X = 0;
                 car.Speed_Y = 0;
 
+                ART1_mode = 2;               // art矫正模式
+                uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
+                rt_thread_mdelay(1000);
+                // 记录当前坐标
                 unknow_card_loction_x = car.MileageX;
                 unknow_card_loction_y = car.MileageY;
-                //记录当前坐标
+                
 
                 // rt_sem_release(correct_sem);
             }
         }
         else // 没有找到卡片，遍历全图
         {
-					ART1_mode = 4;
-          uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-//					if() //没有找到边线
-//            // car.Speed_X = 100;
+            //检测到边线就向前移动两格，没有检测到就移动
+            car_moveto_boundry(field_width, 0);
+
         }
     }
 }
@@ -833,11 +860,11 @@ void car_start_init(void)
 
     boundary_th = rt_thread_create("boundary_th", boundary_th_entry, RT_NULL, 1024, 28, 10);
 
-//    rt_thread_startup(route_planning_th);
+    //    rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
     // rt_thread_startup(boundary_th);
     //  rt_thread_startup(back_th);
     rt_thread_startup(obj_detection_th);
-//    uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+    //    uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 }
