@@ -14,13 +14,13 @@ correct_flag = 1
 recognize_flag = 1
 uart_num = 0
 
-##白天阈值
-#card_threshold = [((85, 100, -128, 38, -19, 89))]#色块检测阈值
-#boundary_threshold = [(61, 100, -35, 8, 35, 127)]#边线检测阈值
+#白天阈值
+card_threshold = [((85, 100, -128, 38, -19, 89))]#色块检测阈值
+boundary_threshold = [(61, 100, -35, 8, 35, 127)]#边线检测阈值
 
 #晚上阈值
-card_threshold = [(57, 90, -36, 40, -17, 92)]#色块检测阈值
-boundary_threshold = [(46, 95, -49, -6, 48, 85)]#边线检测阈值
+#card_threshold = [(57, 90, -36, 40, -17, 92)]#色块检测阈值
+#boundary_threshold = [(46, 95, -49, -6, 48, 85)]#边线检测阈值
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -188,6 +188,7 @@ def boundary_correct(mode):
     boundary_correct_flag = 1
     boundary_uart_flag = 0
     global uart_num
+    angle_per = 0
 
     if mode == 'row':
         num = [0,45,90,185,230,275]
@@ -215,7 +216,7 @@ def boundary_correct(mode):
                     img.draw_rectangle(result.rect(), color = (255, 0, 0), scale = 1, thickness = 2)
                 else:
                     break
-            if center > 4:
+            if center > 3:
                     l = img.get_regression(boundary_threshold)
                     if l:
                         img.draw_line(l.line(), color = (255, 0, 0)) # 在图像上标出线段
@@ -240,16 +241,18 @@ def boundary_correct(mode):
                                     angle = - angle
 
                         boundary_uart_flag = 1
-
-                        uart.write("B")
-                        uart.write("%c" % angle)
-                        uart.write("%c" % boundary_uart_flag)
-                        uart.write("Y")
-                        print("now:angle:%d",angle)
-                        img.draw_string(10,10,"boundary", (255,0,0))
-                        boundary_correct_flag = 1
-                        break
-
+                        angle_per = angle
+                        if(angle_per == angle):
+                            uart.write("B")
+                            uart.write("%c" % angle)
+                            uart.write("%c" % boundary_uart_flag)
+                            uart.write("Y")
+                            print("now:angle:%d",angle)
+                            img.draw_string(10,10,"boundary", (255,0,0))
+                            boundary_correct_flag = 1
+                            break
+                        else:
+                            break
                     else:
                         # uart.write("%c" % 0)
                         # print("Line Angle: ", angle)
@@ -320,7 +323,7 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "mobilenet_v2-2023-06-28T12-25-48.594Z_in-int8_out-int8_channel_ptq.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "2023-6-30-12pochs.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
@@ -368,5 +371,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 

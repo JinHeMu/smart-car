@@ -30,9 +30,13 @@ void main()
 	car_start_init();
 
 	car.MileageX = 0; car.MileageY = 0;
-	ART1_mode = 1;
-	ART2_mode = 1;
+//	ART1_mode = 1;
+//	ART2_mode = 1;
 	
+//	                arm_carry();
+//                car_moveto_boundry(-3, 0);
+//                arm_down();
+//	
 //	ART1_mode = 4;
 //  uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
 
@@ -40,7 +44,7 @@ void main()
 	{
 		gpio_toggle(B9);
 		rt_thread_mdelay(500);
-		
+
 //		uart_putchar(USART_4, 0x43); // 发送OPENART1告诉该识别边线了
 //		rt_thread_mdelay(3000);
 //		uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了

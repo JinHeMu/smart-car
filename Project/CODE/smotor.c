@@ -79,7 +79,7 @@ void arm_down(void)
 	
 	ARM_UP_angle(0);
 	rt_thread_mdelay(300);
-	ARM_LOW_angle(50);
+	ARM_LOW_angle(60);
 	rt_thread_mdelay(300);
 
 	magnet_front_release();
@@ -95,20 +95,21 @@ void arm_carry(void)
 {
 	ARM_UP_angle(90);
 	rt_thread_mdelay(300);
-	ARM_LOW_angle(50);
-	rt_thread_mdelay(300);	
-	ARM_UP_angle(5);
-	rt_thread_mdelay(300);
 	ARM_LOW_angle(43);
 	rt_thread_mdelay(300);
-
+	ARM_UP_angle(5);
+	rt_thread_mdelay(300);
 
 	magnet_front_appeal();
+	rt_thread_mdelay(500);
+	
+	
+	ARM_LOW_angle(60);
+	rt_thread_mdelay(300);
+	ARM_UP_angle(150);
+	ARM_LOW_angle(90);
 	rt_thread_mdelay(300);
 	
-
-	ARM_LOW_angle(80);
-	rt_thread_mdelay(500);
 
 }
 

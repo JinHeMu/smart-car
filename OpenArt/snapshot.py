@@ -47,7 +47,7 @@ def snapshot(count):
         lcd.show_image(img, 320, 240, zoom=2)
 
         # 娣囨繂鐡ㄧ憗浣稿閸氬海娈戦崶鎯у剼
-        img_cropped.save("/data/cabbage/%d.jpg" % count)
+        img_cropped.save("/data/potato/%d.jpg" % count)
 
 
         # img1 = img.rotation_corr(0,0,0,0,0,1,60,corners).replace(vflip=True,  hmirror=False,  transpose=False)
@@ -55,7 +55,7 @@ def snapshot(count):
 
 def main():
     openart_init()
-    count = 100
+    count = 2000
     while(True):
         img = sensor.snapshot()
         snapshot(count)
