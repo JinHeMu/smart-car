@@ -47,6 +47,19 @@ void Menu_key_set(void)
 
 		if ((mb_data == 1)) // 按下按键1
 	{
+		
+		car_turnto(20);
+		rt_thread_mdelay(3000);
+		car_turnto(40);
+		rt_thread_mdelay(3000);
+		car_turnto(-40);
+		rt_thread_mdelay(3000);
+		car_turnto(-90);
+		rt_thread_mdelay(3000);
+		car_turnto(0);
+		rt_thread_mdelay(3000);
+		
+		
 //		car_move(200,0); 
 //		rt_thread_mdelay(3000);
 //		car_move(200,200); 
@@ -59,26 +72,26 @@ void Menu_key_set(void)
 		
 		
 //		car.Speed_X = 200; 
-//	rt_thread_mdelay(3000);
-//	car.Speed_X = 0;
-//	rt_thread_mdelay(3000);
-//	car.Speed_Y = 200; 
-//	rt_thread_mdelay(3000);
-//	car.Speed_Y = 0;
-//	rt_thread_mdelay(3000);
-//	car.Speed_X = -200; 
-//	rt_thread_mdelay(3000);
-//	car.Speed_X = 0;
-//	rt_thread_mdelay(3000);
-//	car.Speed_Y = -200; 
-//	rt_thread_mdelay(3000);
-//	car.Speed_Y = 0;
-//	rt_thread_mdelay(3000);
+//		rt_thread_mdelay(3000);
+//		car.Speed_X = 0;
+//		rt_thread_mdelay(3000);
+//		car.Speed_Y = 200; 
+//		rt_thread_mdelay(3000);
+//		car.Speed_Y = 0;
+//		rt_thread_mdelay(3000);
+//		car.Speed_X = -200; 
+//		rt_thread_mdelay(3000);
+//		car.Speed_X = 0;
+//		rt_thread_mdelay(3000);
+//		car.Speed_Y = -200; 
+//		rt_thread_mdelay(3000);
+//		car.Speed_Y = 0;
+//		rt_thread_mdelay(3000);
 
 //
 
 
-		arm_openbox(1);
+//		arm_openbox(1);
 		mb_data = 0; // 邮箱数据清除
 	}
 
@@ -89,18 +102,18 @@ void Menu_key_set(void)
 	
 	if ((mb_data == 2)) // 按下按键1
 	{
-//		Incremental_ki[0] += 0.5;
-//		Incremental_ki[1] += 0.5;
-//		Incremental_ki[2] += 0.5;
-//		Incremental_ki[3] += 0.5;
-//		ips114_showfloat(60, 4, Incremental_ki[0], 4, 2);
+		Incremental_ki[0] += 0.5;
+		Incremental_ki[1] += 0.5;
+		Incremental_ki[2] += 0.5;
+		Incremental_ki[3] += 0.5;
+		ips114_showfloat(60, 4, Incremental_ki[0], 4, 2);
 //		
 		
 //		Angel_kd += 5;
 //		ips114_showfloat(60, 4, Angel_kd, 4, 2);
 //		
-//		Angel_kp += 1;
-//		ips114_showfloat(60, 4, Angel_kp, 4, 2);
+		Angel_kp += 1;
+		ips114_showfloat(60, 4, Angel_kp, 4, 2);
 		
 //				car_turnto(40); 
 //		rt_thread_mdelay(2000);
@@ -113,7 +126,7 @@ void Menu_key_set(void)
 //		car_turnto(0); 
 //		rt_thread_mdelay(2000);
 
-			arm_openbox(2);
+//			arm_openbox(2);
 		
 		
 		mb_data = 0; // 邮箱数据清除
@@ -127,17 +140,15 @@ void Menu_key_set(void)
 //		Incremental_ki[3] -= 0.1;
 //		ips114_showfloat(60, 4, Incremental_ki[0], 4, 2);
 		
-//		Angel_kd -= 1;
-//		ips114_showfloat(60, 4, Angel_kd, 4, 2);
-		
-//		Angel_kp -= 1;
-//		ips114_showfloat(60, 4, Angel_kp, 4, 2);
+
+		Angel_kp -= 1;
+		ips114_showfloat(60, 4, Angel_kp, 4, 2);
 		
 //		static int angle1 = 0;
 //		angle1 += 10;
 //		ARM_UP_angle(angle1);
 		
-		arm_putbox(1);
+//		arm_putbox(1);
 		
 		
 		
@@ -154,11 +165,11 @@ void Menu_key_set(void)
 //		Incremental_kp[1]+= 5;
 //		Incremental_kp[2]+= 5;
 //		Incremental_kp[3]+= 5;
-//		ips114_showfloat(60, 5, Incremental_kd[0], 4, 2);
+//		ips114_showfloat(60, 5, Incremental_kp[0], 4, 2);
 		
 //		
-//		Angel_kd += 5;
-//		ips114_showfloat(60, 5, Angel_kd, 4, 2);
+		Angel_kd += 5;
+		ips114_showfloat(60, 5, Angel_kd, 4, 2);
 		
 		
 //		static int angle2 = 0;
@@ -166,7 +177,7 @@ void Menu_key_set(void)
 //		ARM_LOW_angle(angle2);
 //		
 		
-		arm_putbox(2);
+//		arm_putbox(2);
 		
 		
 		

@@ -133,14 +133,14 @@ void car_move(float tar_x, float tar_y)
 
     float target_distance = distance(car.MileageX, car.MileageY, tar_x, tar_y);
     float current_distance = target_distance;
-    float acceleration = 0.01; // 加速度，可根据实际情况调整
+    float acceleration = 0.005; // 加速度，可根据实际情况调整
     float max_speed = 1;       // 最大速度，可根据实际情况调整
     float current_speed = 0;
 
     //		ART1_mode = 4;
     //    uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
 
-    while (current_distance > 10) // 持续运动
+    while (current_distance > 5) // 持续运动
     {
         // 逐渐增加速度
         if (current_speed < max_speed)
@@ -379,7 +379,7 @@ void correct_entry(void *param)
                 car.Speed_Y = -car.correct_speed * ART1_CORRECT_Y;
             }
 
-            rt_kprintf("%d,%d\n", (int)car.Speed_X, (int)car.Speed_Y);
+            //rt_kprintf("%d,%d\n", (int)car.Speed_X, (int)car.Speed_Y);
         }
 
         //				car_turn(ART1_CORRECT_Angle);
@@ -395,10 +395,7 @@ void correct_entry(void *param)
 
         ART1_mode = 3;
         uart_putchar(USART_4, 0x43);
-        rt_thread_mdelay(500);
-        uart_putchar(USART_4, 0x43);
-        rt_thread_mdelay(500);
-        uart_putchar(USART_4, 0x43);
+        rt_thread_mdelay(3000);
 
         rt_sem_release(recognize_sem);
         //				rt_sem_release(correct_sem);
@@ -737,6 +734,10 @@ void obj_detection_entry(void *param)
             {
                 car.Speed_X = ART2_center_x / 5;
                 car.Speed_Y = ART2_center_y / 5;
+							
+								        ART1_mode = 2;               // art矫正模式
+									uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
+									rt_thread_mdelay(1000);
             }
             else//如果到达目标位置就矫正
             {
@@ -752,8 +753,10 @@ void obj_detection_entry(void *param)
         }
         else // 没有找到卡片，遍历全图
         {
-            if() //没有找到边线
-            car.Speed_X = 100;
+					ART1_mode = 4;
+          uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
+//					if() //没有找到边线
+//            // car.Speed_X = 100;
         }
     }
 }
@@ -828,13 +831,13 @@ void car_start_init(void)
 
     back_th = rt_thread_create("back_th", back_th_entry, RT_NULL, 1024, 28, 10);
 
-    boundary_th = rt_thread_create("boundary_th", boundary_th_entry, RT_NULL, 1024, 27, 10);
+    boundary_th = rt_thread_create("boundary_th", boundary_th_entry, RT_NULL, 1024, 28, 10);
 
-    rt_thread_startup(route_planning_th);
+//    rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
     // rt_thread_startup(boundary_th);
     //  rt_thread_startup(back_th);
     rt_thread_startup(obj_detection_th);
-    uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+//    uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 }
