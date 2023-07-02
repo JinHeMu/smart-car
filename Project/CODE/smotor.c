@@ -93,12 +93,15 @@ void arm_down(void)
 //机械臂将卡片捡起来
 void arm_carry(void)
 {
-	ARM_UP_angle(90);
-	rt_thread_mdelay(300);
-	ARM_LOW_angle(43);
-	rt_thread_mdelay(300);
 	ARM_UP_angle(5);
 	rt_thread_mdelay(300);
+	
+	ARM_LOW_angle(53);
+	rt_thread_mdelay(100);
+	ARM_LOW_angle(48);
+	rt_thread_mdelay(100);
+	ARM_LOW_angle(43);
+	rt_thread_mdelay(100);
 
 	magnet_front_appeal();
 	rt_thread_mdelay(500);
@@ -119,8 +122,41 @@ void arm_putbox(uint8 angle)
 {
 	//机械臂启动
 	//盒子转动 1-0；2-90 3-180 4-270
+//	ARM_LOW_angle(80);
+//	ARM_UP_angle(180);
+//	rt_thread_mdelay(300);
+
+//	
+//	ARM_MID_angle(angle*90 - 90);
+//	rt_thread_mdelay(500);
+//	
+
+//	ARM_UP_angle(90);
+//	rt_thread_mdelay(300);
+//	ARM_LOW_angle(43);
+//	rt_thread_mdelay(300);
+//	ARM_UP_angle(5);
+//	rt_thread_mdelay(300);
+
+//	magnet_front_appeal();
+//	rt_thread_mdelay(500);
+//	
+//	
+//	ARM_LOW_angle(60);
+//	rt_thread_mdelay(300);
+//	ARM_UP_angle(180);
+//	rt_thread_mdelay(300);
+//	ARM_LOW_angle(90);
+//	rt_thread_mdelay(300);
+//	
+//	magnet_front_release();
+//	rt_thread_mdelay(300);
+//	
+//	ARM_LOW_angle(80);
+//	rt_thread_mdelay(300);
+
 	ARM_LOW_angle(80);
-	ARM_UP_angle(180);
+	ARM_UP_angle(160);
 	rt_thread_mdelay(300);
 
 	
@@ -128,12 +164,14 @@ void arm_putbox(uint8 angle)
 	rt_thread_mdelay(500);
 	
 
-	ARM_UP_angle(90);
-	rt_thread_mdelay(300);
-	ARM_LOW_angle(43);
-	rt_thread_mdelay(300);
 	ARM_UP_angle(5);
 	rt_thread_mdelay(300);
+	ARM_LOW_angle(53);
+	rt_thread_mdelay(100);
+	ARM_LOW_angle(48);
+	rt_thread_mdelay(100);
+	ARM_LOW_angle(43);
+	rt_thread_mdelay(100);
 
 	magnet_front_appeal();
 	rt_thread_mdelay(500);
@@ -141,16 +179,24 @@ void arm_putbox(uint8 angle)
 	
 	ARM_LOW_angle(60);
 	rt_thread_mdelay(300);
-	ARM_UP_angle(180);
-	rt_thread_mdelay(300);
+	ARM_UP_angle(170);
+	rt_thread_mdelay(1000);
+	ARM_LOW_angle(70);
+	rt_thread_mdelay(100);
+	ARM_LOW_angle(80);
+	rt_thread_mdelay(100);
 	ARM_LOW_angle(90);
-	rt_thread_mdelay(300);
+	rt_thread_mdelay(100);
+	ARM_LOW_angle(95);
+	rt_thread_mdelay(100);
 	
 	magnet_front_release();
 	rt_thread_mdelay(300);
 	
 	ARM_LOW_angle(80);
-	rt_thread_mdelay(300);
+	ARM_UP_angle(160);
+	ARM_MID_angle(0);
+	rt_thread_mdelay(500);
 	
 	
 }
@@ -166,16 +212,22 @@ switch (angle)
 	case 4:	ARM_MID_angle(180);rt_thread_mdelay(1500);break;
 }
 
-	ARM_LEFT_angle(90);
+	ARM_LEFT_angle(100);
 	rt_thread_mdelay(300);
 
 	magnet_left_appeal();
-	rt_thread_mdelay(300);
+	rt_thread_mdelay(500);
 
 	ARM_LEFT_angle(0);
 	rt_thread_mdelay(1000);
 
-	ARM_LEFT_angle(90);
+	car_turnto(90);
+	rt_thread_mdelay(1000);
+	car_turnto(0);
+	rt_thread_mdelay(1000);
+
+
+	ARM_LEFT_angle(100);
 	rt_thread_mdelay(300);
 
 	magnet_left_release();
@@ -210,7 +262,7 @@ void arm_init(void)
 	gpio_init(MAGNET_LEFT, GPO, 0, GPIO_PIN_CONFIG);
 
 	ARM_LEFT_angle(0);
-	ARM_LOW_angle(100);
+	ARM_LOW_angle(80);
 	ARM_UP_angle(180);
 	ARM_MID_angle(0);
 	rt_thread_mdelay(200);

@@ -37,7 +37,7 @@ rt_thread_t obj_detection_th;  // 目标检测线程
 rt_thread_t back_th;           // 回库线程
 rt_thread_t boundary_th;       // 边线矫正线程
 
-char taget_Big_category[10];
+char taget_Big_category[10] = "food";
 // rt_thread_t move_th;
 
 uint8 pic_dis = 0;
@@ -51,16 +51,16 @@ uint16 unknow_card_loction_y = 20;
 struct card apple = {"fruit", "apple", 0, 21, 8};
 struct card bannana = {"fruit", "bannana", 0, 8, 21};
 struct card durian = {"fruit", "durian", 0, -2, 8};
-struct card grape = {"fruit", "grape", 1, 0, 0}; // 车载
+struct card grape = {"fruit", "grape", 3, 0, 0}; // 车载
 struct card orange = {"fruit", "orange", 0, 8, 21};
 
 struct card cabbage = {"vegetable", "cabbage", 0, 12, 8};
 struct card cucumber = {"vegetable", "cucumber", 0, -2, 4};
-struct card eggplant = {"vegetable", "eggplant", 1, 0, 0}; // 车载
+struct card eggplant = {"vegetable", "eggplant", 3, 0, 0}; // 车载
 struct card radish = {"vegetable", "radish", 0, 12, 21};
 struct card pepper = {"vegetable", "pepper", 0, 21, 4};
 
-struct card corn = {"food", "corn", 1, 0, 0}; // 车载
+struct card corn = {"food", "corn", 3, 0, 0}; // 车载
 struct card bean = {"food", "bean", 0, 4, 21};
 struct card peanut = {"food", "peanut", 0, 21, 12};
 struct card potato = {"food", "potato", 0, -2, 12};
@@ -311,11 +311,31 @@ void static_planning(struct point *arr, int size)
 
 /**************************************************************************
 函数功能：动态路径规划
-入口参数：当前点
-返回值：目标点
+入口参数：当前点里程计，还剩下点数
+返回值：true则还有点没遍历，false则已遍历完
 **************************************************************************/
-void dynamic_planning(float current_x, float current_y)
+bool dynamic_planning(struct point *arr, int size, int visited)
 {
+    if(visited == size) return false;
+
+    // 找到距离原点最近的点
+    struct point temp;
+    int min_dist = INT_MAX;
+    int nearest = -1;
+    for (int i = visited; i < size; i++)
+    {
+        int dist = (arr[i].x * 20 - car.MileageX) * (arr[i].x * 20 - car.MileageX)
+                 + (arr[i].y * 20 - car.MileageY) * (arr[i].y * 20 - car.MileageY);
+        if (dist < min_dist && dist != 0)
+        {
+            min_dist = dist;
+            nearest = i;
+        }
+    }
+    temp = arr[nearest];
+    arr[nearest] = arr[visited];
+    arr[visited] = temp;
+    return true;
 }
 
 void route_planning_entry(void *param)
@@ -324,6 +344,7 @@ void route_planning_entry(void *param)
     uart_coordinate_transforming(ART1_POINT_X, ART1_POINT_Y, point_num / 2);
     static_planning(tar_point, point_num / 2);
     int point = 0;
+    bool all_collected = false;
 
     for (int i = 0; i < point_num / 2; i++)
     {
@@ -338,12 +359,16 @@ void route_planning_entry(void *param)
     {
 
         rt_sem_take(arrive_sem, RT_WAITING_FOREVER); // 接受到达信号量
-        rt_kprintf("arriveing!!!\n");
+        rt_kprintf("arriving!!!\n");
         rt_mb_send(buzzer_mailbox, 500); // 给buzzer_mailbox发送100
 
-        if (point == point_num / 2)
+        all_collected = dynamic_planning(tar_point, point_num / 2, point);
+        if (all_collected)
         {
-            car_move(0, 40);
+            car_move(0, 320);
+			arm_openbox(2);
+			car_move(40, 40);
+			arm_closebox();
             rt_sem_release(obj_detection_sem);
             rt_thread_delete(route_planning_th);
         }
@@ -353,7 +378,7 @@ void route_planning_entry(void *param)
             car.target_y = tar_point[point].y * 20;
             rt_kprintf("TARGET_X%d   ", (int)car.target_x);
             rt_kprintf("TARGET_Y%d\n", (int)car.target_y);
-            point++; // 统计到达点数
+            point++;
         }
 
         car_move(car.target_x, car.target_y);

@@ -141,14 +141,19 @@ void Menu_key_set(void)
 //		ips114_showfloat(60, 4, Incremental_ki[0], 4, 2);
 		
 
-		Angel_kp -= 1;
-		ips114_showfloat(60, 4, Angel_kp, 4, 2);
+//		Angel_kp -= 1;
+//		ips114_showfloat(60, 4, Angel_kp, 4, 2);
 		
 //		static int angle1 = 0;
 //		angle1 += 10;
 //		ARM_UP_angle(angle1);
 		
 //		arm_putbox(1);
+		
+//		static int count = 0;
+//		count++;
+		arm_putbox(1);
+//		ARM_UP_angle(count*10);
 		
 		
 		
@@ -168,9 +173,9 @@ void Menu_key_set(void)
 //		ips114_showfloat(60, 5, Incremental_kp[0], 4, 2);
 		
 //		
-		Angel_kd += 5;
-		ips114_showfloat(60, 5, Angel_kd, 4, 2);
-		
+//		Angel_kd += 5;
+//		ips114_showfloat(60, 5, Angel_kd, 4, 2);
+//		
 		
 //		static int angle2 = 0;
 //		angle2 += 10;
@@ -178,6 +183,11 @@ void Menu_key_set(void)
 //		
 		
 //		arm_putbox(2);
+		static int count = 0;
+		count++;
+		ARM_LOW_angle(count*10);
+
+		
 		
 		
 		
