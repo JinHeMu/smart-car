@@ -19,6 +19,8 @@
 uint8 running_mode = 0; // 小车功能模式：0为寻找坐标点模式   1为目标检测模式
 
 point tar_point[40]; // 排序好顺序的目标坐标
+int8 visited[40] = {0};  // 初始化访问数组，所有坐标都未访问
+int8 nearestIndex = -1;
 
 Pose_car car; // 定义car，作为位姿的载体
 
@@ -338,6 +340,30 @@ void static_planning(struct point *arr, int size)
 //     return true;
 // }
 
+int findNearestCoordinate(struct Pose_car car, struct point tar_point[], int size, int visited[], int *nearestIndex) {
+    double minDist = INT_MAX;
+
+    for (int i = 0; i < size; i++) {
+        if (visited[i]) {
+            continue;  // 跳过已访问过的坐标
+        }
+
+        double dist = sqrt(pow(car.MileageX - tar_point[i].x * 20, 2) + pow(car.MileageY - tar_point[i].y * 20, 2));
+        if (dist < minDist) {
+            minDist = dist;
+            *nearestIndex = i;
+        }
+    }
+
+    if (*nearestIndex != -1) {
+        visited[*nearestIndex] = 1;  // 将最近点标记为已访问
+    }
+
+    return *nearestIndex;
+}
+
+
+
 
 void route_planning_entry(void *param)
 {
@@ -345,9 +371,8 @@ void route_planning_entry(void *param)
     uart_coordinate_transforming(ART1_POINT_X, ART1_POINT_Y, coordinate_num);
     static_planning(tar_point, coordinate_num);
 
-    
-    int point = 0;
-    bool all_collected = false;
+
+    static uint8 count = 0;
 
     for (int i = 0; i < coordinate_num; i++)
     {
@@ -358,6 +383,7 @@ void route_planning_entry(void *param)
 
     car_move(0, 40); // 出库
 
+
     while (1)
     {
 
@@ -365,8 +391,17 @@ void route_planning_entry(void *param)
         rt_kprintf("arriving!!!\n");
         rt_mb_send(buzzer_mailbox, 500); // 给buzzer_mailbox发送100
 
-        all_collected = dynamic_planning(tar_point, coordinate_num, point);
-        if (all_collected)
+
+        
+        findNearestCoordinate(car, tar_point, 40, visited, &nearestIndex);
+
+        if (nearestIndex != -1)
+        {
+            rt_kprintf("The nearest point：(%d,%d)\n", tar_point[nearestIndex].x * 20, tar_point[nearestIndex].y * 20);
+            visited[nearestIndex] = 1;  // 将本次访问过的点标记为已访问
+        }
+
+        if (count == coordinate_num)
         {
             car_move(0, 320);
 			arm_openbox(2);
@@ -377,11 +412,11 @@ void route_planning_entry(void *param)
         }
         else
         {
-            car.target_x = tar_point[point].x * 20; // 获取目标坐标点
-            car.target_y = tar_point[point].y * 20;
+            car.target_x = tar_point[nearestIndex].x * 20; // 获取目标坐标点
+            car.target_y = tar_point[nearestIndex].y * 20;
             rt_kprintf("TARGET_X%d   ", (int)car.target_x);
             rt_kprintf("TARGET_Y%d\n", (int)car.target_y);
-            point++;
+            count++;
         }
 
         car_move(car.target_x, car.target_y);
@@ -390,14 +425,7 @@ void route_planning_entry(void *param)
         uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
         rt_thread_mdelay(1000);
 
-        //        if(ART1_CORRECT_Angle < 5)
-        //        {
-        //            car_turn(ART1_CORRECT_Angle);rt_thread_mdelay(100);
-        //            angle_z = 0;//重新设定陀螺仪值
-        //        }
-
         rt_sem_release(correct_sem); // 到达后发送矫正信号
-                                     //				 rt_sem_release(arrive_sem); // 到达后发送矫正信号
     }
 }
 
@@ -461,13 +489,8 @@ void correct_entry(void *param)
             {
                 car.Speed_Y = -car.correct_speed * ART1_CORRECT_Y;
             }
-
-            // rt_kprintf("%d,%d\n", (int)car.Speed_X, (int)car.Speed_Y);
         }
 
-        //				car_turn(ART1_CORRECT_Angle);
-        //				rt_thread_mdelay(1000);
-        //				angle_z = 0;
 
         car.Speed_X = 0;
         car.Speed_Y = 0;
@@ -481,7 +504,6 @@ void correct_entry(void *param)
         rt_thread_mdelay(1000);
 
         rt_sem_release(recognize_sem);
-        //				rt_sem_release(correct_sem);
     }
 }
 
