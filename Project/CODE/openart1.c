@@ -16,6 +16,7 @@ lpuart_transfer_t ART1_receivexfer;
 lpuart_handle_t ART1_g_lpuartHandle;
 
 uint8 ART1_mode = 1;//模式1位识别坐标点 模式2矫正位姿 模式3识别图片 模式4边线矫正
+uint8 coordinate_num = 0;
 uint8 ART1_dat[82]; // 前一半x后一半y
 uint8 ART1_POINT_X[40];
 uint8 ART1_POINT_Y[40];
@@ -71,12 +72,13 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 				{
 					for (int temp = 0; temp<point_num; temp++)
 					{
-						if(temp < point_num/2)
+						coordinate_num = point_num/2;
+						if(temp < coordinate_num)
 						{
 							ART1_POINT_X[temp] = ART1_dat[temp];
 						}else
 						{
-							ART1_POINT_Y[temp-point_num/2] = ART1_dat[temp];
+							ART1_POINT_Y[temp-coordinate_num] = ART1_dat[temp];
 						}			 
 					}
 					rt_sem_release(uart_corrdinate_sem);//发送已经识别完毕坐标纸的信号量

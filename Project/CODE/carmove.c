@@ -18,7 +18,7 @@
 
 uint8 running_mode = 0; // 小车功能模式：0为寻找坐标点模式   1为目标检测模式
 
-point tar_point[15]; // 排序好顺序的目标坐标
+point tar_point[40]; // 排序好顺序的目标坐标
 
 Pose_car car; // 定义car，作为位姿的载体
 
@@ -245,7 +245,7 @@ void car_turnto(float angle)
 入口参数：ART识别到的坐标
 返回值：无
 **************************************************************************/
-void uart_coordinate_transforming(uint8 ART1_POINT_X[15], uint8 ART1_POINT_Y[15], uint8 num)
+void uart_coordinate_transforming(uint8 ART1_POINT_X[40], uint8 ART1_POINT_Y[40], uint8 num)
 {
     for (int i = 0; i < num; i++)
     {
@@ -314,39 +314,42 @@ void static_planning(struct point *arr, int size)
 入口参数：当前点里程计，还剩下点数
 返回值：true则还有点没遍历，false则已遍历完
 **************************************************************************/
-bool dynamic_planning(struct point *arr, int size, int visited)
-{
-    if(visited == size) return false;
+// bool dynamic_planning(struct point *arr, int size, int visited)
+// {
+//     if(visited == size) return false;
 
-    // 找到距离原点最近的点
-    struct point temp;
-    int min_dist = INT_MAX;
-    int nearest = -1;
-    for (int i = visited; i < size; i++)
-    {
-        int dist = (arr[i].x * 20 - car.MileageX) * (arr[i].x * 20 - car.MileageX)
-                 + (arr[i].y * 20 - car.MileageY) * (arr[i].y * 20 - car.MileageY);
-        if (dist < min_dist && dist != 0)
-        {
-            min_dist = dist;
-            nearest = i;
-        }
-    }
-    temp = arr[nearest];
-    arr[nearest] = arr[visited];
-    arr[visited] = temp;
-    return true;
-}
+//     // 找到距离原点最近的点
+//     struct point temp;
+//     int min_dist = INT_MAX;
+//     int nearest = -1;
+//     for (int i = visited; i < size; i++)
+//     {
+//         int dist = (arr[i].x * 20 - car.MileageX) * (arr[i].x * 20 - car.MileageX)
+//                  + (arr[i].y * 20 - car.MileageY) * (arr[i].y * 20 - car.MileageY);
+//         if (dist < min_dist && dist != 0)
+//         {
+//             min_dist = dist;
+//             nearest = i;
+//         }
+//     }
+//     temp = arr[nearest];
+//     arr[nearest] = arr[visited];
+//     arr[visited] = temp;
+//     return true;
+// }
+
 
 void route_planning_entry(void *param)
 {
     rt_sem_take(uart_corrdinate_sem, RT_WAITING_FOREVER);
-    uart_coordinate_transforming(ART1_POINT_X, ART1_POINT_Y, point_num / 2);
-    static_planning(tar_point, point_num / 2);
+    uart_coordinate_transforming(ART1_POINT_X, ART1_POINT_Y, coordinate_num);
+    static_planning(tar_point, coordinate_num);
+
+    
     int point = 0;
     bool all_collected = false;
 
-    for (int i = 0; i < point_num / 2; i++)
+    for (int i = 0; i < coordinate_num; i++)
     {
         rt_kprintf("x:%d", tar_point[i].x);
         rt_kprintf("y:%d\n", tar_point[i].y);
@@ -362,7 +365,7 @@ void route_planning_entry(void *param)
         rt_kprintf("arriving!!!\n");
         rt_mb_send(buzzer_mailbox, 500); // 给buzzer_mailbox发送100
 
-        all_collected = dynamic_planning(tar_point, point_num / 2, point);
+        all_collected = dynamic_planning(tar_point, coordinate_num, point);
         if (all_collected)
         {
             car_move(0, 320);
