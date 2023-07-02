@@ -100,7 +100,7 @@
 #include "imu963.h"
 #include "openart1.h"
 #include "openart2.h"
-#include "class.h"
+#include "icm20602.h"
 
 #endif
 

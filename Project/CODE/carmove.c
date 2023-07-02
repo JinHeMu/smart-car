@@ -889,11 +889,11 @@ void car_start_init(void)
 
     boundary_th = rt_thread_create("boundary_th", boundary_th_entry, RT_NULL, 1024, 28, 10);
 
-//        rt_thread_startup(route_planning_th);
+    rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
     // rt_thread_startup(boundary_th);
     //  rt_thread_startup(back_th);
-    rt_thread_startup(obj_detection_th);
-//        uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+    //rt_thread_startup(obj_detection_th);
+		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 }

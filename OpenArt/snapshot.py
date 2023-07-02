@@ -12,14 +12,14 @@ lcd.full()
 #LED(4).on()#閻撗勬
 
 
-threshold = [(50, 100, -17, 14, -19, 95)]
+threshold = [(40, 100, -128, 127, -128, 127)]
 
 def openart_init():
 
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(1000)
+    sensor.set_brightness(500)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(False,(0,0,0))
@@ -47,7 +47,7 @@ def snapshot(count):
         lcd.show_image(img, 320, 240, zoom=2)
 
         # 娣囨繂鐡ㄧ憗浣稿閸氬海娈戦崶鎯у剼
-        img_cropped.save("/data/potato/%d.jpg" % count)
+        img_cropped.save("/data/orange/%d.jpg" % count)
 
 
         # img1 = img.rotation_corr(0,0,0,0,0,1,60,corners).replace(vflip=True,  hmirror=False,  transpose=False)
@@ -55,7 +55,7 @@ def snapshot(count):
 
 def main():
     openart_init()
-    count = 2000
+    count = 4700
     while(True):
         img = sensor.snapshot()
         snapshot(count)

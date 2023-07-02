@@ -14,13 +14,13 @@ correct_flag = 1
 recognize_flag = 1
 uart_num = 0
 
-#白天阈值
-card_threshold = [((85, 100, -128, 38, -19, 89))]#色块检测阈值
-boundary_threshold = [(61, 100, -35, 8, 35, 127)]#边线检测阈值
+##白天阈值
+#card_threshold = [((60, 100, -20, 68, -49, 71))]#色块检测阈值
+#boundary_threshold = [(59, 100, -38, 7, 6, 83)]#边线检测阈值
 
 #晚上阈值
-#card_threshold = [(57, 90, -36, 40, -17, 92)]#色块检测阈值
-#boundary_threshold = [(46, 95, -49, -6, 48, 85)]#边线检测阈值
+card_threshold = [(57, 90, -36, 40, -17, 92)]#色块检测阈值
+boundary_threshold = [(46, 95, -49, -6, 48, 85)]#边线检测阈值
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -39,7 +39,7 @@ def openart_init():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(800)
+    sensor.set_brightness(500)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True,(0,0,0))
@@ -51,7 +51,7 @@ def find_coordinates():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(1000)
+    sensor.set_brightness(500)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(False,(0,0,0))
@@ -116,7 +116,7 @@ def picture_correct():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QQVGA)
-    sensor.set_brightness(1000)
+    sensor.set_brightness(500)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True,(0,0,0))
@@ -180,7 +180,7 @@ def boundary_correct(mode):
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(1000)
+    sensor.set_brightness(500)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(False,(0,0,0))
@@ -267,7 +267,7 @@ def recognize_pic(labels, net):
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(1000)
+    sensor.set_brightness(500)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(False,(0,0,0))

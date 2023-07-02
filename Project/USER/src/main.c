@@ -15,7 +15,7 @@ void main()
 	ART2_UART_Init();
 
 	encoder_init();	  // 初始化编码器
-	imu963ra_init();  // 初始化陀螺仪
+	icm20602_init_spi();  // 初始化陀螺仪
 	timer_pit_init(); // 周期定时器
 	
 	rt_thread_mdelay(200);
