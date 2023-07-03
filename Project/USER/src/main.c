@@ -29,6 +29,7 @@ void main()
 	car_start_init();
 
 	car.MileageX = 0; car.MileageY = 0;
+//	rt_sem_release(obj_detection_sem);
 //	ART1_mode = 1;
 //	ART2_mode = 1;
 	
@@ -38,6 +39,7 @@ void main()
 //	
 //	ART1_mode = 4;
 //  uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
+	
 
 	while (1)
 	{

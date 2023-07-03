@@ -18,8 +18,8 @@
 
 uint8 running_mode = 0; // 小车功能模式：0为寻找坐标点模式   1为目标检测模式
 
-point tar_point[40]; // 排序好顺序的目标坐标
-int8 visited[40] = {0};  // 初始化访问数组，所有坐标都未访问
+point tar_point[40];    // 排序好顺序的目标坐标
+int8 visited[40] = {0}; // 初始化访问数组，所有坐标都未访问
 int8 nearestIndex = -1;
 
 Pose_car car; // 定义car，作为位姿的载体
@@ -29,15 +29,12 @@ rt_sem_t arrive_sem;        // 到达
 rt_sem_t carry_sem;         // 搬运
 rt_sem_t recognize_sem;     // 识别
 rt_sem_t obj_detection_sem; // 目标检测
-rt_sem_t back_sem;          // 回库
 // rt_sem_t move_sem;
 
 rt_thread_t route_planning_th; // 路径规划线程
 rt_thread_t correct_th;        // 矫正线程
 rt_thread_t carry_th;          // 搬运线程
 rt_thread_t obj_detection_th;  // 目标检测线程
-rt_thread_t back_th;           // 回库线程
-rt_thread_t boundary_th;       // 边线矫正线程
 
 char taget_Big_category[10] = "food";
 // rt_thread_t move_th;
@@ -140,7 +137,7 @@ void car_move(float tar_x, float tar_y)
     float target_distance = distance(car.MileageX, car.MileageY, tar_x, tar_y);
     float current_distance = target_distance;
     float acceleration = 0.01; // 加速度，可根据实际情况调整
-    float max_speed = 1;        // 最大速度，可根据实际情况调整
+    float max_speed = 1;       // 最大速度，可根据实际情况调整
     float current_speed = 0;
 
     //		ART1_mode = 4;
@@ -165,11 +162,11 @@ void car_move(float tar_x, float tar_y)
     car.Speed_X = 0;
     car.Speed_Y = 0;
     rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
-    rt_thread_delay(1000);            // 延时1秒
+    rt_thread_delay(1000);           // 延时1秒
     rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX, (int)car.MileageY);
 }
 
-void car_moveto_boundry(int8 tar_x,int8 tar_y)
+void car_moveto_boundry(int8 tar_x, int8 tar_y)
 {
 
     // ---------------
@@ -179,9 +176,8 @@ void car_moveto_boundry(int8 tar_x,int8 tar_y)
     // ---------------
 
     // 定义四条边线
-		rt_kprintf("GO TO BOUNDRE!!!\n");
+    rt_kprintf("GO TO BOUNDRE!!!\n");
     ART1_mode = 4;
-		
 
     while (ART1_CORRECT_Boundary_Flag == 0)
     {
@@ -189,33 +185,78 @@ void car_moveto_boundry(int8 tar_x,int8 tar_y)
         {
             uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
             rt_thread_mdelay(1000);
-            car.Speed_X = -150;
+            if (car.MileageX > 40)
+            {
+                car.Speed_X = -150;
+            }
+            else
+            {
+                car.Speed_X = -50;
+            }
         }
         else if (tar_y < 0)
         {
             uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
             rt_thread_mdelay(1000);
-            car.Speed_Y = -150;
+            if (car.MileageY > 40)
+            {
+                car.Speed_Y = -150;
+            }
+            else
+            {
+                car.Speed_Y = -50;
+            }
         }
         else if (tar_x > field_width)
         {
             uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
             rt_thread_mdelay(1000);
-            car.Speed_X = 150;
+            if (car.MileageX < (field_width * 20 - 40))
+            {
+                car.Speed_X = 150;
+            }
+            else
+            {
+                car.Speed_X = 50;
+            }
         }
         else if (tar_y > field_height)
         {
             uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
             rt_thread_mdelay(1000);
-            car.Speed_Y = 150;
+            if (car.MileageY < (field_height * 20 - 40))
+            {
+                car.Speed_Y = 150;
+            }
+            else
+            {
+                car.Speed_Y = 50;
+            }
         }
+			}
+				if (tar_x < 0)
+        {
+					car.MileageX = 0;
 
-    }
+        }
+        else if (tar_y < 0)
+        {
+					car.MileageY = 0;
+        }
+        else if (tar_x > field_width)
+        {
+					car.MileageX = field_width * 20;
+        }
+        else if (tar_y > field_height)
+        {
+					car.MileageY = field_height * 20;
+        }
+		
     car.Speed_X = 0;
     car.Speed_Y = 0;
-		rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
+    rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
     rt_kprintf("I HAVE ARRIVED BOUNDRE!!!");
-		ART1_CORRECT_Boundary_Flag = 0;
+    ART1_CORRECT_Boundary_Flag = 0;
 }
 
 void car_turn(float angle)
@@ -338,37 +379,38 @@ void static_planning(struct point *arr, int size)
 //     return true;
 // }
 
-int findNearestCoordinate(struct Pose_car car, struct point tar_point[], int size, int8 visited[], int8 *nearestIndex) {
+int findNearestCoordinate(struct Pose_car car, struct point tar_point[], int size, int8 visited[], int8 *nearestIndex)
+{
     double minDist = INT_MAX;
 
-    for (int i = 0; i < size; i++) {
-        if (visited[i]) {
-            continue;  // 跳过已访问过的坐标
+    for (int i = 0; i < size; i++)
+    {
+        if (visited[i])
+        {
+            continue; // 跳过已访问过的坐标
         }
 
         double dist = sqrt(pow(car.MileageX - tar_point[i].x * 20, 2) + pow(car.MileageY - tar_point[i].y * 20, 2));
-        if (dist < minDist) {
+        if (dist < minDist)
+        {
             minDist = dist;
             *nearestIndex = i;
         }
     }
 
-    if (*nearestIndex != -1) {
-        visited[*nearestIndex] = 1;  // 将最近点标记为已访问
+    if (*nearestIndex != -1)
+    {
+        visited[*nearestIndex] = 1; // 将最近点标记为已访问
     }
 
     return *nearestIndex;
 }
-
-
-
 
 void route_planning_entry(void *param)
 {
     rt_sem_take(uart_corrdinate_sem, RT_WAITING_FOREVER);
     uart_coordinate_transforming(ART1_POINT_X, ART1_POINT_Y, coordinate_num);
     static_planning(tar_point, coordinate_num);
-
 
     static uint8 count = 0;
 
@@ -381,7 +423,6 @@ void route_planning_entry(void *param)
 
     car_move(0, 40); // 出库
 
-
     while (1)
     {
 
@@ -389,23 +430,21 @@ void route_planning_entry(void *param)
         rt_kprintf("arriving!!!\n");
         rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
 
-
-        
         findNearestCoordinate(car, tar_point, coordinate_num, visited, &nearestIndex);
 
         if (nearestIndex != -1)
         {
             rt_kprintf("The nearest point(%d,%d)\n", tar_point[nearestIndex].x * 20, tar_point[nearestIndex].y * 20);
-            visited[nearestIndex] = 1;  // 将本次访问过的点标记为已访问
+            visited[nearestIndex] = 1; // 将本次访问过的点标记为已访问
         }
 
         if (count == coordinate_num)
         {
             car_move(0, 320);
-						arm_openbox(2);
-						car_move(40, 40);
+            arm_openbox(2);
+            car_move(40, 40);
             rt_sem_release(obj_detection_sem);
-            rt_thread_delete(route_planning_th);
+					  running_mode = 1;
         }
         else
         {
@@ -487,7 +526,6 @@ void correct_entry(void *param)
                 car.Speed_Y = -car.correct_speed * ART1_CORRECT_Y;
             }
         }
-
 
         car.Speed_X = 0;
         car.Speed_Y = 0;
@@ -789,130 +827,120 @@ void carry_entry(void *param)
 // }
 
 void obj_detection_entry(void *param)
+	
 {
-    // rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER);
+	while(1)
+	{
+		rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER); // 接受识别信号量
     rt_kprintf("DETECT !!!\n");
     ART2_mode = 1;
     car_move(unknow_card_loction_x, unknow_card_loction_y);
-
-
-    while (1)
-    {
-//        if (ART2_center_x != 0 && ART2_center_y != 0) // 找到卡片
-//        {
-
-//            pic_dis = distance(ART2_center_x, ART2_center_y, 0, 0);
-
-//            rt_kprintf("x:%d,y:%d,dis:%d\n", ART2_center_x, ART2_center_y, pic_dis);
-
-//            if (pic_dis > 60) // 如果目标距离比较远就移动
-//            {
-//                car.Speed_X = ART2_center_x / 5;
-//                car.Speed_Y = ART2_center_y / 5;
-
-
-//            }
-//            else // 如果到达目标位置就矫正
-//            {
-//                car.Speed_X = 0;
-//                car.Speed_Y = 0;
-
-//                ART1_mode = 2;               // art矫正模式
-//                uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
-//                rt_thread_mdelay(1000);
-//                // 记录当前坐标
-//                unknow_card_loction_x = car.MileageX;
-//                unknow_card_loction_y = car.MileageY;
-//                
-
-//                // rt_sem_release(correct_sem);
-//            }
-//        }
-//        else // 没有找到卡片，遍历全图
-//        {
-            //检测到边线就向前移动两格，没有检测到就移动
-						
-						if(count % 2 == 0)
-						{
-							car_moveto_boundry(19, 0);
-							
-							car.Speed_Y = 100;
-							rt_thread_mdelay(1000);
-							car.Speed_Y = 0;
-							
-							car.Speed_X = -200;
-							rt_thread_mdelay(1000);
-							car.Speed_X = 0;
-							count++;
-						}
-						else if(count % 2 == 1)
-						{
-							car_moveto_boundry(-1, 0);
-							car.Speed_Y = 100;
-							rt_thread_mdelay(1000);
-							car.Speed_Y = 0;
-							
-							car.Speed_X = 200;
-							rt_thread_mdelay(1000);
-							car.Speed_X = 0;
-							count++;
-						}
-            
-						rt_kprintf("count:%d\n", count);
-//        }
-				rt_thread_mdelay(200);
-    }
-}
-
-void boundary_th_entry(void *param)
-{
-    while (1)
-    {
-        // if(ART1_CORRECT_Boundary_Angle != 0)
-        // {
-        //     car_turn(ART1_CORRECT_Boundary_Angle);//转向边线角度
-        //     rt_thread_mdelay(100);//延时，让小车及时转向
-        //     angle_z = 0;//使陀螺仪数值归0
-        //     ART1_CORRECT_Boundary_Angle = 0;//边线角度归0
-        // }
-
-        ART1_mode = 4;
-        rt_kprintf("ART1_CORRECT_Boundary_Angle:%d\n", ART1_CORRECT_Boundary_Angle);
-        if (ART1_CORRECT_Boundary_Angle != 0)
+		while(1)
+		{
+			if (count % 2 == 0)
         {
-            angle_z = (ART1_CORRECT_Boundary_Angle); // 转向边线角度
+            car_moveto_boundry(19, 0);
 
-            ART1_CORRECT_Boundary_Angle = 0; // 边线角度归0
-        }
-        else
-        {
-            rt_thread_mdelay(500);
-        }
-    }
-}
+            car.Speed_Y = 100;
+            rt_thread_mdelay(1000);
+            car.Speed_Y = 0;
 
-void back_th_entry(void *param)
-{
-    while (1)
-    {
-        if (abs(ART1_CORRECT_Boundary_Angle) > 0 && abs(ART1_CORRECT_Boundary_Angle) < 45) // 如果检测到竖直边线
-        {
+            car.Speed_X = -100;
+            rt_thread_mdelay(2000);
             car.Speed_X = 0;
-            car.Speed_Y = -300; // 向下移动
+            count++;
+        }
+        else if (count % 2 == 1)
+        {
+            car_moveto_boundry(-1, 0);
+            car.Speed_Y = 100;
+            rt_thread_mdelay(1000);
+            car.Speed_Y = 0;
+
+            car.Speed_X = 100;
+            rt_thread_mdelay(2000);
+            car.Speed_X = 0;
+            count++;
         }
 
-        else if (abs(ART1_CORRECT_Boundary_Angle) > 45 && abs(ART1_CORRECT_Boundary_Angle) < 100)
-        {
-            car.Speed_X = 0; // 停止移动
-            car.Speed_Y = 0;
-        }
-        else if (ART1_CORRECT_Boundary_Angle == 0)
-        {
-            car.Speed_X = -300; // 向左移动
-            car.Speed_Y = 0;
-        }
+        rt_kprintf("count:%d\n", count);
+        //        }
+        rt_thread_mdelay(200);
     }
+			
+			
+		}
+		
+		
+		
+		
 }
+
+        //        if (ART2_center_x != 0 && ART2_center_y != 0) // 找到卡片
+        //        {
+
+        //            pic_dis = distance(ART2_center_x, ART2_center_y, 0, 0);
+
+        //            rt_kprintf("x:%d,y:%d,dis:%d\n", ART2_center_x, ART2_center_y, pic_dis);
+
+        //            if (pic_dis > 60) // 如果目标距离比较远就移动
+        //            {
+        //                car.Speed_X = ART2_center_x / 5;
+        //                car.Speed_Y = ART2_center_y / 5;
+
+        //            }
+        //            else // 如果到达目标位置就矫正
+        //            {
+        //                car.Speed_X = 0;
+        //                car.Speed_Y = 0;
+
+        //                ART1_mode = 2;               // art矫正模式
+        //                uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
+        //                rt_thread_mdelay(1000);
+        //                // 记录当前坐标
+        //                unknow_card_loction_x = car.MileageX;
+        //                unknow_card_loction_y = car.MileageY;
+        //
+
+        //                // rt_sem_release(correct_sem);
+        //            }
+        //        }
+        //        else // 没有找到卡片，遍历全图
+        //        {
+        // 检测到边线就向前移动两格，没有检测到就移动
+
+//        if (count % 2 == 0)
+//        {
+//            car_moveto_boundry(19, 0);
+
+//            car.Speed_Y = 100;
+//            rt_thread_mdelay(1000);
+//            car.Speed_Y = 0;
+
+//            car.Speed_X = -100;
+//            rt_thread_mdelay(2000);
+//            car.Speed_X = 0;
+//            count++;
+//        }
+//        else if (count % 2 == 1)
+//        {
+//            car_moveto_boundry(-1, 0);
+//            car.Speed_Y = 100;
+//            rt_thread_mdelay(1000);
+//            car.Speed_Y = 0;
+
+//            car.Speed_X = 100;
+//            rt_thread_mdelay(2000);
+//            car.Speed_X = 0;
+//            count++;
+//        }
+
+//        rt_kprintf("count:%d\n", count);
+//        //        }
+//        rt_thread_mdelay(200);
+//    }
+
+
 
 void car_start_init(void)
 {
@@ -922,8 +950,8 @@ void car_start_init(void)
     correct_sem = rt_sem_create("correct_sem", 0, RT_IPC_FLAG_FIFO);                 // 矫正信号量，接受就开始矫正
     recognize_sem = rt_sem_create("recognize_sem", 0, RT_IPC_FLAG_FIFO);             // 识别信号量，告诉单片机已经识别，接受就开始搬运
     carry_sem = rt_sem_create("carry_sem", 0, RT_IPC_FLAG_FIFO);                     // 搬运信号量，接受即已经搬运到相应点位
-    back_sem = rt_sem_create("back_sem", 0, RT_IPC_FLAG_FIFO);                       // 搬运信号量，接受即已经搬运到相应点位
-
+		obj_detection_sem = rt_sem_create("obj_detection_sem", 0, RT_IPC_FLAG_FIFO);
+	// 搬运信号量，接受即已经搬运到相应点位
     route_planning_th = rt_thread_create("route_planning_th", route_planning_entry, RT_NULL, 1024, 28, 10);
 
     correct_th = rt_thread_create("correct_th", correct_entry, RT_NULL, 1024, 28, 10);
@@ -932,15 +960,9 @@ void car_start_init(void)
 
     obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 28, 10);
 
-    back_th = rt_thread_create("back_th", back_th_entry, RT_NULL, 1024, 28, 10);
-
-    boundary_th = rt_thread_create("boundary_th", boundary_th_entry, RT_NULL, 1024, 28, 10);
-
     rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
-    // rt_thread_startup(boundary_th);
-    //  rt_thread_startup(back_th);
-    //rt_thread_startup(obj_detection_th);
-		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+    rt_thread_startup(obj_detection_th);
+    uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 }

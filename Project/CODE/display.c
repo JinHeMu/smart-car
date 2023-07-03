@@ -48,16 +48,20 @@ void Menu_key_set(void)
 		if ((mb_data == 1)) // °´ÏÂ°´¼ü1
 	{
 		
-		car_turnto(20);
-		rt_thread_mdelay(3000);
-		car_turnto(40);
-		rt_thread_mdelay(3000);
-		car_turnto(-40);
-		rt_thread_mdelay(3000);
-		car_turnto(-90);
-		rt_thread_mdelay(3000);
-		car_turnto(0);
-		rt_thread_mdelay(3000);
+		// car_turnto(20);
+		// rt_thread_mdelay(3000);
+		// car_turnto(40);
+		// rt_thread_mdelay(3000);
+		// car_turnto(-40);
+		// rt_thread_mdelay(3000);
+		// car_turnto(-90);
+		// rt_thread_mdelay(3000);
+		// car_turnto(0);
+		// rt_thread_mdelay(3000);
+
+		car_moveto_boundry(-2,5);	
+
+
 		
 		
 //		car_move(200,0); 
