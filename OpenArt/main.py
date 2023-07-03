@@ -14,14 +14,16 @@ correct_flag = 1
 recognize_flag = 1
 uart_num = 0
 
-#白天阈值
-card_threshold = [((65, 100, -39, 19, -37, 19))]#色块检测阈值
-boundary_column_threshold = [(62, 100, -46, 5, 8, 111)]#边线检测阈值
-boundary_row_threshold = [(73, 100, -48, -4, 15, 127)]#边线检测阈值
+##白天阈值
+#card_threshold = [((65, 100, -39, 19, -37, 19))]#色块检测阈值
+#boundary_column_threshold = [(62, 100, -46, 5, 8, 111)]#边线检测阈值
+#boundary_row_threshold = [(73, 100, -48, -4, 15, 127)]#边线检测阈值
 
-##晚上阈值
-#card_threshold = [(57, 90, -36, 40, -17, 92)]#色块检测阈值
-#boundary_threshold = [(46, 95, -49, -6, 48, 85)]#边线检测阈值
+#晚上阈值
+card_threshold = [(62, 100, -17, 54, -15, 85)]#色块检测阈值
+boundary_threshold = [(56, 95, -19, 9, 32, 98)]#边线检测阈值
+boundary_column_threshold = [(56, 95, -19, 9, 32, 98)]#边线检测阈值
+boundary_row_threshold = [(56, 95, -19, 9, 32, 98)]#边线检测阈值
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -52,7 +54,7 @@ def find_coordinates():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(500)
+    sensor.set_brightness(1000)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(False,(0,0,0))

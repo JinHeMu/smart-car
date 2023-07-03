@@ -179,8 +179,9 @@ void car_moveto_boundry(int8 tar_x,int8 tar_y)
     // ---------------
 
     // 定义四条边线
-
+		rt_kprintf("GO TO BOUNDRE!!!\n");
     ART1_mode = 4;
+		
 
     while (ART1_CORRECT_Boundary_Flag == 0)
     {
@@ -393,7 +394,7 @@ void route_planning_entry(void *param)
 
 
         
-        findNearestCoordinate(car, tar_point, 40, visited, &nearestIndex);
+        findNearestCoordinate(car, tar_point, coordinate_num, visited, &nearestIndex);
 
         if (nearestIndex != -1)
         {
