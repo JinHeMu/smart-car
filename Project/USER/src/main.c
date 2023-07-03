@@ -18,7 +18,6 @@ void main()
 	icm20602_init_spi();  // 初始化陀螺仪
 	timer_pit_init(); // 周期定时器
 	
-	rt_thread_mdelay(200);
 
 	buzzer_init(); // 初始化蜂鸣器
 	button_init(); // 初始化按键

@@ -56,7 +56,7 @@ struct card durian = {"fruit", "durian", 0, -2, 8};
 struct card grape = {"fruit", "grape", 3, 0, 0}; // 车载
 struct card orange = {"fruit", "orange", 0, 8, 21};
 
-struct card cabbage = {"vegetable", "cabbage", 0, 12, 8};
+struct card cabbage = {"vegetable", "cabbage", 0, 12, 21};
 struct card cucumber = {"vegetable", "cucumber", 0, -2, 4};
 struct card eggplant = {"vegetable", "eggplant", 3, 0, 0}; // 车载
 struct card radish = {"vegetable", "radish", 0, 12, 21};
@@ -164,7 +164,7 @@ void car_move(float tar_x, float tar_y)
 
     car.Speed_X = 0;
     car.Speed_Y = 0;
-    rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+    rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
     rt_thread_delay(1000);            // 延时1秒
     rt_kprintf("GO TO X:%d, Y:%d\n", (int)car.MileageX, (int)car.MileageY);
 }
@@ -188,37 +188,34 @@ void car_moveto_boundry(int8 tar_x,int8 tar_y)
         if (tar_x < 0)
         {
             uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
-            rt_thread_mdelay(1500);
+            rt_thread_mdelay(1000);
             car.Speed_X = -150;
         }
         else if (tar_y < 0)
         {
             uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-            rt_thread_mdelay(1500);
+            rt_thread_mdelay(1000);
             car.Speed_Y = -150;
         }
         else if (tar_x > field_width)
         {
             uart_putchar(USART_4, 0x44); // 发送OPENART1告诉该识别边线了
-            rt_thread_mdelay(1500);
+            rt_thread_mdelay(1000);
             car.Speed_X = 150;
         }
         else if (tar_y > field_height)
         {
             uart_putchar(USART_4, 0x45); // 发送OPENART1告诉该识别边线了
-            rt_thread_mdelay(1500);
+            rt_thread_mdelay(1000);
             car.Speed_Y = 150;
         }
 
-        rt_thread_mdelay(20);
     }
-
     car.Speed_X = 0;
     car.Speed_Y = 0;
-		rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+		rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
     rt_kprintf("I HAVE ARRIVED BOUNDRE!!!");
 		ART1_CORRECT_Boundary_Flag = 0;
-    rt_thread_mdelay(1000);
 }
 
 void car_turn(float angle)
@@ -341,7 +338,7 @@ void static_planning(struct point *arr, int size)
 //     return true;
 // }
 
-int findNearestCoordinate(struct Pose_car car, struct point tar_point[], int size, int visited[], int *nearestIndex) {
+int findNearestCoordinate(struct Pose_car car, struct point tar_point[], int size, int8 visited[], int8 *nearestIndex) {
     double minDist = INT_MAX;
 
     for (int i = 0; i < size; i++) {
@@ -380,7 +377,7 @@ void route_planning_entry(void *param)
         rt_kprintf("x:%d", tar_point[i].x);
         rt_kprintf("y:%d\n", tar_point[i].y);
     }
-    rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+    rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
 
     car_move(0, 40); // 出库
 
@@ -390,7 +387,7 @@ void route_planning_entry(void *param)
 
         rt_sem_take(arrive_sem, RT_WAITING_FOREVER); // 接受到达信号量
         rt_kprintf("arriving!!!\n");
-        rt_mb_send(buzzer_mailbox, 500); // 给buzzer_mailbox发送100
+        rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
 
 
         
@@ -398,16 +395,15 @@ void route_planning_entry(void *param)
 
         if (nearestIndex != -1)
         {
-            rt_kprintf("The nearest point：(%d,%d)\n", tar_point[nearestIndex].x * 20, tar_point[nearestIndex].y * 20);
+            rt_kprintf("The nearest point(%d,%d)\n", tar_point[nearestIndex].x * 20, tar_point[nearestIndex].y * 20);
             visited[nearestIndex] = 1;  // 将本次访问过的点标记为已访问
         }
 
         if (count == coordinate_num)
         {
             car_move(0, 320);
-			arm_openbox(2);
-			car_move(40, 40);
-			arm_closebox();
+						arm_openbox(2);
+						car_move(40, 40);
             rt_sem_release(obj_detection_sem);
             rt_thread_delete(route_planning_th);
         }
@@ -424,7 +420,7 @@ void route_planning_entry(void *param)
 
         ART1_mode = 2;               // art矫正模式
         uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
-        rt_thread_mdelay(1000);
+        rt_thread_mdelay(500);
 
         rt_sem_release(correct_sem); // 到达后发送矫正信号
     }
@@ -498,7 +494,7 @@ void correct_entry(void *param)
 
         car.MileageX = car.target_x; // 更新当前坐标
         car.MileageY = car.target_y;
-        rt_mb_send(buzzer_mailbox, 1000); // 给buzzer_mailbox发送100
+        rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
 
         ART1_mode = 3;
         uart_putchar(USART_4, 0x43);

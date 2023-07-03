@@ -311,7 +311,7 @@ def recognize_pic(labels, net):
                             uart.write("I")
                             uart.write(sorted_list[i][0])
                             uart.write("J")
-                            img.draw_string(10,10,"recognize", (255,0,0))
+                            img.draw_string(10,10,"%s:%d" % (sorted_list[i][0],sorted_list[i][1]*100) , (255,0,0), 2)
                             lcd.show_image(img, 320, 240, zoom=2)
                             recognize_flag = 0
                         else:
@@ -326,47 +326,47 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "2023-6-30-12pochs.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "7-3-epoch20.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
 
     while(True):
         img = sensor.snapshot()
-        #recognize_pic(labels, net)
+        recognize_pic(labels, net)
         #boundary_correct('column')
         #picture_correct()
-        uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
-        if (uart_num):
-            uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
-            #print(uart_str.decode())
-            if(uart_str.decode() == "A"):
-                print("A")
-                uart_num=0
-                find_coordinates()
+        #uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
+        #if (uart_num):
+            #uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
+            ##print(uart_str.decode())
+            #if(uart_str.decode() == "A"):
+                #print("A")
+                #uart_num=0
+                #find_coordinates()
 
-            elif(uart_str.decode() == "B"):
-                print("B")
-                uart_num=0
-                picture_correct()
+            #elif(uart_str.decode() == "B"):
+                #print("B")
+                #uart_num=0
+                #picture_correct()
 
-            elif(uart_str.decode() == "C"):
-                print("C")
-                uart_num=0
-                recognize_pic(labels, net)
+            #elif(uart_str.decode() == "C"):
+                #print("C")
+                #uart_num=0
+                #recognize_pic(labels, net)
 
-            elif(uart_str.decode() == "D"):
-                print("D")
-                uart_num=0
-                boundary_correct('column')
+            #elif(uart_str.decode() == "D"):
+                #print("D")
+                #uart_num=0
+                #boundary_correct('column')
 
-            elif(uart_str.decode() == "E"):
-                print("E")
-                uart_num=0
-                boundary_correct('row')
+            #elif(uart_str.decode() == "E"):
+                #print("E")
+                #uart_num=0
+                #boundary_correct('row')
 
-        else:
-            lcd.show_image(img, 320, 240, zoom=2)
+        #else:
+            #lcd.show_image(img, 320, 240, zoom=2)
 
 
 
