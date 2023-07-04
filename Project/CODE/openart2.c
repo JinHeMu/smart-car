@@ -10,6 +10,7 @@ int8 ART2_angle = 0;
 int8 ART2_dat[10];
 uint8 ART2_mode = 0;
 uint8 detect_flag = 0;
+uint8 detect_arrive_flag = 0;
 
 void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData)
 {
@@ -36,10 +37,10 @@ void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 
 					ART2_center_x = ART2_dat[0];
 					ART2_center_y = ART2_dat[1];
+					detect_arrive_flag = ART2_dat[2];//是否到达点位
 					
 					detect_flag = 1;
-
-
+					
 					
 					rxstate = 0;
 				}

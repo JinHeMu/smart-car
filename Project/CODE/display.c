@@ -59,7 +59,7 @@ void Menu_key_set(void)
 		// car_turnto(0);
 		// rt_thread_mdelay(3000);
 
-		car_moveto_boundry(12,19);	
+//		car_moveto_boundry(12,19);	
 
 
 		
@@ -95,7 +95,7 @@ void Menu_key_set(void)
 //
 
 
-//		arm_openbox(1);
+		arm_openbox(2);
 		mb_data = 0; // ÓÊÏäÊı¾İÇå³ı
 	}
 

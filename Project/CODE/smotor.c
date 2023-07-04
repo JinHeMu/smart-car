@@ -219,14 +219,13 @@ switch (angle)
 	rt_thread_mdelay(500);
 
 	ARM_LEFT_angle(0);
-	rt_thread_mdelay(500);
+	rt_thread_mdelay(1000);
 
-	car_turnto(-180);
-	rt_thread_mdelay(300);
-	car_turnto(-270);
-	rt_thread_mdelay(300);
-	car_turnto(0);
-	rt_thread_mdelay(300);
+	car.Speed_X= 200;
+	rt_thread_mdelay(500);
+	car.Speed_X= -200;
+	rt_thread_mdelay(500);
+	car.Speed_X= 0;
 
 
 	ARM_LEFT_angle(100);

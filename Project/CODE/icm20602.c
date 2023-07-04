@@ -79,7 +79,7 @@ void ARHS_getValues()
 	
 //	rt_kprintf("%d\n", (int)(filtered_gyro_z * 10000));
 	
-	if(abs(filtered_gyro_z) < 5)
+	if(abs(filtered_gyro_z) < 3)
 	{
 		filtered_gyro_z = 0;
 	}

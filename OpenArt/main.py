@@ -14,19 +14,19 @@ correct_flag = 1
 recognize_flag = 1
 uart_num = 0
 
-#白天阈值
-card_threshold = [((65, 100, -39, 19, -37, 19))]#色块检测阈值
-boundary_threshold = [(62, 100, -46, 5, 8, 111)]#边线检测阈值
-boundary_column_threshold = [(62, 100, -46, 5, 8, 111)]#边线检测阈值
-boundary_row_threshold = [(73, 100, -48, -4, 15, 127)]#边线检测阈值
-day_brightness = 1000
+##白天阈值
+#card_threshold = [((65, 100, -39, 19, -37, 19))]#色块检测阈值
+#boundary_threshold = [(62, 100, -46, 5, 8, 111)]#边线检测阈值
+#boundary_column_threshold = [(62, 100, -46, 5, 8, 111)]#边线检测阈值
+#boundary_row_threshold = [(73, 100, -48, -4, 15, 127)]#边线检测阈值
+#day_brightness = 1000
 
-# #晚上阈值
-# card_threshold = [(53, 100, -22, 33, -56, 84)]#色块检测阈值
-# boundary_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
-# boundary_column_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
-# boundary_row_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
-# day_brightness = 1000
+ #晚上阈值
+card_threshold = [(49, 100, -28, 53, -54, 80)]#色块检测阈值
+boundary_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
+boundary_column_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
+boundary_row_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
+day_brightness = 1000
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -139,7 +139,7 @@ def picture_correct():
         img = sensor.snapshot()
 
         if(uart_num!=0):
-            correct_flag = 1
+            correct_flag = 0
             break
         else:
             for b in img.find_blobs(card_threshold, pixels_threshold=400, area_threshold=400, margin=1, merge=True, invert=0):
