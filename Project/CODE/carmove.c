@@ -262,11 +262,12 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
             car.MileageY = field_height * 20;
         }
     }
+
     car.Speed_X = 0;
     car.Speed_Y = 0;
     rt_mb_send(buzzer_mailbox, 100); // 给buzzer_mailbox发送100
-    rt_kprintf("I HAVE ARRIVED BOUNDRE!!!");
-    rt_kprintf("flag:%d\n", detect_flag);
+    // rt_kprintf("I HAVE ARRIVED BOUNDRE!!!");
+    // rt_kprintf("flag:%d\n", detect_flag);
     ART1_CORRECT_Boundary_Flag = 0;
 }
 
@@ -521,7 +522,7 @@ void correct_entry(void *param)
         while (distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0) > 5 || (ART1_CORRECT_X == 0 && ART1_CORRECT_Y == 0))
         {
 
-            rt_thread_mdelay(1);
+            rt_thread_mdelay(10);
             pic_dis = (int)distance(ART1_CORRECT_X, ART1_CORRECT_Y, 0, 0);
 
             if (pic_dis > 65)
@@ -575,7 +576,7 @@ void correct_entry(void *param)
         car.Speed_X = 0;
         car.Speed_Y = 0;
 
-        if (running_mode == 0)
+        if (running_mode == 0)//目标检测模式就不更新，普通模式更新
         {
             car.MileageX = car.target_x; // 更新当前坐标
             car.MileageY = car.target_y;
@@ -927,14 +928,17 @@ void obj_detection_entry(void *param)
     while (1)
     {
         rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER); // 接受识别信号量
+
         ART2_center_x = 0;
         ART2_center_y = 0;
-        rt_kprintf("DETECT !!!\n");
-        rt_kprintf("%d\n", detect_flag);
         running_mode = 1;
         detect_flag = 0;
+        detect_arrive_flag = 0;
 
-        rt_kprintf("card_x:%d, card_y:%d\n", unknow_card_loction_x, unknow_card_loction_y);
+        rt_kprintf("DETECT !!!\n");
+        rt_kprintf("%d\n", detect_flag);
+        rt_kprintf("card_x:%d,card_y:%d\n", unknow_card_loction_x, unknow_card_loction_y);
+
         car_move(unknow_card_loction_x, unknow_card_loction_y); // 首先到达上一次位置
 
         ART2_mode = 1;
@@ -951,7 +955,7 @@ void obj_detection_entry(void *param)
 
             if (boundry_num % 2 == 0)
             {
-                car_moveto_boundry(19, 0);
+                car_moveto_boundry(field_width+1, 0);//向右移动找边线
 
                 if (detect_flag == 1)
                 {
@@ -972,7 +976,7 @@ void obj_detection_entry(void *param)
             }
             else if (boundry_num % 2 == 1)
             {
-                car_moveto_boundry(-1, 0);
+                car_moveto_boundry(-1, 0);//向左移动寻找边线
 
                 if (detect_flag == 1)
                 {
