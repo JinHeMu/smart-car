@@ -25,6 +25,9 @@ void main()
 
 	car_start_init();
 	uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+	
+//	
+	rt_sem_release(obj_detection_sem);
 
 	while (1)
 	{

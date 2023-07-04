@@ -59,7 +59,7 @@ void Menu_key_set(void)
 		// car_turnto(0);
 		// rt_thread_mdelay(3000);
 
-		car_moveto_boundry(-2,5);	
+		car_moveto_boundry(12,19);	
 
 
 		
@@ -106,18 +106,21 @@ void Menu_key_set(void)
 	
 	if ((mb_data == 2)) // °´ÏÂ°´¼ü1
 	{
-		Incremental_ki[0] += 0.5;
-		Incremental_ki[1] += 0.5;
-		Incremental_ki[2] += 0.5;
-		Incremental_ki[3] += 0.5;
-		ips114_showfloat(60, 4, Incremental_ki[0], 4, 2);
+//		Incremental_ki[0] += 0.5;
+//		Incremental_ki[1] += 0.5;
+//		Incremental_ki[2] += 0.5;
+//		Incremental_ki[3] += 0.5;
+//		ips114_showfloat(60, 4, Incremental_ki[0], 4, 2);
 //		
+		
+		
+		car_boundry_carry(12,19);
 		
 //		Angel_kd += 5;
 //		ips114_showfloat(60, 4, Angel_kd, 4, 2);
 //		
-		Angel_kp += 1;
-		ips114_showfloat(60, 4, Angel_kp, 4, 2);
+//		Angel_kp += 1;
+//		ips114_showfloat(60, 4, Angel_kp, 4, 2);
 		
 //				car_turnto(40); 
 //		rt_thread_mdelay(2000);

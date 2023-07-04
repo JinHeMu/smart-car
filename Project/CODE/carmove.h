@@ -66,6 +66,7 @@ void car_turnto(float angle);
 void uart_coordinate_transforming(uint8 ART1_POINT_X[15], uint8 ART1_POINT_Y[15], uint8 num);
 void static_planning(struct point* arr, int size);
 void car_moveto_boundry(int8 tar_x,int8 tar_y);
+void car_boundry_carry(int8 tar_x, int8 tar_y);
 
 
 

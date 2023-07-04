@@ -109,8 +109,8 @@ void arm_carry(void)
 	
 	ARM_LOW_angle(60);
 	rt_thread_mdelay(300);
-	ARM_UP_angle(150);
-	ARM_LOW_angle(90);
+	ARM_UP_angle(170);
+	ARM_LOW_angle(80);
 	rt_thread_mdelay(300);
 	
 
@@ -222,9 +222,11 @@ switch (angle)
 	rt_thread_mdelay(500);
 
 	car_turnto(-180);
-	rt_thread_mdelay(500);
+	rt_thread_mdelay(300);
+	car_turnto(-270);
+	rt_thread_mdelay(300);
 	car_turnto(0);
-	rt_thread_mdelay(500);
+	rt_thread_mdelay(300);
 
 
 	ARM_LEFT_angle(100);

@@ -14,18 +14,19 @@ correct_flag = 1
 recognize_flag = 1
 uart_num = 0
 
-##白天阈值
-#card_threshold = [((65, 100, -39, 19, -37, 19))]#色块检测阈值
-#boundary_column_threshold = [(62, 100, -46, 5, 8, 111)]#边线检测阈值
-#boundary_row_threshold = [(73, 100, -48, -4, 15, 127)]#边线检测阈值
-#day_brightness = 500
+#白天阈值
+card_threshold = [((65, 100, -39, 19, -37, 19))]#色块检测阈值
+boundary_threshold = [(62, 100, -46, 5, 8, 111)]#边线检测阈值
+boundary_column_threshold = [(62, 100, -46, 5, 8, 111)]#边线检测阈值
+boundary_row_threshold = [(73, 100, -48, -4, 15, 127)]#边线检测阈值
+day_brightness = 1000
 
-#晚上阈值
-card_threshold = [(53, 100, -22, 33, -56, 84)]#色块检测阈值
-boundary_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
-boundary_column_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
-boundary_row_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
-evening_brightness = 1000
+# #晚上阈值
+# card_threshold = [(53, 100, -22, 33, -56, 84)]#色块检测阈值
+# boundary_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
+# boundary_column_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
+# boundary_row_threshold = [(54, 90, -35, 0, 21, 107)]#边线检测阈值
+# day_brightness = 1000
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -44,7 +45,7 @@ def openart_init():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(evening_brightness)
+    sensor.set_brightness(day_brightness)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True,(0,0,0))
@@ -121,7 +122,7 @@ def picture_correct():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QQVGA)
-    sensor.set_brightness(evening_brightness)
+    sensor.set_brightness(day_brightness)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True,(0,0,0))
@@ -185,7 +186,7 @@ def boundary_correct(mode):
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(evening_brightness)
+    sensor.set_brightness(day_brightness)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(False,(0,0,0))
@@ -272,7 +273,7 @@ def recognize_pic(labels, net):
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(evening_brightness)
+    sensor.set_brightness(day_brightness)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(False,(0,0,0))
