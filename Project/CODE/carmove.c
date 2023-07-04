@@ -118,7 +118,7 @@ void car_move(float tar_x, float tar_y)
 
     float target_distance = distance(car.MileageX, car.MileageY, tar_x, tar_y);
     float current_distance = target_distance;
-    float acceleration = 0.01; // 加速度，可根据实际情况调整
+    float acceleration = 0.02; // 加速度，可根据实际情况调整
     float max_speed = 1;       // 最大速度，可根据实际情况调整
     float current_speed = 0;
 
@@ -259,7 +259,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
         }
         if (detect_flag == 0)
         {
-            car.MileageY = field_height * 20 - 20;
+            car.MileageY = field_height * 20;
         }
     }
     car.Speed_X = 0;
@@ -461,17 +461,17 @@ void route_planning_entry(void *param)
             arm_openbox(1);//右三
 
 
-            car.Speed_X = -100;
+            car.Speed_X = -200;
             rt_thread_mdelay(2000);
             car.Speed_X = 0;
 
-            car_moveto_boundry(field_height + 1, 1);
-            car_boundry_carry(field_height + 1, 1);
+            car_moveto_boundry(1, field_height + 1);
+            car_boundry_carry(1, field_height + 1);
             arm_openbox(2);//下三（需要改动）
 
 
 
-            car.Speed_Y = -100;
+            car.Speed_Y = -200;
             rt_thread_mdelay(2000);
             car.Speed_Y = 0;
 

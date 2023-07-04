@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\RT106X.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\RT106X.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Tue Jul  4 19:29:32 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Tue Jul  4 21:50:14 2023
 <BR><P>
 <H3>Maximum Stack Usage =        816 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -2909,6 +2909,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Menu_key_set
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;route_planning_entry
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;carry_entry
 </UL>
 
@@ -2934,7 +2935,8 @@ Global Symbols
 <LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_kprintf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;obj_detection_entry
+<BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;route_planning_entry
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;obj_detection_entry
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;carry_entry
 </UL>
 
@@ -2952,7 +2954,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[297]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[eb]"></a>carry_entry</STRONG> (Thumb, 1368 bytes, Stack size 56 bytes, carmove.o(.text.carry_entry))
+<P><STRONG><a name="[eb]"></a>carry_entry</STRONG> (Thumb, 1888 bytes, Stack size 56 bytes, carmove.o(.text.carry_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 720<LI>Call Chain = carry_entry &rArr; arm_putbox &rArr; ARM_UP_angle &rArr; pwm_duty &rArr; PWM_UpdatePwmDutycycle &rArr; __aeabi_assert &rArr; DbgConsole_Printf &rArr; StrFormatPrintf &rArr; ConvertFloatRadixNumToString &rArr; __hardfp_pow &rArr; sqrt
 </UL>
 <BR>[Calls]<UL><LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
@@ -3728,7 +3730,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;encoder_init
 </UL>
 
-<P><STRONG><a name="[e9]"></a>route_planning_entry</STRONG> (Thumb, 740 bytes, Stack size 80 bytes, carmove.o(.text.route_planning_entry))
+<P><STRONG><a name="[e9]"></a>route_planning_entry</STRONG> (Thumb, 860 bytes, Stack size 80 bytes, carmove.o(.text.route_planning_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 752<LI>Call Chain = route_planning_entry &rArr; arm_openbox &rArr; ARM_MID_angle &rArr; pwm_duty &rArr; PWM_UpdatePwmDutycycle &rArr; __aeabi_assert &rArr; DbgConsole_Printf &rArr; StrFormatPrintf &rArr; ConvertFloatRadixNumToString &rArr; __hardfp_pow &rArr; sqrt
 </UL>
 <BR>[Calls]<UL><LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_putchar
@@ -3737,10 +3739,12 @@ Global Symbols
 <LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_kprintf
+<LI><a href="#[1e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;car_boundry_carry
 <LI><a href="#[1e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_openbox
 <LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_coordinate_transforming
 <LI><a href="#[2ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;static_planning
 <LI><a href="#[265]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;findNearestCoordinate
+<LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;car_moveto_boundry
 <LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;car_move
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> carmove.o(.text.car_start_init)

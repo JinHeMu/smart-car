@@ -77,7 +77,7 @@ void ARHS_getValues()
 //	source_data.acc_y = imu963ra_acc_y;
 //	source_data.acc_z = imu963ra_acc_z;
 	
-//	rt_kprintf("%d\n", (int)(filtered_gyro_z * 10000));
+	//rt_kprintf("%d\n", (int)(filtered_gyro_z * 10000));
 	
 	if(abs(filtered_gyro_z) < 3)
 	{
