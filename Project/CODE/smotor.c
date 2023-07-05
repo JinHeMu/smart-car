@@ -86,7 +86,7 @@ void arm_down(void)
 	rt_thread_mdelay(300);
 
 	ARM_LOW_angle(80);
-	ARM_UP_angle(150);
+	ARM_UP_angle(180);
 
 }
 
@@ -161,7 +161,7 @@ void arm_putbox(uint8 angle)
 
 	
 	ARM_MID_angle(angle*90 - 90);
-	rt_thread_mdelay(500);
+	rt_thread_mdelay(2000);
 	
 
 	ARM_UP_angle(5);
@@ -194,7 +194,7 @@ void arm_putbox(uint8 angle)
 	rt_thread_mdelay(300);
 	
 	ARM_LOW_angle(80);
-	ARM_UP_angle(160);
+	ARM_UP_angle(180);
 	ARM_MID_angle(0);
 	rt_thread_mdelay(500);
 	

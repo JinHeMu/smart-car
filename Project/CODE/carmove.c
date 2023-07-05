@@ -161,6 +161,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
         {
             if (detect_flag) // 是否接受数据
             {
+							rt_kprintf("I FOUND CARD!!!");
                 break;
             }
             if (car.MileageX > 40)
@@ -188,6 +189,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
         {
             if (detect_flag)
             {
+							rt_kprintf("I FOUND CARD!!!");
                 break;
             }
             if (car.MileageY > 40)
@@ -216,6 +218,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 
             if (detect_flag)
             {
+							rt_kprintf("I FOUND CARD!!!");
                 break;
             }
             if (car.MileageX < (field_width * 20 - 40))
@@ -929,6 +932,7 @@ void obj_detection_entry(void *param)
     {
         rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER); // 接受识别信号量
 
+
         ART2_center_x = 0;
         ART2_center_y = 0;
         running_mode = 1;
@@ -940,15 +944,22 @@ void obj_detection_entry(void *param)
         rt_kprintf("card_x:%d,card_y:%d\n", unknow_card_loction_x, unknow_card_loction_y);
 
         car_move(unknow_card_loction_x, unknow_card_loction_y); // 首先到达上一次位置
-
-        ART2_mode = 1;
+			
+				ART2_mode = 1;
         uart_putchar(USART_1, 0x46);
+				rt_kprintf("WAITING3 !!!\n");
+				rt_thread_mdelay(1000);
+			
+			
+
+
 
         while (detect_flag == 0) // 是否接受数据
         {
 
             if (detect_flag == 1)
             {
+								//rt_kprintf("OUT1 !!!\n");
                 detect_flag = 0;
                 break;
             }
@@ -959,6 +970,7 @@ void obj_detection_entry(void *param)
 
                 if (detect_flag == 1)
                 {
+										//rt_kprintf("OUT2 !!!\n");
                     detect_flag = 0;
                     break;
                 }
@@ -980,6 +992,7 @@ void obj_detection_entry(void *param)
 
                 if (detect_flag == 1)
                 {
+										//rt_kprintf("OUT3 !!!\n");
                     detect_flag = 0;
                     break;
                 }
@@ -999,30 +1012,30 @@ void obj_detection_entry(void *param)
             rt_thread_mdelay(50);
         }
 
+				rt_thread_mdelay(2000);
         unknow_card_loction_x = (int)car.MileageX;
         unknow_card_loction_y = (int)car.MileageY; // 记录当前坐标
+				rt_kprintf("now card_x:%d,card_y:%d\n", unknow_card_loction_x, unknow_card_loction_y);
 
         while (detect_arrive_flag == 0) // 如果找到卡片但是没有到达，则就运动到距离小于60
         {
 
-            car.Speed_X = ART2_center_x;
-            car.Speed_Y = ART2_center_y;
+            car.Speed_X = ART2_center_x/2;
+            car.Speed_Y = ART2_center_y/2;
             rt_kprintf("x:%d, y:%d,flag:%d\n", ART2_center_x, ART2_center_y, detect_arrive_flag);
-            rt_thread_mdelay(50);
+            rt_thread_mdelay(100);
         }
 
-        car.Speed_X = 0;
-        car.Speed_Y = 0;
-        detect_flag = 0;
-        ART2_center_x = 0;
-        ART2_center_y = 0;
+					
 
-        ART1_mode = 2;               // art矫正模式
-        uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
-        rt_thread_mdelay(1000);
+			ART1_mode = 2;               // art矫正模式
+			uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
+			rt_thread_mdelay(1000);
+				
         // 记录当前坐标
+       rt_sem_release(correct_sem);
 
-        rt_sem_release(correct_sem);
+				//rt_sem_release(obj_detection_sem);
     }
 }
 
@@ -1035,13 +1048,12 @@ void car_start_init(void)
     recognize_sem = rt_sem_create("recognize_sem", 0, RT_IPC_FLAG_FIFO);             // 识别信号量，告诉单片机已经识别，接受就开始搬运
     obj_detection_sem = rt_sem_create("obj_detection_sem", 0, RT_IPC_FLAG_FIFO);     // 目标检测信号量
 
+
     route_planning_th = rt_thread_create("route_planning_th", route_planning_entry, RT_NULL, 1024, 28, 10);
-
     correct_th = rt_thread_create("correct_th", correct_entry, RT_NULL, 1024, 28, 10);
-
     carry_th = rt_thread_create("carry_th", carry_entry, RT_NULL, 1024, 28, 10);
-
     obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 28, 10);
+
 
     rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);

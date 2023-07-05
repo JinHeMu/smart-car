@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\RT106X.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\RT106X.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Tue Jul  4 23:07:07 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Wed Jul  5 17:52:27 2023
 <BR><P>
 <H3>Maximum Stack Usage =        816 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -827,12 +827,12 @@ Global Symbols
 <LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_create
 <LI><a href="#[21a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_interrupt_leave
 <LI><a href="#[217]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_interrupt_enter
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_start
 <LI><a href="#[2c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_control
 <LI><a href="#[2bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_suspend
 <LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_resume
 <LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_create
 <LI><a href="#[2cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_object_init
 <LI><a href="#[2d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_object_detach
@@ -871,12 +871,12 @@ Global Symbols
 <LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_create
 <LI><a href="#[21a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_interrupt_leave
 <LI><a href="#[217]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_interrupt_enter
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_start
 <LI><a href="#[2c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_control
 <LI><a href="#[2bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_suspend
 <LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_resume
 <LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_create
 <LI><a href="#[2cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_object_init
 <LI><a href="#[2d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_object_detach
@@ -2927,7 +2927,7 @@ Global Symbols
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;obj_detection_entry
 </UL>
 
-<P><STRONG><a name="[254]"></a>car_moveto_boundry</STRONG> (Thumb, 564 bytes, Stack size 32 bytes, carmove.o(.text.car_moveto_boundry))
+<P><STRONG><a name="[254]"></a>car_moveto_boundry</STRONG> (Thumb, 620 bytes, Stack size 32 bytes, carmove.o(.text.car_moveto_boundry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = car_moveto_boundry &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_putchar
@@ -2944,7 +2944,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer1_pit_entry
 </UL>
 
-<P><STRONG><a name="[256]"></a>car_start_init</STRONG> (Thumb, 424 bytes, Stack size 32 bytes, carmove.o(.text.car_start_init))
+<P><STRONG><a name="[256]"></a>car_start_init</STRONG> (Thumb, 412 bytes, Stack size 32 bytes, carmove.o(.text.car_start_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 416<LI>Call Chain = car_start_init &rArr; rt_thread_create &rArr; rt_object_allocate &rArr; rt_malloc &rArr; rt_memheap_alloc &rArr; rt_sem_take &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_create
@@ -2957,8 +2957,8 @@ Global Symbols
 <P><STRONG><a name="[eb]"></a>carry_entry</STRONG> (Thumb, 1888 bytes, Stack size 56 bytes, carmove.o(.text.carry_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 720<LI>Call Chain = carry_entry &rArr; arm_putbox &rArr; ARM_UP_angle &rArr; pwm_duty &rArr; PWM_UpdatePwmDutycycle &rArr; __aeabi_assert &rArr; DbgConsole_Printf &rArr; StrFormatPrintf &rArr; ConvertFloatRadixNumToString &rArr; __hardfp_pow &rArr; sqrt
 </UL>
-<BR>[Calls]<UL><LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_kprintf
 <LI><a href="#[1e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;car_boundry_carry
 <LI><a href="#[1e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_putbox
@@ -2989,8 +2989,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_putchar
 <LI><a href="#[246]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send
 <LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
-<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_kprintf
 <LI><a href="#[251]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;distance
 </UL>
@@ -3521,15 +3521,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_openbox
 </UL>
 
-<P><STRONG><a name="[297]"></a>$Super$$main</STRONG> (Thumb, 92 bytes, Stack size 0 bytes, main.o(.text.main))
+<P><STRONG><a name="[297]"></a>$Super$$main</STRONG> (Thumb, 96 bytes, Stack size 0 bytes, main.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 776<LI>Call Chain = $Super$$main &rArr; display_init &rArr; ips114_init &rArr; ips114_clear &rArr; ips114_set_region &rArr; ips114_writedata_16bit &rArr; spi_mosi &rArr; LPSPI_MasterTransferBlocking &rArr; __aeabi_assert &rArr; DbgConsole_Printf &rArr; StrFormatPrintf &rArr; ConvertFloatRadixNumToString &rArr; __hardfp_pow &rArr; sqrt
 </UL>
-<BR>[Calls]<UL><LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_putchar
-<LI><a href="#[279]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_toggle
+<BR>[Calls]<UL><LI><a href="#[279]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_toggle
 <LI><a href="#[23f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_init
 <LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
 <LI><a href="#[27e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;icm20602_init_spi
 <LI><a href="#[298]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer_pit_init
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[299]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor_init
 <LI><a href="#[263]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;encoder_init
 <LI><a href="#[259]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;display_init
@@ -3617,13 +3617,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO2_Combined_0_15_IRQHandler
 </UL>
 
-<P><STRONG><a name="[ec]"></a>obj_detection_entry</STRONG> (Thumb, 636 bytes, Stack size 0 bytes, carmove.o(.text.obj_detection_entry))
+<P><STRONG><a name="[ec]"></a>obj_detection_entry</STRONG> (Thumb, 708 bytes, Stack size 0 bytes, carmove.o(.text.obj_detection_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = obj_detection_entry &rArr; car_move &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_putchar
 <LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
-<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_kprintf
 <LI><a href="#[254]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;car_moveto_boundry
 <LI><a href="#[250]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;car_move
@@ -3736,8 +3736,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[255]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_putchar
 <LI><a href="#[246]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send
 <LI><a href="#[239]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
-<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_kprintf
 <LI><a href="#[1e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;car_boundry_carry
 <LI><a href="#[1e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_openbox
@@ -3766,12 +3766,12 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_recv
 <LI><a href="#[24d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_create
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_start
 <LI><a href="#[2c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_control
 <LI><a href="#[2bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_suspend
 <LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_resume
 <LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[270]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_init
 <LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_create
 <LI><a href="#[2d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_object_is_systemobject
@@ -4075,8 +4075,8 @@ Global Symbols
 <P><STRONG><a name="[2c4]"></a>rt_memheap_alloc</STRONG> (Thumb, 328 bytes, Stack size 24 bytes, memheap.o(.text.rt_memheap_alloc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = rt_memheap_alloc &rArr; rt_sem_take &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
-<BR>[Calls]<UL><LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[2c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_object_get_type
 <LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_assert_handler
 <LI><a href="#[2cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_set_errno
@@ -4087,8 +4087,8 @@ Global Symbols
 <P><STRONG><a name="[2b5]"></a>rt_memheap_free</STRONG> (Thumb, 416 bytes, Stack size 24 bytes, memheap.o(.text.rt_memheap_free))
 <BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = rt_memheap_free &rArr; rt_sem_take &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
-<BR>[Calls]<UL><LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[2c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_object_get_type
 <LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_assert_handler
 <LI><a href="#[2cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_set_errno
@@ -4177,12 +4177,12 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_assert_handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_recv
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_start
 <LI><a href="#[2c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_control
 <LI><a href="#[2bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_suspend
 <LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_resume
 <LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
 <LI><a href="#[2ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send_wait
 <LI><a href="#[2b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_malloc
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_startup
@@ -4235,8 +4235,8 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[218]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_tick_increase
 <LI><a href="#[1df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_recv
-<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<LI><a href="#[257]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
 <LI><a href="#[2ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send_wait
 <LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_startup
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_timeout
@@ -4310,7 +4310,8 @@ Global Symbols
 <LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_hw_interrupt_enable
 <LI><a href="#[22c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_hw_interrupt_disable
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_memheap_free
+<BR>[Called By]<UL><LI><a href="#[297]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
+<LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_memheap_free
 <LI><a href="#[2c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_memheap_alloc
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;button_entry
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;route_planning_entry
@@ -4883,7 +4884,6 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[2fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LPUART_WriteByte
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_hw_console_output
-<LI><a href="#[297]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;route_planning_entry
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;obj_detection_entry
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;correct_entry
