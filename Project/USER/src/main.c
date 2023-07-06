@@ -16,6 +16,7 @@ void main()
 
 	encoder_init();	  // 初始化编码器
 	icm20602_init_spi();  // 初始化陀螺仪
+	icm_zeroBias();
 	timer_pit_init(); // 周期定时器
 	
 	buzzer_init(); // 初始化蜂鸣器
@@ -24,11 +25,11 @@ void main()
 	motor_init();
 
 	car_start_init();
-	//uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+	uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 	
 	
 //	
-	rt_sem_release(obj_detection_sem);
+//	rt_sem_release(obj_detection_sem);
 
 	while (1)
 	{

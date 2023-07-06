@@ -476,7 +476,7 @@ void route_planning_entry(void *param)
 
 
             car.Speed_Y = -200;
-            rt_thread_mdelay(2000);
+            rt_thread_mdelay(1000);
             car.Speed_Y = 0;
 
             car_moveto_boundry(-1, 1);
@@ -484,8 +484,8 @@ void route_planning_entry(void *param)
             arm_openbox(3);//左三
 
 
-            car.Speed_X = 100;
-            rt_thread_mdelay(2000);
+            car.Speed_X = 200;
+            rt_thread_mdelay(1000);
             car.Speed_X = 0;
 
             car_moveto_boundry(1, -1);
@@ -1027,13 +1027,14 @@ void obj_detection_entry(void *param)
         }
 
 					
-
+            detect_flag = 0;
 			ART1_mode = 2;               // art矫正模式
 			uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
 			rt_thread_mdelay(1000);
 				
+
         // 记录当前坐标
-       rt_sem_release(correct_sem);
+            rt_sem_release(correct_sem);
 
 				//rt_sem_release(obj_detection_sem);
     }

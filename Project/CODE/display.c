@@ -95,7 +95,7 @@ void Menu_key_set(void)
 //
 
 
-		arm_openbox(2);
+		arm_putbox(1);
 		mb_data = 0; // 邮箱数据清除
 	}
 
@@ -114,7 +114,7 @@ void Menu_key_set(void)
 //		
 		
 		
-		car_boundry_carry(12,19);
+//		car_boundry_carry(12,19);
 		
 //		Angel_kd += 5;
 //		ips114_showfloat(60, 4, Angel_kd, 4, 2);
@@ -134,7 +134,7 @@ void Menu_key_set(void)
 //		rt_thread_mdelay(2000);
 
 //			arm_openbox(2);
-		
+		arm_putbox(2);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -189,10 +189,10 @@ void Menu_key_set(void)
 //		ARM_LOW_angle(angle2);
 //		
 		
-//		arm_putbox(2);
-		static int count = 0;
-		count++;
-		ARM_LOW_angle(count*10);
+			arm_carry();
+//		static int count = 0;
+//		count++;
+//		ARM_LOW_angle(count*10);
 
 		
 		

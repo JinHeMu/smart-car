@@ -15,7 +15,8 @@
         "seekfree_ips114_spi.h": "c",
         "openart1.h": "c",
         "openart2.h": "c",
-        "iterator": "c"
+        "iterator": "c",
+        "icm20602.h": "c"
     },
     "idf.flashType": "UART",
     "idf.portWin": "COM5",

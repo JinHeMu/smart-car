@@ -33,50 +33,25 @@ float slidingFilter(float newData)
     return average;
 }
 
-void icm_zeroBias()
+void icm_zeroBias(void)//陀螺仪零漂
 {
-
-	Gyro_Bias.Xdata = 0;
-	Gyro_Bias.Ydata = 0;
-	Gyro_Bias.Zdata = 0;
-
-	if (icm_zeroBiasFlag == 0)
-	{
-
-		for (uint16_t i = 0; i < 100; ++i)
+	Gyro_Bias.Zdata = 0;//初始化
+		for (uint16_t i = 0; i < 400; ++i)
 		{
-			imu963ra_get_gyro();
-
-			Gyro_Bias.Xdata += icm_gyro_x;
-			Gyro_Bias.Ydata += icm_gyro_y;
-			Gyro_Bias.Zdata += icm_gyro_z;
-
-			rt_thread_mdelay(10);
+			get_icm20602_gyro_spi();//获取角速度
+			Gyro_Bias.Zdata += icm_gyro_z;//累加陀螺仪
+			rt_kprintf("Zdata :%d\n", 	(int)icm_gyro_z);
+			rt_thread_mdelay(5);
 		}
-		Gyro_Bias.Xdata /= 100;
-		Gyro_Bias.Ydata /= 100;
-		Gyro_Bias.Zdata /= 100;
-		icm_zeroBiasFlag = 1;
-	}
+		Gyro_Bias.Zdata /= 400;//取平均数
+		rt_kprintf("Gyro_Bias.Zdata :%d\n", 	(int)Gyro_Bias.Zdata);
 }
 
 void ARHS_getValues()
 {
-	// 陀螺仪角度转弧度
-//	float filtered_gyro_x = slidingFilter(((float)icm_gyro_x + Gyro_Bias.Xdata) * M_PI / 180 / 14.3f);
-//	float filtered_gyro_y = slidingFilter(((float)icm_gyro_y + Gyro_Bias.Ydata) * M_PI / 180 / 14.3f);
-	float filtered_gyro_z = slidingFilter(((float)icm_gyro_z + Gyro_Bias.Zdata)  / 16.4f);
-	//rt_kprintf("icm_gyro_z:%d\n", (int)(filtered_gyro_z*100));
-	
-//	source_data.gyro_x = (float)(icm_gyro_x + Gyro_Bias.Xdata) * M_PI / 180 / 14.3f;
-//	source_data.gyro_y = (float)(icm_gyro_y + Gyro_Bias.Ydata) * M_PI / 180 / 14.3f;
-//	source_data.gyro_z = (float)(icm_gyro_z + Gyro_Bias.Zdata) * M_PI / 180 / 14.3f;
-	
-	
-//	source_data.acc_x = imu963ra_acc_x;
-//	source_data.acc_y = imu963ra_acc_y;
-//	source_data.acc_z = imu963ra_acc_z;
-	
+
+	float filtered_gyro_z = slidingFilter(((float)icm_gyro_z - Gyro_Bias.Zdata)  / 16.4f);
+
 	//rt_kprintf("%d\n", (int)(filtered_gyro_z * 10000));
 	
 	if(abs(filtered_gyro_z) < 3)
@@ -84,14 +59,8 @@ void ARHS_getValues()
 		filtered_gyro_z = 0;
 	}
 
-//    angle_x += (filtered_gyro_x / 3.33);
-//    angle_y += (filtered_gyro_y / 3.33);
     angle_z -= filtered_gyro_z * 0.005;
 	
-//	  angle_x += (source_data.gyro_x / 3.33);
-//    angle_y += (source_data.gyro_y / 3.33);
-//    angle_z += (source_data.gyro_z / 3.33);
-
 	if (angle_z >= 360)
 	{
 		angle_z -= 360;
@@ -109,8 +78,6 @@ void ARHS_getValues()
 void Mahony_computeAngles()
 {
 	// 采集陀螺仪数据
-	get_icm20602_gyro_spi();
-	get_icm20602_accdata_spi();
-	icm_zeroBias();
+	get_icm20602_gyro_spi();//获取角速度
 	ARHS_getValues();
 }

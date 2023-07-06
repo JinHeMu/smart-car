@@ -161,7 +161,7 @@ def openart_init():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(1000)
+    sensor.set_brightness(400)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True, (0, 0, 0))
@@ -253,7 +253,7 @@ def object_detection(net, face_detect):
             uart.write("%c" % 0)
             uart.write("D")
             print("dis:%d, angle:%d, center_x:%d, center_y:%d" % (dis, angle, center_x - 160, dis_center_y))
-            if dis < 50:
+            if dis < 30:
                 detec_flag = 0
                 uart.write("C")
                 uart.write("%c" % dis_center_x)
@@ -270,16 +270,16 @@ def main():
 
     while True:
         img = sensor.snapshot()
-        object_detection(net, face_detect)
+        #object_detection(net, face_detect)
 
-        #uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
-        #if uart_num:
-            #uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
-            #print(uart_str.decode())
-            #if uart_str.decode() == "F":
-                #print("F")
-                #uart_num = 0
-                #object_detection(net, face_detect)
+        uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
+        if uart_num:
+            uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
+            print(uart_str.decode())
+            if uart_str.decode() == "F":
+                print("F")
+                uart_num = 0
+                object_detection(net, face_detect)
 
 if __name__ == '__main__':
     main()

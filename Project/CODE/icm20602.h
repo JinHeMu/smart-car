@@ -24,7 +24,7 @@ extern float angle_x,angle_y,angle_z;
 
 
 
-void icm_zeroBias();
+void icm_zeroBias(void);
 void ARHS_getValues();
 void Mahony_computeAngles();
 
