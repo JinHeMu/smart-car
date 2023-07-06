@@ -42,8 +42,8 @@ uint8 find_card_y = 0;
 uint8 count = 0;
 uint8 boundry_num = 0;
 
-uint8 unknow_card_loction_x = 0;
-uint8 unknow_card_loction_y = 0;
+uint8 unknow_card_loction_x = 60;
+uint8 unknow_card_loction_y = 60;
 
 //**初赛**
 // 车载 盒4
@@ -115,7 +115,16 @@ int get_angle(float current_x, float current_y, float target_x, float target_y)
 void car_move(float tar_x, float tar_y)
 {
     rt_kprintf("MOVING!!!\n");
-
+		
+		
+		int16 angle = get_angle(car.MileageX,car.MileageY,tar_x,tar_y);
+	
+		if(abs(angle) > 90)//如果是向下移动，就多向下移动一格，防止卡片在车底下
+		{
+			tar_y -= 10;
+			rt_kprintf("tar_angle:\n", angle);
+		}
+		
     float target_distance = distance(car.MileageX, car.MileageY, tar_x, tar_y);
     float current_distance = target_distance;
     float acceleration = 0.02; // 加速度，可根据实际情况调整
@@ -164,9 +173,9 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 							rt_kprintf("I FOUND CARD!!!");
                 break;
             }
-            if (car.MileageX > 40)
+            if (car.MileageX > 20)
             {
-                car.Speed_X = -150;
+                car.Speed_X = -200;
             }
             else
             {
@@ -192,9 +201,9 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 							rt_kprintf("I FOUND CARD!!!");
                 break;
             }
-            if (car.MileageY > 40)
+            if (car.MileageY > 20)
             {
-                car.Speed_Y = -150;
+                car.Speed_Y = -200;
             }
             else
             {
@@ -221,9 +230,9 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 							rt_kprintf("I FOUND CARD!!!");
                 break;
             }
-            if (car.MileageX < (field_width * 20 - 40))
+            if (car.MileageX < (field_width * 20 - 20))
             {
-                car.Speed_X = 150;
+                car.Speed_X = 200;
             }
             else
             {
@@ -278,26 +287,26 @@ void car_boundry_carry(int8 tar_x, int8 tar_y)
 {
     if (tar_x < 0)
     {
-        car.Speed_X = -100;
+        car.Speed_X = -200;
         rt_thread_mdelay(1000);
         car.Speed_X = 0;
     }
     else if (tar_x > field_width)
     {
-        car.Speed_X = 100;
-        rt_thread_mdelay(1000);
+        car.Speed_X = 200;
+        rt_thread_mdelay(500);
         car.Speed_X = 0;
     }
     else if (tar_y < 0)
     {
-        car.Speed_Y = -100;
-        rt_thread_mdelay(1000);
+        car.Speed_Y = -200;
+        rt_thread_mdelay(500);
         car.Speed_Y = 0;
     }
     else if (tar_y > field_height)
     {
-        car.Speed_Y = 100;
-        rt_thread_mdelay(1000);
+        car.Speed_Y = 200;
+        rt_thread_mdelay(500);
         car.Speed_Y = 0;
     }
 }
@@ -460,40 +469,42 @@ void route_planning_entry(void *param)
 
             //初赛分类
 
-            car_moveto_boundry(field_width + 1, 1);
-            car_boundry_carry(field_width + 1, 1);
-            arm_openbox(1);//右三
+//            car_moveto_boundry(field_width + 1, 1);
+//            car_boundry_carry(field_width + 1, 1);
+//            arm_openbox(1);//右三
 
 
-            car.Speed_X = -200;
-            rt_thread_mdelay(2000);
-            car.Speed_X = 0;
+//            car.Speed_X = -200;
+//            rt_thread_mdelay(2000);
+//            car.Speed_X = 0;
 
-            car_moveto_boundry(1, field_height + 1);
-            car_boundry_carry(1, field_height + 1);
-            arm_openbox(2);//下三（需要改动）
-
-
-
-            car.Speed_Y = -200;
-            rt_thread_mdelay(1000);
-            car.Speed_Y = 0;
-
-            car_moveto_boundry(-1, 1);
-            car_boundry_carry(-1, 1);
-            arm_openbox(3);//左三
+//            car_moveto_boundry(1, field_height + 1);
+//            car_boundry_carry(1, field_height + 1);
+//            arm_openbox(2);//下三（需要改动）
 
 
-            car.Speed_X = 200;
-            rt_thread_mdelay(1000);
-            car.Speed_X = 0;
 
-            car_moveto_boundry(1, -1);
-            car_boundry_carry(1, -1);//测试回库
+//            car.Speed_Y = -200;
+//            rt_thread_mdelay(1000);
+//            car.Speed_Y = 0;
+
+//            car_moveto_boundry(-1, 1);
+//            car_boundry_carry(-1, 1);
+//            arm_openbox(3);//左三
+
+
+//            car.Speed_X = 200;
+//            rt_thread_mdelay(1000);
+//            car.Speed_X = 0;
+
+//            car_moveto_boundry(1, -1);
+//            car_boundry_carry(1, -1);//测试回库
 
 
             rt_sem_release(obj_detection_sem);
-            running_mode = 1;
+						rt_thread_mdelay(2000);
+						rt_thread_delete(route_planning_th);
+						
         }
         else
         {
@@ -931,7 +942,10 @@ void obj_detection_entry(void *param)
     while (1)
     {
         rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER); // 接受识别信号量
-
+			
+				ARM_LOW_angle(100);
+				ARM_UP_angle(180);
+				rt_thread_mdelay(300);
 
         ART2_center_x = 0;
         ART2_center_y = 0;
@@ -950,16 +964,13 @@ void obj_detection_entry(void *param)
 				rt_kprintf("WAITING3 !!!\n");
 				rt_thread_mdelay(1000);
 			
-			
-
-
 
         while (detect_flag == 0) // 是否接受数据
         {
 
             if (detect_flag == 1)
             {
-								//rt_kprintf("OUT1 !!!\n");
+								rt_kprintf("OUT1 !!!\n");
                 detect_flag = 0;
                 break;
             }
@@ -970,7 +981,7 @@ void obj_detection_entry(void *param)
 
                 if (detect_flag == 1)
                 {
-										//rt_kprintf("OUT2 !!!\n");
+										rt_kprintf("OUT2 !!!\n");
                     detect_flag = 0;
                     break;
                 }
@@ -992,7 +1003,7 @@ void obj_detection_entry(void *param)
 
                 if (detect_flag == 1)
                 {
-										//rt_kprintf("OUT3 !!!\n");
+										rt_kprintf("OUT3 !!!\n");
                     detect_flag = 0;
                     break;
                 }
@@ -1027,14 +1038,14 @@ void obj_detection_entry(void *param)
         }
 
 					
-            detect_flag = 0;
+      detect_flag = 0;
 			ART1_mode = 2;               // art矫正模式
 			uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
 			rt_thread_mdelay(1000);
 				
 
         // 记录当前坐标
-            rt_sem_release(correct_sem);
+       rt_sem_release(correct_sem);
 
 				//rt_sem_release(obj_detection_sem);
     }
@@ -1056,7 +1067,7 @@ void car_start_init(void)
     obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 28, 10);
 
 
-    rt_thread_startup(route_planning_th);
+//    rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
     rt_thread_startup(obj_detection_th);

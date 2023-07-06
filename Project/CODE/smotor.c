@@ -122,6 +122,7 @@ void arm_putbox(uint8 angle)
 {
 
 	ARM_LOW_angle(80);
+	ARM_UP_angle(140);
 	rt_thread_mdelay(300);//防止仓卡住
 
 	
@@ -166,6 +167,12 @@ void arm_putbox(uint8 angle)
 	
 	ARM_LOW_angle(95);
 	rt_thread_mdelay(20);
+		ARM_LOW_angle(96);
+	rt_thread_mdelay(20);
+		ARM_LOW_angle(97);
+	rt_thread_mdelay(20);
+		ARM_LOW_angle(98);
+	rt_thread_mdelay(20);
 	
 	magnet_front_release();
 	rt_thread_mdelay(300);
@@ -173,10 +180,11 @@ void arm_putbox(uint8 angle)
 	
 
 	ARM_LOW_angle(80);
+	ARM_UP_angle(140);
 	rt_thread_mdelay(500);//防止仓卡住
 	
 	ARM_MID_angle(0);
-	rt_thread_mdelay(1000);//转动回去
+	rt_thread_mdelay(1500);//转动回去
 	
 	ARM_LOW_angle(100);
 	ARM_UP_angle(180);//收回，防止目标检测识别到
@@ -191,6 +199,7 @@ void arm_openbox(uint8 angle)
 {
 	
 	ARM_LOW_angle(80);
+	ARM_UP_angle(140);
 	rt_thread_mdelay(300);//防止仓卡住
 	switch (angle)
 	{

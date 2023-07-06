@@ -253,7 +253,7 @@ def object_detection(net, face_detect):
             uart.write("%c" % 0)
             uart.write("D")
             print("dis:%d, angle:%d, center_x:%d, center_y:%d" % (dis, angle, center_x - 160, dis_center_y))
-            if dis < 30:
+            if dis < 40:
                 detec_flag = 0
                 uart.write("C")
                 uart.write("%c" % dis_center_x)
