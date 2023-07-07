@@ -7,6 +7,8 @@
 3 - 180°
 4 - 270°*/
 
+uint8 tar_angle = 0;
+uint8 cur_angle = 0;
 
 //定义机械臂的PWM IO口
 #define ARM_UP_PIN PWM1_MODULE3_CHA_B10
@@ -63,6 +65,21 @@ void ARM_MID_angle(int angle)
 }
 
 
+void arm_out(void) // 防止仓卡住
+{
+	ARM_LOW_angle(80);
+	ARM_UP_angle(120);
+	rt_thread_mdelay(300);//防止仓卡住
+}
+
+void arm_return(void)//防止目标检测到舵机
+{
+	ARM_UP_angle(180);//收回，防止目标检测识别到
+	rt_thread_mdelay(100);
+	ARM_LOW_angle(90);
+	rt_thread_mdelay(100);
+}
+
 /*
 机械臂分为三种情况，或者是两种运动情况
 1.放入盒子-先转动仓库，放入卡片
@@ -86,8 +103,9 @@ void arm_down(void)
 	rt_thread_mdelay(300);
 
 	ARM_UP_angle(180);//收回，防止目标检测识别到
-	rt_thread_mdelay(200);
-	ARM_LOW_angle(80);
+	rt_thread_mdelay(500);
+	ARM_LOW_angle(90);
+	rt_thread_mdelay(100);
 
 }
 
@@ -108,7 +126,7 @@ void arm_carry(void)
 	rt_thread_mdelay(500);
 	
 	
-	ARM_LOW_angle(60);
+	ARM_LOW_angle(70);
 	rt_thread_mdelay(300);
 	ARM_LOW_angle(70);
 	ARM_UP_angle(180);
@@ -122,15 +140,17 @@ void arm_carry(void)
 void arm_putbox(uint8 angle)
 {
 
-	ARM_LOW_angle(80);
-	ARM_UP_angle(140);
-	rt_thread_mdelay(300);//防止仓卡住
+	arm_out();
 
-	
-	ARM_MID_angle(angle*90 - 90);
-	rt_thread_mdelay(1500);
-	
 
+	switch (abs(angle - cur_angle))
+	{
+		case 0:	ARM_MID_angle(angle * 90 - 1);rt_thread_mdelay(0);cur_angle = angle;break;
+		case 1:	ARM_MID_angle(angle * 90 - 1);rt_thread_mdelay(500);cur_angle = angle;break;
+		case 2:	ARM_MID_angle(angle * 90 - 1);rt_thread_mdelay(1000);cur_angle = angle;break;
+		case 3:	ARM_MID_angle(angle * 90 - 1);rt_thread_mdelay(1500);cur_angle = angle;break;
+	}
+	
 	ARM_UP_angle(5);
 	rt_thread_mdelay(300);
 	ARM_LOW_angle(53);
@@ -156,41 +176,26 @@ void arm_putbox(uint8 angle)
 	rt_thread_mdelay(100);
 	ARM_LOW_angle(91);
 	rt_thread_mdelay(20);
-	
 	ARM_LOW_angle(92);
 	rt_thread_mdelay(20);
-	
 	ARM_LOW_angle(93);
 	rt_thread_mdelay(20);
-	
 	ARM_LOW_angle(94);
 	rt_thread_mdelay(20);
-	
 	ARM_LOW_angle(95);
 	rt_thread_mdelay(20);
-		ARM_LOW_angle(96);
+	ARM_LOW_angle(96);
 	rt_thread_mdelay(20);
-		ARM_LOW_angle(97);
+	ARM_LOW_angle(97);
 	rt_thread_mdelay(20);
-		ARM_LOW_angle(98);
+	ARM_LOW_angle(98);
 	rt_thread_mdelay(20);
 	
 	magnet_front_release();
 	rt_thread_mdelay(300);
 	
-	
 
-	ARM_LOW_angle(80);
-	ARM_UP_angle(140);
-	rt_thread_mdelay(500);//防止仓卡住
-	
-	ARM_MID_angle(0);
-	rt_thread_mdelay(1500);//转动回去
-	
-	
-	ARM_UP_angle(180);//收回，防止目标检测识别到
-	rt_thread_mdelay(200);
-	ARM_LOW_angle(80);
+	arm_return();
 	
 	
 	
@@ -202,15 +207,14 @@ void arm_putbox(uint8 angle)
 void arm_openbox(uint8 angle)
 {
 	
-	ARM_LOW_angle(80);
-	ARM_UP_angle(140);
-	rt_thread_mdelay(300);//防止仓卡住
+	arm_out();
+	
 	switch (angle)
 	{
 		case 1:	ARM_MID_angle(270);rt_thread_mdelay(1500);break;
-		case 2:	ARM_MID_angle(0);rt_thread_mdelay(1500);break;
-		case 3:	ARM_MID_angle(90);rt_thread_mdelay(1500);break;
-		case 4:	ARM_MID_angle(180);rt_thread_mdelay(1500);break;
+		case 2:	ARM_MID_angle(0);rt_thread_mdelay(0);break;
+		case 3:	ARM_MID_angle(90);rt_thread_mdelay(500);break;
+		case 4:	ARM_MID_angle(180);rt_thread_mdelay(1000);break;
 	}
 
 	ARM_LEFT_angle(100);
@@ -222,10 +226,10 @@ void arm_openbox(uint8 angle)
 	ARM_LEFT_angle(0);
 	rt_thread_mdelay(1000);
 
-	car.Speed_X= 300;
-	rt_thread_mdelay(500);
-	car.Speed_X= 0;
-	rt_thread_mdelay(500);
+//	car.Speed_X= 300;
+//	rt_thread_mdelay(500);
+//	car.Speed_X= 0;
+//	rt_thread_mdelay(500);
 
 
 	ARM_LEFT_angle(100);
@@ -235,9 +239,8 @@ void arm_openbox(uint8 angle)
 
 	ARM_LEFT_angle(0);
 	rt_thread_mdelay(300);
-	ARM_UP_angle(180);//收回，防止目标检测识别到
-	rt_thread_mdelay(100);
-	ARM_LOW_angle(80);
+
+	arm_return();
 	
 
 }
@@ -267,7 +270,7 @@ void arm_init(void)
 
 	ARM_LEFT_angle(0);
 	ARM_LOW_angle(80);
-	ARM_UP_angle(180);//收回，防止目标检测识别到
+	ARM_UP_angle(120);//收回，防止目标检测识别到
 	ARM_MID_angle(0);
 	rt_thread_mdelay(200);
 

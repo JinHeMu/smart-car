@@ -20,7 +20,7 @@ void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 	
 	if (kStatus_LPUART_RxIdle == status)
 	{
-		if (ART2_mode && car.MileageX > 100 && car.MileageX < 260)
+		if (ART2_mode && car.MileageX > 40 && car.MileageX < 310)
 		{
 			if (rxstate == 0)
 			{
