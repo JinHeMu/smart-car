@@ -161,7 +161,7 @@ def openart_init():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(400)
+    sensor.set_brightness(1000)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True, (0, 0, 0))
@@ -207,10 +207,11 @@ def object_detection(net, face_detect):
                 if dis_center_y > 128:
                     dis_center_y = 128
 
+                max_distance_threshold = 150
                 angle = -int(math.atan((center_x - 160) / (center_y - 240)) * 60)
                 dis = int(math.sqrt(((center_x - 160) ** 2) + ((center_y - 240) ** 2)))
 
-                if dis < closest_dis:
+                if dis < closest_dis and dis < max_distance_threshold:
                     closest_dis = dis
                     closest_obj = obj
 

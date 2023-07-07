@@ -15,7 +15,7 @@ def resize_images(directory, new_size):
                     print(f"Error resizing {filename}: {str(e)}")
 
 # 指定文件夹路径和新尺寸
-directory = r"C:\Users\49075\Desktop\eiq-data\data(new_96)\data\grape"
+directory = r"C:\Users\49075\Desktop\openart\eiq-data\picture"
 new_size = 96
 
 # 调用函数进行图片尺寸修改

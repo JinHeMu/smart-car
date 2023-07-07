@@ -58,6 +58,7 @@ typedef struct card {
 extern Pose_car car;
 extern rt_sem_t recognize_sem;
 extern rt_sem_t obj_detection_sem;
+extern char taget_Big_category[10];
 
 void car_start_init(void);
 void car_move(float tar_x, float tar_y);

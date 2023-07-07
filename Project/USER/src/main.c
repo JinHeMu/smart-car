@@ -25,11 +25,13 @@ void main()
 	motor_init();
 
 	car_start_init();
-//	uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+	uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 	
+	car.MileageY = -20;
 	
 //	
-	rt_sem_release(obj_detection_sem);
+////	
+//	rt_sem_release(obj_detection_sem);
 
 	while (1)
 	{

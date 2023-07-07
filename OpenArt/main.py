@@ -14,12 +14,14 @@ correct_flag = 1
 recognize_flag = 1
 uart_num = 0
 
+binary_threshold = (130, 248)
+
 #白天阈值
-card_threshold = [(60, 100, -41, 22, -18, 95)]#色块检测阈值
-boundary_threshold = [(52, 94, -20, 8, 26, 127)]#边线检测阈值
-boundary_column_threshold = [(52, 94, -20, 8, 26, 127)]#边线检测阈值
-boundary_row_threshold = [(52, 94, -20, 8, 26, 127)]#边线检测阈值
-day_brightness = 400
+card_threshold = [(48, 87, -33, 33, -2, 80)]#色块检测阈值
+boundary_threshold = [(46, 71, -28, 9, 47, 84)]#边线检测阈值
+boundary_column_threshold = [(46, 71, -28, 9, 47, 84)]#边线检测阈值
+boundary_row_threshold = [(46, 71, -28, 9, 47, 84)]#边线检测阈值
+day_brightness = 1000
 
 ##  #晚上阈值
 #card_threshold = [(64, 100, -33, 12, -18, 107)]#色块检测阈值
@@ -55,7 +57,7 @@ def find_coordinates():
     global pos_perx
 
     sensor.reset()
-    sensor.set_pixformat(sensor.RGB565)
+    sensor.set_pixformat(sensor.GRAYSCALE)
     sensor.set_framesize(sensor.QVGA)
     sensor.set_brightness(1000)
     sensor.skip_frames(20)
@@ -71,6 +73,9 @@ def find_coordinates():
         pos_y = []
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         img = sensor.snapshot()
+        img.binary([binary_threshold])
+        img.erode(2)
+        img.dilate(2)
         for r in img.find_rects(threshold=3000):
             #寻找矩形
             if r.w() > 120 and r.w() < 180 and r.h() > 70 and r.h() < 130:
@@ -112,7 +117,7 @@ def find_coordinates():
                     break
                 else:
                     pos_perx = result_x
-                    lcd.show_image(img1, 320, 240, zoom=2)
+                    lcd.show_image(img, 320, 240, zoom=2)
 
 
 
@@ -329,47 +334,48 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "mobilenet_v2-2023-07-05_previous75.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "7-6-epoch10.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
 
     while(True):
         img = sensor.snapshot()
-        #recognize_pic(labels, net)
-        #boundary_correct('column')
-        #picture_correct()
-        uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
-        if (uart_num):
-            uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
-            #print(uart_str.decode())
-            if(uart_str.decode() == "A"):
-                print("A")
-                uart_num=0
-                find_coordinates()
+        # find_coordinates()
+        recognize_pic(labels, net)
+        # boundary_correct('column')
+        # picture_correct()
+        #uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
+        #if (uart_num):
+            #uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
+            ##print(uart_str.decode())
+            #if(uart_str.decode() == "A"):
+                #print("A")
+                #uart_num=0
+                #find_coordinates()
 
-            elif(uart_str.decode() == "B"):
-                print("B")
-                uart_num=0
-                picture_correct()
+            #elif(uart_str.decode() == "B"):
+                #print("B")
+                #uart_num=0
+                #picture_correct()
 
-            elif(uart_str.decode() == "C"):
-                print("C")
-                uart_num=0
-                recognize_pic(labels, net)
+            #elif(uart_str.decode() == "C"):
+                #print("C")
+                #uart_num=0
+                #recognize_pic(labels, net)
 
-            elif(uart_str.decode() == "D"):
-                print("D")
-                uart_num=0
-                boundary_correct('column')
+            #elif(uart_str.decode() == "D"):
+                #print("D")
+                #uart_num=0
+                #boundary_correct('column')
 
-            elif(uart_str.decode() == "E"):
-                print("E")
-                uart_num=0
-                boundary_correct('row')
+            #elif(uart_str.decode() == "E"):
+                #print("E")
+                #uart_num=0
+                #boundary_correct('row')
 
-        else:
-            lcd.show_image(img, 320, 240, zoom=2)
+        #else:
+            #lcd.show_image(img, 320, 240, zoom=2)
 
 
 

@@ -85,8 +85,9 @@ void arm_down(void)
 	magnet_front_release();
 	rt_thread_mdelay(300);
 
-	ARM_LOW_angle(100);
 	ARM_UP_angle(180);//收回，防止目标检测识别到
+	rt_thread_mdelay(200);
+	ARM_LOW_angle(80);
 
 }
 
@@ -97,11 +98,11 @@ void arm_carry(void)
 	rt_thread_mdelay(300);
 	
 	ARM_LOW_angle(53);
-	rt_thread_mdelay(100);
+	rt_thread_mdelay(200);
 	ARM_LOW_angle(48);
-	rt_thread_mdelay(100);
+	rt_thread_mdelay(200);
 	ARM_LOW_angle(43);
-	rt_thread_mdelay(100);
+	rt_thread_mdelay(200);
 
 	magnet_front_appeal();
 	rt_thread_mdelay(500);
@@ -186,8 +187,11 @@ void arm_putbox(uint8 angle)
 	ARM_MID_angle(0);
 	rt_thread_mdelay(1500);//转动回去
 	
-	ARM_LOW_angle(100);
+	
 	ARM_UP_angle(180);//收回，防止目标检测识别到
+	rt_thread_mdelay(200);
+	ARM_LOW_angle(80);
+	
 	
 	
 	
@@ -218,11 +222,10 @@ void arm_openbox(uint8 angle)
 	ARM_LEFT_angle(0);
 	rt_thread_mdelay(1000);
 
-//	car.Speed_X= 200;
-//	rt_thread_mdelay(500);
-//	car.Speed_X= -200;
-//	rt_thread_mdelay(500);
-//	car.Speed_X= 0;
+	car.Speed_X= 300;
+	rt_thread_mdelay(500);
+	car.Speed_X= 0;
+	rt_thread_mdelay(500);
 
 
 	ARM_LEFT_angle(100);
@@ -232,8 +235,9 @@ void arm_openbox(uint8 angle)
 
 	ARM_LEFT_angle(0);
 	rt_thread_mdelay(300);
-	ARM_LOW_angle(100);
 	ARM_UP_angle(180);//收回，防止目标检测识别到
+	rt_thread_mdelay(100);
+	ARM_LOW_angle(80);
 	
 
 }
