@@ -18,23 +18,23 @@ uart_num = 0
 
 
 
-#白天阈值
-card_threshold = [(47, 100, -4, 68, -17, 29)]#色块检测阈值
-boundary_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
-boundary_column_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
-boundary_row_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
-day_brightness = 300
-binary_threshold = (183, 255)
+##白天阈值
+#card_threshold = [(47, 100, -4, 68, -17, 29)]#色块检测阈值
+#boundary_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
+#boundary_column_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
+#boundary_row_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
+#day_brightness = 300
+#binary_threshold = (183, 255)
 #LED(4).on()#照明
 
-#  #晚上阈值
-# card_threshold = [(48, 87, -33, 33, -2, 80)]#色块检测阈值
-# boundary_threshold = [(46, 71, -28, 9, 47, 84)]#边线检测阈值
-# boundary_column_threshold = [(46, 71, -28, 9, 47, 84)]#边线检测阈值
-# boundary_row_threshold = [(46, 71, -28, 9, 47, 84)]#边线检测阈值
-# day_brightness = 1000
-# LED(4).on()#照明
-# binary_threshold = (154, 255)
+#晚上阈值
+card_threshold = [(46, 86, -40, 26, -14, 82)]#色块检测阈值
+boundary_threshold = [(45, 73, -42, -9, 21, 90)]#边线检测阈值
+boundary_column_threshold = [(45, 73, -42, -9, 21, 90)]#边线检测阈值
+boundary_row_threshold = [(45, 73, -42, -9, 21, 90)]#边线检测阈值
+day_brightness = 1000
+LED(4).on()#照明
+binary_threshold = (154, 255)
 
 uart = UART(2, baudrate=115200) #串口
 

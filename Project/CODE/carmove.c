@@ -141,16 +141,17 @@ void car_move(float tar_x, float tar_y)
 	{
 		
 		acceleration = 0.01;
+		max_speed = 0.5;
 		
 		if (angle > 0 && angle < 90) // 如果是向下移动，就多向下移动一格，防止卡片在车底下
     {
-        tar_x += 40;
+        tar_x += 60;
 				tar_y += 20;
     }
     else if (angle > 90 && angle < 180) // 如果向右移动，就多向右移动一点
     {
         tar_y -= 40;
-        tar_x += 40;
+        tar_x += 0;
     }
     else if (angle < 0 && angle > -90) // 如果向左移动，就多向左以动一点
     {
