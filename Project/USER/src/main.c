@@ -23,11 +23,15 @@ void main()
 	button_init(); // 初始化按键
 
 	motor_init();
+	
 
 	car_start_init();
 	uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 	
+	
+	
 	car.MileageY = -20;
+	car.MileageX = 10;
 	
 //	
 ////	
