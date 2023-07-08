@@ -16,7 +16,8 @@
         "openart1.h": "c",
         "openart2.h": "c",
         "iterator": "c",
-        "icm20602.h": "c"
+        "icm20602.h": "c",
+        "mutex": "c"
     },
     "idf.flashType": "UART",
     "idf.portWin": "COM5",

@@ -7,13 +7,13 @@ from pyb import LED #ĺŻźĺĽLED
 sensor.reset()
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA) # we run out of memory if the resolution is much bigger...
-sensor.set_brightness(800)
+sensor.set_brightness(1000)
 sensor.skip_frames(time = 20)
 #sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
 #sensor.set_auto_whitebal(False,(0,0x80,0))  # must turn this off to prevent image washout...
 clock = time.clock()
 
-net_path = "6.23-ori-120.tflite"                                  # ĺŽäšć¨ĄĺçčˇŻĺž?
+net_path = "7-7-epoch225.tflite"                                  # ĺŽäšć¨ĄĺçčˇŻĺž?
 labels = [line.rstrip() for line in open("/sd/labels.txt")]   # ĺ č˝˝ć ç­ž
 net = tf.load(net_path, load_to_fb=True)                                  # ĺ č˝˝ć¨Ąĺ
 

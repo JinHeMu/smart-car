@@ -58,16 +58,20 @@ typedef struct card {
 extern Pose_car car;
 extern rt_sem_t recognize_sem;
 extern rt_sem_t obj_detection_sem;
+extern rt_sem_t arrive_sem;
 extern char taget_Big_category[10];
+
+extern uint8 running_mode;
 
 void car_start_init(void);
 void car_move(float tar_x, float tar_y);
 void car_turn(float angle);
 void car_turnto(float angle);
-void uart_coordinate_transforming(uint8 ART1_POINT_X[15], uint8 ART1_POINT_Y[15], uint8 num);
+void uart_coordinate_transforming(uint8 ART1_POINT_X[40], uint8 ART1_POINT_Y[40], uint8 num);
 void static_planning(struct point* arr, int size);
 void car_moveto_boundry(int8 tar_x,int8 tar_y);
 void car_boundry_carry(int8 tar_x, int8 tar_y);
+void select_mode(void);
 
 
 

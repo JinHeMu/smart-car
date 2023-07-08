@@ -16,6 +16,7 @@ void arm_putbox(uint8 angle);
 void arm_down(void);
 void arm_closebox(void);
 void arm_openbox(uint8 angle);
+void arm_return(void);
 
 
 void magnet_front_release(void);

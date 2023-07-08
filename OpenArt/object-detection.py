@@ -13,7 +13,7 @@ def openart_init():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
-    sensor.set_brightness(300)
+    sensor.set_brightness(1000)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(True, (0, 0, 0))
