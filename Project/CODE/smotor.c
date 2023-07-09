@@ -241,13 +241,13 @@ void arm_putbox(uint8 angle)
 		ARM_LOW_angle(40);
 		rt_thread_mdelay(500);
 
-				ARM_LOW_angle(50);
+		ARM_LOW_angle(50);
 		rt_thread_mdelay(100);
-				ARM_LOW_angle(60);
+		ARM_LOW_angle(60);
 		rt_thread_mdelay(100);
-				ARM_LOW_angle(70);
+		ARM_LOW_angle(70);
 		rt_thread_mdelay(100);
-				ARM_LOW_angle(80);
+		ARM_LOW_angle(80);
 		rt_thread_mdelay(100);
 		ARM_LOW_angle(90);
 		rt_thread_mdelay(100);
@@ -285,6 +285,10 @@ void arm_putbox(uint8 angle)
 		ARM_LOW_angle(97);
 		rt_thread_mdelay(20);
 		ARM_LOW_angle(98);
+		rt_thread_mdelay(20);
+		ARM_LOW_angle(99);
+		rt_thread_mdelay(20);
+		ARM_LOW_angle(100);
 		rt_thread_mdelay(20);
 	}
 	

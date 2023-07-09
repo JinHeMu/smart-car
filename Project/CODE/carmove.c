@@ -112,11 +112,11 @@ int distance(float current_x, float current_y, float target_x, float target_y)
 }
 
 // 获得目标角度
-int get_angle(float current_x, float current_y, float target_x, float target_y)
+float get_angle(float current_x, float current_y, float target_x, float target_y)
 {
-    int angle;
-    angle = atan2((target_x - current_x), (target_y - current_y)) * 180 / PI;
-    return (int)angle;
+    float angle;
+    angle = atan2((target_x - current_x), (target_y - current_y));
+    return angle;
 }
 
 /**************************************************************************
@@ -133,7 +133,7 @@ void car_move(float tar_x, float tar_y)
     float acceleration = 0.02; // 加速度，可根据实际情况调整
     float max_speed = 1;       // 最大速度，可根据实际情况调整
     float current_speed = 0;
-    int16 angle = get_angle(car.MileageX, car.MileageY, tar_x, tar_y);
+    float angle = get_angle(car.MileageX, car.MileageY, tar_x, tar_y);
 
 	// rt_kprintf("TARGRT TO X:%d, Y:%d\n", (int)tar_x, (int)tar_y);
 	
@@ -141,20 +141,13 @@ void car_move(float tar_x, float tar_y)
 	{
 		
 		acceleration = 0.01;
-		max_speed = 0.5;
+		max_speed = 1;
     }
 
-    if(angle == 0)
-    {
-        tar_x = 0;
-        tar_y = 0;
-    }
-
-    if(angle > 0 && angle < 90)
-    {
+    tar_x += sin(angle)*target_distance / 6.5;
+    tar_y += cos(angle)*target_distance / 6.5;
 
 
-    }
 		
 	// 	if (angle > 0 && angle < 90) // 如果是向下移动，就多向下移动一格，防止卡片在车底下
     // {
@@ -364,7 +357,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 
         if (detect_flag == 0) // 如果不是目标检测中断，就是边线
         {
-            car.MileageX = 0;
+            car.MileageX = 50;
         }
     }
     else if (tar_y < 0)
@@ -387,7 +380,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 
         if (detect_flag == 0)
         {
-            car.MileageY = 0;
+            car.MileageY = -20;
         }
     }
     else if (tar_x > field_width)
@@ -416,7 +409,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 
         if (detect_flag == 0)
         {
-            car.MileageX = field_width * 20;
+            car.MileageX = field_width * 20 - 50;
         }
     }
     else if (tar_y > field_height)
@@ -1124,13 +1117,17 @@ void obj_detection_entry(void *param)
         {
             if (boundry_num == 4)
             {
-
+								running_mode = 0;
                 car_moveto_boundry(field_width + 1, 1);
                 car_boundry_carry(field_width + 1, 1);
                 arm_openbox(1); // 右三
+							
+							  car.Speed_Y = -200;
+                rt_thread_mdelay(1000);
+                car.Speed_Y = 0;
 
                 car.Speed_X = -200;
-                rt_thread_mdelay(1000);
+                rt_thread_mdelay(3000);
                 car.Speed_X = 0;
 
                 car_moveto_boundry(1, field_height + 1);
@@ -1138,7 +1135,7 @@ void obj_detection_entry(void *param)
                 arm_openbox(2); // 下三（需要改动）
 
                 car.Speed_Y = -200;
-                rt_thread_mdelay(1000);
+                rt_thread_mdelay(3000);
                 car.Speed_Y = 0;
 
                 car_moveto_boundry(-1, 1);
