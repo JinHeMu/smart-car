@@ -94,16 +94,15 @@ void Menu_key_set(void)
 
 //
 
-		static int count = 0;
 
-		count ++;
-		if(count > 4)
-		{
-			count = 0;
-			arm_putbox(count);
-		}
+//		count ++;
+//		if(count > 4)
+//		{
+//			count = 0;
+//			arm_putbox(count);
+//		}
 		 
-//		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+
 //	arm_openbox(1);
 
 
@@ -145,8 +144,8 @@ void Menu_key_set(void)
 //		rt_thread_mdelay(2000);
 
 			//arm_openbox(2);
-		 arm_putbox(1);
-		 
+//		 arm_putbox(1);
+		 uart_putchar(USART_4, 0x43);
 
 		ips114_clear(WHITE);
 		strcpy(taget_Big_category, "fruit");
@@ -182,9 +181,9 @@ void Menu_key_set(void)
 //		ARM_UP_angle(count*10);
 
 
-			arm_down();
+//			arm_down();
 //		arm_openbox(3);
-		
+		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 //		ips114_clear(WHITE);
 //		strcpy(taget_Big_category, "vegetable");
 //		ips114_showstr(0, 0, "vegetable");
@@ -218,9 +217,10 @@ void Menu_key_set(void)
 //		count++;
 //		ARM_LOW_angle(count*10);
 
-		arm_openbox(1);
+//		arm_openbox(1);
 
-
+		//uart_putchar(USART_1, 0x42); // 持续发送“B”来告诉openart该矫正了
+uart_putchar(USART_1, 0x46);
 //		arm_putbox(4);
 
 

@@ -90,14 +90,23 @@ void arm_return(void) // 防止目标检测到舵机
 void arm_down(void)
 {
 
-	ARM_UP_angle(80);
+	ARM_UP_angle(60);
 	ARM_LOW_angle(60);
 	rt_thread_mdelay(300);
 
 	magnet_front_release();
 	
 
-	arm_return();
+	ARM_UP_angle(160); // 收回，防止目标检测识别到
+	rt_thread_mdelay(400);
+	ARM_UP_angle(180); // 收回，防止目标检测识别到
+	rt_thread_mdelay(200);
+	ARM_LOW_angle(70);
+	rt_thread_mdelay(100);
+		ARM_LOW_angle(80);
+	rt_thread_mdelay(100);
+		ARM_LOW_angle(90);
+	rt_thread_mdelay(100);
 }
 
 // 机械臂将卡片捡起来
@@ -106,17 +115,28 @@ void arm_carry(void)
 	ARM_UP_angle(5);
 	rt_thread_mdelay(200);
 	ARM_LOW_angle(53);
-	rt_thread_mdelay(100);
+	rt_thread_mdelay(150);
 	ARM_LOW_angle(48);
-	rt_thread_mdelay(100);
+	rt_thread_mdelay(150);
 	ARM_LOW_angle(43);
-	rt_thread_mdelay(100);
+	rt_thread_mdelay(150);
 
 	magnet_front_appeal();
 	rt_thread_mdelay(500);
 
-	ARM_LOW_angle(70);
-	ARM_UP_angle(180);
+	
+		ARM_LOW_angle(70);
+		rt_thread_mdelay(100);
+		ARM_UP_angle(170);
+		rt_thread_mdelay(150);
+		ARM_LOW_angle(40);
+		rt_thread_mdelay(500);
+		
+				ARM_LOW_angle(50);
+		rt_thread_mdelay(100);
+				ARM_LOW_angle(60);
+		rt_thread_mdelay(100);
+
 	
 }
 
