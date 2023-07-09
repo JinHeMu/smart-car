@@ -4,7 +4,7 @@ void main()
 {
 	
 
-	rt_thread_mdelay(8000);					// 延时150ms，等待主板其他外设上电成功
+	rt_thread_mdelay(800);					// 延时150ms，等待主板其他外设上电成功
 	gpio_init(B9, GPO, 1, GPIO_PIN_CONFIG); // 初始化B9灯
 
 	arm_init();
@@ -26,7 +26,7 @@ void main()
 	
 
 	car_start_init();
-	uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+//	uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 	
 	
 	

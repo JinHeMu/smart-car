@@ -395,7 +395,7 @@ void car_boundry_carry(int8 tar_x, int8 tar_y)
     if (tar_x < 0)
     {
         car.Speed_X = -200;
-        rt_thread_mdelay(1000);
+        rt_thread_mdelay(500);
         car.Speed_X = 0;
     }
     else if (tar_x > field_width)
@@ -605,7 +605,6 @@ void correct_entry(void *param)
 
         ART1_mode = 2;               // art矫正模式
         uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
-        rt_thread_mdelay(500);
 
         rt_kprintf("correcting!!!\n");
 
@@ -1054,10 +1053,6 @@ void obj_detection_entry(void *param)
         rt_kprintf("WAITING3 !!!\n");
         rt_thread_mdelay(1000);
 
-        ART2_mode = 1;
-        uart_putchar(USART_1, 0x46);
-        rt_kprintf("WAITING3 !!!\n");
-        rt_thread_mdelay(1000);
 
         while (detect_flag == 0) // 是否接受数据
         {
@@ -1069,7 +1064,7 @@ void obj_detection_entry(void *param)
                 break;
             }
 
-            if (boundry_num == 4)
+            if (boundry_num == 2)
             {
 
                 car_moveto_boundry(field_width + 1, 1);
@@ -1097,7 +1092,7 @@ void obj_detection_entry(void *param)
                 car.Speed_X = 0;
 
                 car_moveto_boundry(1, -1);
-                car_boundry_carry(1, -1); // 测试回库
+								rt_thread_mdelay(100000);
 
                 rt_thread_delete(obj_detection_th);
                 break;
@@ -1167,9 +1162,6 @@ void obj_detection_entry(void *param)
         }
 
         detect_flag = 0;
-        ART1_mode = 2;               // art矫正模式
-        uart_putchar(USART_4, 0x42); // 持续发送“B”来告诉openart该矫正了
-        rt_thread_mdelay(1000);
 
         // 记录当前坐标
         rt_sem_release(correct_sem);
@@ -1192,7 +1184,7 @@ void car_start_init(void)
     carry_th = rt_thread_create("carry_th", carry_entry, RT_NULL, 1024, 28, 10);
     obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 28, 10);
 
-    rt_thread_startup(route_planning_th);
+    //rt_thread_startup(route_planning_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(carry_th);
     rt_thread_startup(obj_detection_th);

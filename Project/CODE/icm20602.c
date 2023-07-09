@@ -36,14 +36,14 @@ float slidingFilter(float newData)
 void icm_zeroBias(void)//陀螺仪零漂
 {
 	Gyro_Bias.Zdata = 0;//初始化
-		for (uint16_t i = 0; i < 400; ++i)
+		for (uint16_t i = 0; i < 200; ++i)
 		{
 			get_icm20602_gyro_spi();//获取角速度
 			Gyro_Bias.Zdata += icm_gyro_z;//累加陀螺仪
 			rt_kprintf("Zdata :%d\n", 	(int)icm_gyro_z);
 			rt_thread_mdelay(5);
 		}
-		Gyro_Bias.Zdata /= 400;//取平均数
+		Gyro_Bias.Zdata /= 200;//取平均数
 		rt_kprintf("Gyro_Bias.Zdata :%d\n", 	(int)Gyro_Bias.Zdata);
 }
 

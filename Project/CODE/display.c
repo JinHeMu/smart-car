@@ -94,9 +94,16 @@ void Menu_key_set(void)
 
 //
 
+		static int count = 0;
 
-		 //arm_putbox(1);
-		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+		count ++;
+		if(count > 4)
+		{
+			count = 0;
+			arm_putbox(count);
+		}
+		 
+//		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 //	arm_openbox(1);
 
 
@@ -138,7 +145,7 @@ void Menu_key_set(void)
 //		rt_thread_mdelay(2000);
 
 			//arm_openbox(2);
-		 //arm_putbox(2);
+		 arm_putbox(1);
 		 
 
 		ips114_clear(WHITE);
@@ -175,12 +182,12 @@ void Menu_key_set(void)
 //		ARM_UP_angle(count*10);
 
 
-
+			arm_down();
 //		arm_openbox(3);
 		
-		ips114_clear(WHITE);
-		strcpy(taget_Big_category, "vegetable");
-		ips114_showstr(0, 0, "vegetable");
+//		ips114_clear(WHITE);
+//		strcpy(taget_Big_category, "vegetable");
+//		ips114_showstr(0, 0, "vegetable");
 
 		
 		
@@ -205,22 +212,22 @@ void Menu_key_set(void)
 //		angle2 += 10;
 //		ARM_LOW_angle(angle2);
 //		
-		
-			// arm_carry();
+//		
+//			arm_carry();
 //		static int count = 0;
 //		count++;
 //		ARM_LOW_angle(count*10);
 
-//arm_openbox(1);
+		arm_openbox(1);
 
 
 //		arm_putbox(4);
 
 
-		Position_kd += 0.5;
-		ips114_clear(WHITE);
-		strcpy(taget_Big_category, "food");
-		ips114_showstr(0, 0, "food");
+//		Position_kd += 0.5;
+//		ips114_clear(WHITE);
+//		strcpy(taget_Big_category, "food");
+//		ips114_showstr(0, 0, "food");
 		
 		
 		mb_data = 0; // 邮箱数据清除

@@ -18,23 +18,23 @@ uart_num = 0
 
 
 
-##白天阈值
-#card_threshold = [(47, 100, -4, 68, -17, 29)]#色块检测阈值
-#boundary_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
-#boundary_column_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
-#boundary_row_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
-#day_brightness = 300
-#binary_threshold = (183, 255)
+#白天阈值
+card_threshold = [(62, 100, -42, 23, -19, 73)]#色块检测阈值
+boundary_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
+boundary_column_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
+boundary_row_threshold = [(45, 71, -20, 15, 23, 127)]#边线检测阈值
+day_brightness = 300
+binary_threshold = (183, 255)
 #LED(4).on()#照明
 
-#晚上阈值
-card_threshold = [(46, 86, -40, 26, -14, 82)]#色块检测阈值
-boundary_threshold = [(45, 73, -42, -9, 21, 90)]#边线检测阈值
-boundary_column_threshold = [(45, 73, -42, -9, 21, 90)]#边线检测阈值
-boundary_row_threshold = [(45, 73, -42, -9, 21, 90)]#边线检测阈值
-day_brightness = 1000
-LED(4).on()#照明
-binary_threshold = (154, 255)
+##晚上阈值
+#card_threshold = [(46, 86, -40, 26, -14, 82)]#色块检测阈值
+#boundary_threshold = [(45, 73, -42, -9, 21, 90)]#边线检测阈值
+#boundary_column_threshold = [(45, 73, -42, -9, 21, 90)]#边线检测阈值
+#boundary_row_threshold = [(45, 73, -42, -9, 21, 90)]#边线检测阈值
+#day_brightness = 1000
+#LED(4).on()#照明
+#binary_threshold = (154, 255)
 
 uart = UART(2, baudrate=115200) #串口
 
@@ -132,7 +132,7 @@ def picture_correct():
 
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
-    sensor.set_framesize(sensor.QQVGA)
+    sensor.set_framesize(sensor.QVGA)
     sensor.set_brightness(day_brightness)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
@@ -176,21 +176,33 @@ def picture_correct():
 
 
                 img.draw_circle(b.cx(), b.cy(), 5, color=(0, 255, 0))
-                dis_X = b.cx() - 91
-                dis_Y = b.cy() - 70
-                distance = math.sqrt((dis_X ** 2) + (dis_Y ** 2))
-                print("disx:%d , disy:%d, angle:%d" % (dis_X, dis_Y, q))
+                dis_X = b.cx() - 160
+                dis_Y = b.cy() - 200
 
+
+                if dis_X < -127:
+                    dis_X = -127
+                if dis_X > 127:
+                    dis_X = 127
+                if dis_Y < -127:
+                    dis_Y = -127
+                if dis_Y > 127:
+                    dis_Y = 127
+
+                distance = math.sqrt((dis_X ** 2) + (dis_Y ** 2))
+
+                img.draw_line(160, 240, b.cx(), b.cy(), color=(255, 0, 0))
                 #发送数据
                 uart.write("C")
                 uart.write("%c" % dis_X)
-                uart.write("%c" % dis_Y)
+                uart.write("%c" % -dis_Y)
                 if distance < 5:
                     uart.write("%c" % 1)
                 else:
                     uart.write("%c" % 0)
                 uart.write("D")
                 img.draw_string(10,10,"correct", (255,0,0))
+                print("disx:%d , disy:%d, angle:%d" % (dis_X, -dis_Y, q))
                 lcd.show_image(img, 160, 120, zoom=0)
 
                 if distance < 5:
@@ -312,8 +324,8 @@ def recognize_pic(labels, net):
                 img.draw_rectangle(b.rect(), color = (255, 0, 0), scale = 1, thickness = 2)
                 x, y, w, h = b.rect()
                 # 缩小矩形框的宽度和高度
-                new_w = w
-                new_h = h
+                new_w = w -20
+                new_h = h -20
                 # 计算新的矩形框左上角坐标
                 new_x = x + (w - new_w) // 2
                 new_y = y + (h - new_h) // 2
@@ -348,7 +360,7 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "7-8-epoch400.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "7-8-epoch375.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
@@ -358,38 +370,38 @@ def main():
         #find_coordinates()
         #recognize_pic(labels, net)
           ##boundary_correct('column')
-        #picture_correct()
-        uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
-        if (uart_num):
-            uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
-            #print(uart_str.decode())
-            if(uart_str.decode() == "A"):
-                print("A")
-                uart_num=0
-                find_coordinates()
+        picture_correct()
+        #uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
+        #if (uart_num):
+            #uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
+            ##print(uart_str.decode())
+            #if(uart_str.decode() == "A"):
+                #print("A")
+                #uart_num=0
+                #find_coordinates()
 
-            elif(uart_str.decode() == "B"):
-                print("B")
-                uart_num=0
-                picture_correct()
+            #elif(uart_str.decode() == "B"):
+                #print("B")
+                #uart_num=0
+                #picture_correct()
 
-            elif(uart_str.decode() == "C"):
-                print("C")
-                uart_num=0
-                recognize_pic(labels, net)
+            #elif(uart_str.decode() == "C"):
+                #print("C")
+                #uart_num=0
+                #recognize_pic(labels, net)
 
-            elif(uart_str.decode() == "D"):
-                print("D")
-                uart_num=0
-                boundary_correct('column')
+            #elif(uart_str.decode() == "D"):
+                #print("D")
+                #uart_num=0
+                #boundary_correct('column')
 
-            elif(uart_str.decode() == "E"):
-                print("E")
-                uart_num=0
-                boundary_correct('row')
+            #elif(uart_str.decode() == "E"):
+                #print("E")
+                #uart_num=0
+                #boundary_correct('row')
 
-        else:
-            lcd.show_image(img, 320, 240, zoom=2)
+        #else:
+            #lcd.show_image(img, 320, 240, zoom=2)
 
 
 

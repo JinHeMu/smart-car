@@ -67,7 +67,7 @@ void arm_out(void) // 防止仓卡住
 {
 	ARM_LOW_angle(80);
 	ARM_UP_angle(120);
-	rt_thread_mdelay(500); // 防止仓卡住
+	rt_thread_mdelay(200); // 防止仓卡住
 }
 
 void arm_return(void) // 防止目标检测到舵机
@@ -90,41 +90,34 @@ void arm_return(void) // 防止目标检测到舵机
 void arm_down(void)
 {
 
-	ARM_UP_angle(0);
-	rt_thread_mdelay(300);
+	ARM_UP_angle(80);
 	ARM_LOW_angle(60);
 	rt_thread_mdelay(300);
 
 	magnet_front_release();
-	rt_thread_mdelay(300);
+	
 
-	ARM_UP_angle(180); // 收回，防止目标检测识别到
-	rt_thread_mdelay(500);
-	ARM_LOW_angle(90);
-	rt_thread_mdelay(100);
+	arm_return();
 }
 
 // 机械臂将卡片捡起来
 void arm_carry(void)
 {
 	ARM_UP_angle(5);
-	rt_thread_mdelay(300);
-
+	rt_thread_mdelay(200);
 	ARM_LOW_angle(53);
-	rt_thread_mdelay(200);
+	rt_thread_mdelay(100);
 	ARM_LOW_angle(48);
-	rt_thread_mdelay(200);
+	rt_thread_mdelay(100);
 	ARM_LOW_angle(43);
-	rt_thread_mdelay(200);
+	rt_thread_mdelay(100);
 
 	magnet_front_appeal();
 	rt_thread_mdelay(500);
 
 	ARM_LOW_angle(70);
-	rt_thread_mdelay(300);
-	ARM_LOW_angle(70);
 	ARM_UP_angle(180);
-	rt_thread_mdelay(300);
+	
 }
 
 // 将卡片放入盒子
@@ -148,18 +141,18 @@ void arm_putbox(uint8 angle)
 		break;
 	case 2:
 		ARM_MID_angle(angle * 90 - 1);
-		rt_thread_mdelay(100);
+		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
 	case 3:
 		ARM_MID_angle(angle * 90 - 1);
-		rt_thread_mdelay(600);
+		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
 	}
 
 	ARM_UP_angle(5);
-	rt_thread_mdelay(300);
+	rt_thread_mdelay(200);
 	ARM_LOW_angle(53);
 	rt_thread_mdelay(100);
 	ARM_LOW_angle(48);
@@ -222,24 +215,38 @@ void arm_putbox(uint8 angle)
 	if(once_flag)
 	{
 		ARM_LOW_angle(70);
-		rt_thread_mdelay(300);
-		ARM_UP_angle(170);
-		rt_thread_mdelay(500);
-		ARM_LOW_angle(70);
 		rt_thread_mdelay(100);
-		ARM_LOW_angle(80);
+		ARM_UP_angle(170);
+		rt_thread_mdelay(150 );
+		ARM_LOW_angle(40);
+		rt_thread_mdelay(500);
+
+				ARM_LOW_angle(50);
+		rt_thread_mdelay(100);
+				ARM_LOW_angle(60);
+		rt_thread_mdelay(100);
+				ARM_LOW_angle(70);
+		rt_thread_mdelay(100);
+				ARM_LOW_angle(80);
 		rt_thread_mdelay(100);
 		ARM_LOW_angle(90);
 		rt_thread_mdelay(100);
 	}else
 	{
 		ARM_LOW_angle(70);
-		rt_thread_mdelay(300);
-		ARM_UP_angle(170);
-		rt_thread_mdelay(500);
-		ARM_LOW_angle(70);
 		rt_thread_mdelay(100);
-		ARM_LOW_angle(80);
+		ARM_UP_angle(170);
+		rt_thread_mdelay(150);
+		ARM_LOW_angle(40);
+		rt_thread_mdelay(500);
+		
+				ARM_LOW_angle(50);
+		rt_thread_mdelay(100);
+				ARM_LOW_angle(60);
+		rt_thread_mdelay(100);
+				ARM_LOW_angle(70);
+		rt_thread_mdelay(100);
+				ARM_LOW_angle(80);
 		rt_thread_mdelay(100);
 		ARM_LOW_angle(90);
 		rt_thread_mdelay(100);
@@ -263,7 +270,6 @@ void arm_putbox(uint8 angle)
 	
 
 		magnet_front_release();
-		rt_thread_mdelay(300);
 
 		arm_return();
 	}
@@ -309,10 +315,10 @@ void arm_putbox(uint8 angle)
 		magnet_left_release();
 		rt_thread_mdelay(1000);
 
-		car.Speed_X = 300;
-		rt_thread_mdelay(500);
-		car.Speed_X = 0;
-		rt_thread_mdelay(500);
+//		car.Speed_X = 300;
+//		rt_thread_mdelay(500);
+//		car.Speed_X = 0;
+//		rt_thread_mdelay(500);
 
 		arm_return();
 	}
