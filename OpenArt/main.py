@@ -28,7 +28,7 @@ uart_num = 0
 #LED(4).on()#照明
 
 #晚上阈值
-card_threshold = [(42, 100, -27, 35, -54, 95)]#色块检测阈值
+card_threshold = [(63, 100, -47, 7, -13, 127)]#色块检测阈值
 boundary_threshold = [(49, 80, -35, 8, 24, 127)]#边线检测阈值
 boundary_column_threshold = [(49, 80, -35, 8, 24, 127)]#边线检测阈值
 boundary_row_threshold = [(49, 80, -35, 8, 24, 127)]#边线检测阈值
@@ -212,23 +212,23 @@ def boundary_correct(mode):
 
 
 
-#识别卡片
 def recognize_pic(labels, net):
-
-
     global uart_num
     recognize_flag = 1
     class_per = []
+    recognized_result = None  # 记录识别结果
+    same_result_count = 0  # 相同结果的计数器
 
     while recognize_flag:
         img = sensor.snapshot()
-        uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
-        if(uart_num!=0):
-            recognize_flag=0
+        uart_num = uart.any()  # 获取当前串口数据数量
+        if uart_num != 0:
+            recognize_flag = 0
             break
         else:
-            for b in img.find_blobs(card_threshold,pixels_threshold=400,area_threshold=400,margin= 1,merge=True,invert=0):
-                img.draw_rectangle(b.rect(), color = (255, 0, 0), scale = 1, thickness = 2)
+            for b in img.find_blobs(card_threshold, pixels_threshold=400, area_threshold=400, margin=1, merge=True,
+                                    invert=0):
+                img.draw_rectangle(b.rect(), color=(255, 0, 0), scale=1, thickness=2)
                 x, y, w, h = b.rect()
                 # 缩小矩形框的宽度和高度
                 new_w = w
@@ -242,22 +242,32 @@ def recognize_pic(labels, net):
                 img1 = img.copy(1, 1, (new_x, new_y, new_w, new_h))
 
                 for obj in tf.classify(net, img1, min_scale=1.0, scale_mul=0.5, x_overlap=0.0, y_overlap=0.0):
-                    #print("**********\nTop 1 Detections at [x=%d,y=%d,w=%d,h=%d]" % obj.rect())
                     sorted_list = sorted(zip(labels, obj.output()), key=lambda x: x[1], reverse=True)
-                    # 鎵撳嵃鍑嗙‘鐜囨渶楂樼殑缁撴灉
+                    # 打印排名第一的结果
                     for i in range(1):
                         class_per = sorted_list[i][0]
-                        if(class_per == sorted_list[i][0]):
-                            print("new:%s = %f" % (sorted_list[i][0], sorted_list[i][1]))
+                        if class_per == recognized_result:
+                            same_result_count += 1
+                        else:
+                            recognized_result = class_per
+                            same_result_count = 1
+
+                        if same_result_count >= 3:
+                            print("识别结果为：%s" % recognized_result)
                             uart.write("I")
-                            uart.write(sorted_list[i][0])
+                            uart.write(recognized_result)
+                            uart.write("%c" % 1)
                             uart.write("J")
-                            img.draw_string(10,10,"%s:%d" % (sorted_list[i][0],sorted_list[i][1]*100) , (255,0,0), 2)
+                            img.draw_string(10, 10, "%s:%d" % (recognized_result, sorted_list[i][1] * 100),
+                                            (255, 0, 0), 2)
 
                             recognize_flag = 0
+                            break
                         else:
-                            img.draw_string(10,10,"recognize", (255,0,0))
+                            img.draw_string(10, 10, "继续识别", (255, 0, 0))
 
+            if recognize_flag == 0:
+                break
 
 
 
@@ -266,7 +276,7 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "7-10-epoch450.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "7-11-epoch450.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 

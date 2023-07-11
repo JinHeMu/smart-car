@@ -17,6 +17,7 @@ card_threshold = [(64, 100, -25, 57, -32, 127)]#色块检测阈值
 day_brightness = 2000
 LED(4).on()#照明
 
+
 def openart_init():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)

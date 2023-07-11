@@ -26,6 +26,7 @@ int8 ART1_CORRECT_Boundary_Angle=0;
 uint8 ART1_CORRECT_Boundary_Flag=0;
 
 char classified[10];
+uint8 ART1_CLASS_Flag=0;
 
 uint8 point_num = 0; // 数据个数
 
@@ -101,10 +102,15 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 			{
 				if(ART1_uart_rx_buffer == 'J')//接收到帧尾
 				{
-					for (int temp = 0; temp<count; temp++)
+					for (int temp = 0; temp<count - 1; temp++)
 					{
 						classified[temp] = ART1_dat[temp];
 					}
+					
+					ART1_CLASS_Flag = ART1_dat[count - 1];
+					
+					rt_kprintf("%s\n", classified);
+					rt_kprintf("%d\n", ART1_CLASS_Flag);
 					
 					//rt_sem_release(recognize_sem);//识别卡片后发送识别信号量
 					rxstate = 0;
@@ -112,7 +118,7 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 				else//没有接收到帧尾，获取坐标点
 				{
 					ART1_dat[count] = ART1_uart_rx_buffer;
-					count++; // 统计接到数据的个数  前二分之一为x坐标， 后二分之一为y坐标
+					count++;
 				}
 			}
 		}

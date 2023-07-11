@@ -150,22 +150,22 @@ void arm_putbox(uint8 angle)
 	switch (abs(angle - cur_angle))
 	{
 	case 0:
-		ARM_MID_angle(angle * 90 - 1);
+		ARM_MID_angle(angle * 90 -90);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
 	case 1:
-		ARM_MID_angle(angle * 90 - 1);
+		ARM_MID_angle(angle * 90-90);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
 	case 2:
-		ARM_MID_angle(angle * 90 - 1);
+		ARM_MID_angle(angle * 90-90);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
 	case 3:
-		ARM_MID_angle(angle * 90 - 1);
+		ARM_MID_angle(angle * 90-90);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
@@ -324,7 +324,7 @@ void arm_putbox(uint8 angle)
 			break;
 		}
 
-		ARM_LEFT_angle(100);
+		ARM_LEFT_angle(90);
 		rt_thread_mdelay(300);
 
 		magnet_left_appeal();

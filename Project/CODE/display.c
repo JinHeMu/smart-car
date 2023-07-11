@@ -2,7 +2,8 @@
 
 rt_mailbox_t display_mailbox; // 定义一个接受信息的邮箱
 
-
+int angle1;
+int angle2;
 
 char taget_Big_category[10];
 
@@ -41,11 +42,16 @@ void Menu_key_set(void)
 
 	if ((mb_data == 1)) // 按下按键1
 	{
+//		
+//////		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+////		car_move(100,100);
+////		rt_thread_mdelay(5000);
+////		car_move(40,40);
+//		
+//		ARM_MID_angle(angle1 * 90);
+//		angle1 ++;
 		
-//		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
-		car_move(100,100);
-		rt_thread_mdelay(5000);
-		car_move(40,40);
+		arm_putbox(1);
 
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -54,15 +60,21 @@ void Menu_key_set(void)
 	if ((mb_data == 2)) // 按下按键1
 	{
 
-		game_mode = 1;
-		ips114_clear(WHITE);
-		strcpy(taget_Big_category, "fruit");
-		rt_kprintf("taget_Big_category is fruit!!!\n");
-		ips114_showstr(0, 0, "fruit");
 		
-		car_move(200,200);
-		rt_thread_mdelay(5000);
-		car_move(40,40);
+//		arm_openbox(1);
+////		angle2 ++;
+//		
+//		game_mode = 1;
+//		ips114_clear(WHITE);
+//		strcpy(taget_Big_category, "fruit");
+//		rt_kprintf("taget_Big_category is fruit!!!\n");
+//		ips114_showstr(0, 0, "fruit");
+//		
+//		car_move(200,200);
+//		rt_thread_mdelay(5000);
+//		car_move(40,40);
+		
+		arm_putbox(2);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -70,15 +82,17 @@ void Menu_key_set(void)
 
 	if ((mb_data == 3))
 	{
-		game_mode = 1;
-		ips114_clear(WHITE);
-		rt_kprintf("taget_Big_category is vegetable!!!\n");
-		strcpy(taget_Big_category, "vegetable");
-		ips114_showstr(0, 0, "vegetable");
+//		game_mode = 1;
+//		ips114_clear(WHITE);
+//		rt_kprintf("taget_Big_category is vegetable!!!\n");
+//		strcpy(taget_Big_category, "vegetable");
+//		ips114_showstr(0, 0, "vegetable");
 
-		car_move(300,300);
-		rt_thread_mdelay(5000);
-		car_move(40,40);
+//		car_move(300,300);
+//		rt_thread_mdelay(5000);
+//		car_move(40,40);
+		
+		arm_putbox(3);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -90,10 +104,13 @@ void Menu_key_set(void)
 //		rt_kprintf("taget_Big_category is food!!!\n");
 //		strcpy(taget_Big_category, "food");
 //		ips114_showstr(0, 0, "food");
+//		
+//		Position_kp += 0.1;
+//		ips114_showfloat(160, 0, Position_kp, 3, 2);
 		
-		Position_kp += 0.1;
-		ips114_showfloat(160, 0, Position_kp, 3, 2);
-		
+//		
+		arm_putbox(4);
+//		
 		
 		mb_data = 0; // 邮箱数据清除
 	}
