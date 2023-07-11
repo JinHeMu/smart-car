@@ -3,16 +3,11 @@
 rt_mailbox_t display_mailbox; // 定义一个接受信息的邮箱
 
 
+
+char taget_Big_category[10];
+
 void (*current_operation_index)();
 
-// typedef struct
-//{
-//     uint8 current;	//当前状态索引号
-//     uint8 next; 		//向下一个
-//     uint8 enter; 	//确定
-//		uint8 back; 		//退出
-//     void (*current_operation)(void); //当前状态应该执行的操作
-// } Menu_table;
 
 // 多级菜单界面
 Menu_table table[30] =
@@ -42,227 +37,52 @@ void Menu_key_set(void)
 
 	rt_ubase_t mb_data; // 储存邮箱的数据
 
-	rt_mb_recv(display_mailbox, &mb_data, RT_WAITING_NO); // 接受按键发送过来的邮件
-//	
+	rt_mb_recv(display_mailbox, &mb_data, RT_WAITING_NO); // 接受按键发送过来的邮件	
 
-		if ((mb_data == 1)) // 按下按键1
+	if ((mb_data == 1)) // 按下按键1
 	{
 		
-		// car_turnto(20);
-		// rt_thread_mdelay(3000);
-		// car_turnto(40);
-		// rt_thread_mdelay(3000);
-		// car_turnto(-40);
-		// rt_thread_mdelay(3000);
-		// car_turnto(-90);
-		// rt_thread_mdelay(3000);
-		// car_turnto(0);
-		// rt_thread_mdelay(3000);
-
-//		car_moveto_boundry(12,19);	
-
-
-		
-		
-//		car_move(500,300); 
-//		rt_thread_mdelay(3000);
-//		car_move(100,100); 
-//		rt_thread_mdelay(3000);
-//		car_move(0,200); 
-//		rt_thread_mdelay(3000);
-//		car_move(0,0); 
-//		rt_thread_mdelay(3000);
-	
-		
-		
-//		car.Speed_X = 200; 
-//		rt_thread_mdelay(3000);
-//		car.Speed_X = 0;
-//		rt_thread_mdelay(3000);
-//		car.Speed_Y = 200; 
-//		rt_thread_mdelay(3000);
-//		car.Speed_Y = 0;
-//		rt_thread_mdelay(3000);
-//		car.Speed_X = -200; 
-//		rt_thread_mdelay(3000);
-//		car.Speed_X = 0;
-//		rt_thread_mdelay(3000);
-//		car.Speed_Y = -200; 
-//		rt_thread_mdelay(3000);
-//		car.Speed_Y = 0;
-//		rt_thread_mdelay(3000);
-
-//
-
-
-//		count ++;
-//		if(count > 4)
-//		{
-//			count = 0;
-//			arm_putbox(count);
-//		}
-		 
-
-//	arm_openbox(1);
-
+//		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
 
 		mb_data = 0; // 邮箱数据清除
 	}
 
 
-
-
-
-	
 	if ((mb_data == 2)) // 按下按键1
 	{
-//		Incremental_ki[0] += 0.5;
-//		Incremental_ki[1] += 0.5;
-//		Incremental_ki[2] += 0.5;
-//		Incremental_ki[3] += 0.5;
-//		ips114_showfloat(60, 4, Incremental_ki[0], 4, 2);
-//		
-		
-		
-//		car_boundry_carry(12,19);
-		
-//		Angel_kd += 5;
-//		ips114_showfloat(60, 4, Angel_kd, 4, 2);
-//		
-//		Angel_kp += 1;
-//		ips114_showfloat(60, 4, Angel_kp, 4, 2);
-		
-//				car_turnto(40); 
-//		rt_thread_mdelay(2000);
-//		car_turnto(90); 
-//		rt_thread_mdelay(2000);
-//		car_turnto(180); 
-//		rt_thread_mdelay(2000);
-//		car_turnto(-40); 
-//		rt_thread_mdelay(2000);
-//		car_turnto(0); 
-//		rt_thread_mdelay(2000);
 
-			//arm_openbox(2);
-//		 arm_putbox(1);
-		 uart_putchar(USART_4, 0x43);
-
+		game_mode = 1;
 		ips114_clear(WHITE);
 		strcpy(taget_Big_category, "fruit");
+		rt_kprintf("taget_Big_category is fruit!!!\n");
 		ips114_showstr(0, 0, "fruit");
-
-//arm_down();
 		
-
 		mb_data = 0; // 邮箱数据清除
 	}
+
 
 	if ((mb_data == 3))
 	{
-//		Incremental_ki[0] -= 0.1;
-//		Incremental_ki[1] -= 0.1;
-//		Incremental_ki[2] -= 0.1;
-//		Incremental_ki[3] -= 0.1;
-//		ips114_showfloat(60, 4, Incremental_ki[0], 4, 2);
-		
+		game_mode = 1;
+		ips114_clear(WHITE);
+		rt_kprintf("taget_Big_category is vegetable!!!\n");
+		strcpy(taget_Big_category, "vegetable");
+		ips114_showstr(0, 0, "vegetable");
 
-//		Angel_kp -= 1;
-//		ips114_showfloat(60, 4, Angel_kp, 4, 2);
-		
-//		static int angle1 = 0;
-//		angle1 += 10;
-//		ARM_UP_angle(angle1);
-//		
-//		arm_carry();
-		
-//		static int count = 0;
-//		count++;
-		//arm_putbox(3);
-//		ARM_UP_angle(count*10);
-
-
-//			arm_down();
-//		arm_openbox(3);
-		uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
-//		ips114_clear(WHITE);
-//		strcpy(taget_Big_category, "vegetable");
-//		ips114_showstr(0, 0, "vegetable");
-
-		
-		
 		mb_data = 0; // 邮箱数据清除
 	}
 
 	if (mb_data == 4)
 	{
-
-//		Incremental_kp[0]+= 5;
-//		Incremental_kp[1]+= 5;
-//		Incremental_kp[2]+= 5;
-//		Incremental_kp[3]+= 5;
-//		ips114_showfloat(60, 5, Incremental_kp[0], 4, 2);
-		
-//		
-//		Angel_kd += 5;
-//		ips114_showfloat(60, 5, Angel_kd, 4, 2);
-//		
-		
-//		static int angle2 = 0;
-//		angle2 += 10;
-//		ARM_LOW_angle(angle2);
-//		
-//		
-//			arm_carry();
-//		static int count = 0;
-//		count++;
-//		ARM_LOW_angle(count*10);
-
-//		arm_openbox(1);
-
-		//uart_putchar(USART_1, 0x42); // 持续发送“B”来告诉openart该矫正了
-uart_putchar(USART_1, 0x46);
-//		arm_putbox(4);
-
-
-//		Position_kd += 0.5;
-//		ips114_clear(WHITE);
-//		strcpy(taget_Big_category, "food");
-//		ips114_showstr(0, 0, "food");
-		
+		game_mode = 1;
+		ips114_clear(WHITE);
+		rt_kprintf("taget_Big_category is food!!!\n");
+		strcpy(taget_Big_category, "food");
+		ips114_showstr(0, 0, "food");
 		
 		mb_data = 0; // 邮箱数据清除
 	}
 
-
-//	if ((mb_data == 1)) // 按下按键1
-//	{
-//		ips114_clear(WHITE);
-//		func_index = table[func_index].next; // 按键next按下后的索引号
-//		mb_data = 0; // 邮箱数据清除
-//	}
-//	
-//	if ((mb_data == 2)) // 按下按键1
-//	{
-//		ips114_clear(WHITE);
-//		func_index = table[func_index].next; // 按键next按下后的索引号
-//		mb_data = 0; // 邮箱数据清除
-//	}
-
-//	if ((mb_data == 3))
-//	{
-//		ips114_clear(WHITE);
-//		func_index = table[func_index].enter; // 按键enter按下后的索引号
-//		mb_data = 0; // 邮箱数据清除
-//	}
-
-//	if (mb_data == 4)
-//	{
-//		ips114_clear(WHITE);
-//		func_index = table[func_index].back; // 按键back按下后的索引号
-//		mb_data = 0; // 邮箱数据清除
-//	}
-//	current_operation_index = table[func_index].current_operation; // 执行当前索引号所对应的功能函数
-//	(*current_operation_index)();								   // 执行当前操作函数
 }
 
 void home() // 主界面

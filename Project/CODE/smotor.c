@@ -67,7 +67,7 @@ void arm_out(void) // 防止仓卡住
 {
 	ARM_LOW_angle(80);
 	ARM_UP_angle(120);
-	rt_thread_mdelay(200); // 防止仓卡住
+	rt_thread_mdelay(400); // 防止仓卡住
 }
 
 void arm_return(void) // 防止目标检测到舵机

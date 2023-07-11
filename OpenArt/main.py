@@ -231,8 +231,8 @@ def recognize_pic(labels, net):
                 img.draw_rectangle(b.rect(), color = (255, 0, 0), scale = 1, thickness = 2)
                 x, y, w, h = b.rect()
                 # 缩小矩形框的宽度和高度
-                new_w = w -20
-                new_h = h -20
+                new_w = w
+                new_h = h
                 # 计算新的矩形框左上角坐标
                 new_x = x + (w - new_w) // 2
                 new_y = y + (h - new_h) // 2
@@ -266,7 +266,7 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "7-8-epoch375.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "7-10-epoch450.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 

@@ -13,8 +13,9 @@ lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
 #晚上阈值
-card_threshold = [(49, 100, -27, 35, -54, 95)]#色块检测阈值
+card_threshold = [(56, 100, -27, 35, -54, 95)]#色块检测阈值
 day_brightness = 1000
+LED(4).on()#照明
 
 def openart_init():
     sensor.reset()
@@ -123,7 +124,7 @@ def picture_correct():
                 img.draw_circle(closest_blob.cx(), closest_blob.cy(), 5, color=(0, 255, 0))
                 img.draw_line(160, 240, closest_blob.cx(), closest_blob.cy(), color=(255, 0, 0))
                 img.draw_string(10, 10, "closest distance: {}".format(closest_distance), (255, 0, 0))
-
+                lcd.show_image(img, 160, 120, zoom=0)
                 print("disx:%d , disy:%d, angle:%d" % (dis_X, -dis_Y, q))
                 uart.write("C")
                 uart.write("%c" % dis_X)
@@ -155,7 +156,7 @@ def main():
     while True:
         img = sensor.snapshot()
         #object_detect()
-        picture_correct()
+        #picture_correct()
 
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if uart_num:

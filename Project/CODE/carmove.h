@@ -51,15 +51,13 @@ typedef struct card {
 
 }card;
 
-//extern struct point cur_point;//����·���滮��������
-//extern struct point tar_point[point_num];
-//extern struct point TAR_POINT[point_num];
+
 
 extern Pose_car car;
 extern rt_sem_t recognize_sem;
 extern rt_sem_t obj_detection_sem;
 extern rt_sem_t arrive_sem;
-extern char taget_Big_category[10];
+extern uint8 game_mode;
 
 extern uint8 running_mode;
 

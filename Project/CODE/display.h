@@ -4,6 +4,8 @@
 
 
 extern rt_mailbox_t display_mailbox;
+extern char taget_Big_category[10];
+
 
 
 typedef struct
