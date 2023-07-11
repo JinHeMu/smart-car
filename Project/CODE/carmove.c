@@ -164,28 +164,30 @@ void car_move(float tar_x, float tar_y)
 
     float target_distance = distance(car.MileageX, car.MileageY, tar_x, tar_y);
     float current_distance = target_distance;
-    float acceleration = 0.02; // 加速度，可根据实际情况调整
-    float max_speed = 1;       // 最大速度，可根据实际情况调整
+    float acceleration = 0.01; // 加速度，可根据实际情况调整
+    float max_speed = 0.75;       // 最大速度，可根据实际情况调整
     float current_speed = 0;
     float angle = get_angle(car.MileageX, car.MileageY, tar_x, tar_y);
 
     // rt_kprintf("TARGRT TO X:%d, Y:%d\n", (int)tar_x, (int)tar_y);
 
-    if (target_distance >= 200)
+    if (target_distance >= 250)
     {
 
         acceleration = 0.01;
-        max_speed = 0.75;
+        max_speed = 0.5;
     }
 
-//    if (running_mode == 0)
-//    {
-//        tar_x += sin(angle) * target_distance / 7;
-//        tar_y += (cos(angle) * target_distance / 7 - 10);
-//    }
-		
+    if (running_mode == 0)
+    {
         tar_x += sin(angle) * target_distance / 7;
-        tar_y += (cos(angle) * target_distance / 7 - 10);
+        tar_y += (cos(angle) * target_distance / 7);
+    }else if (running_mode == 1)
+		
+		{
+        tar_y -= 10;
+		}
+		
 
 
     rt_kprintf("dis:%d\n", (int)target_distance);
@@ -205,6 +207,7 @@ void car_move(float tar_x, float tar_y)
 
         // 更新当前距离
         current_distance = distance(car.MileageX, car.MileageY, tar_x, tar_y);
+				rt_kprintf("dis:%d\n", (int)current_distance);
     }
 
     car.Speed_X = 0;
@@ -238,7 +241,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 
             if (car.MileageX > 40)
             {
-                car.Speed_X = -200;
+                car.Speed_X = -300;
             }
             else
             {
@@ -261,7 +264,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
         {
             if (car.MileageY > 40)
             {
-                car.Speed_Y = -200;
+                car.Speed_Y = -300;
             }
             else
             {
@@ -290,7 +293,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
             }
             if (car.MileageX < (field_width * 20) - 40)
             {
-                car.Speed_X = 200;
+                car.Speed_X = 300;
             }
             else
             {
@@ -314,7 +317,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 
             if (car.MileageY < (field_height * 20 - 40))
             {
-                car.Speed_Y = 200;
+                car.Speed_Y = 300;
             }
             else
             {
@@ -555,19 +558,19 @@ void correct_entry(void *param)
 
             if (pic_dis > 65)
             {
-                car.correct_speed = 1.5;
+                car.correct_speed = 1;
             }
             else if (pic_dis <= 65 && pic_dis > 45)
             {
-                car.correct_speed = 1.2;
+                car.correct_speed = 0.8;
             }
             else if (pic_dis <= 45 && pic_dis > 25)
             {
-                car.correct_speed = 1;
+                car.correct_speed = 0.8;
             }
             else if (pic_dis <= 25 && pic_dis > 5)
             {
-                car.correct_speed = 1;
+                car.correct_speed = 1.5;
             }
             else
             {
@@ -950,7 +953,7 @@ void carry_entry(void *param)
 
 void back(uint8 boundry_num)
 {
-						if (boundry_num == 5)
+						if (boundry_num == 7)
             {
                 detect_flag = 0;
                 running_mode = 0;
@@ -1009,12 +1012,11 @@ void obj_detection_entry(void *param)
         rt_kprintf("DETECT !!!\n");
 
         car_move(unknow_card_loction_x, unknow_card_loction_y); // 首先到达上一次位置
-
+							rt_thread_mdelay(2000);
         ART2_mode = 1;
         uart_putchar(USART_1, 0x46);
-			
-			rt_thread_mdelay(1000);
 
+			
         while (detect_flag == 0) // 是否接受数据
         {
 					
@@ -1023,7 +1025,7 @@ void obj_detection_entry(void *param)
                 car_moveto_boundry(field_width + 1, 0); // 向右移动找边线
 
 
-                if (detect_flag == 0) // 如果识别的是边线
+                if (detect_flag == 0) // 如果没有找到边线
                 { 
 										boundry_num++;
 										back(boundry_num);
@@ -1036,6 +1038,7 @@ void obj_detection_entry(void *param)
                     car.Speed_X = 0;
 									
 										rt_thread_mdelay(1000);
+										detect_flag = 0;
                    
 										rt_kprintf("boundry_num:%d\n", boundry_num);
                 }
@@ -1043,7 +1046,6 @@ void obj_detection_entry(void *param)
                 {
                     if (car.MileageX > 60 && car.MileageX < 690) // 如果在范围内
                     {
-                        detect_flag = 0;
                         break;
                     }
                     else
@@ -1083,6 +1085,7 @@ void obj_detection_entry(void *param)
                     rt_thread_mdelay(1500);
                     car.Speed_X = 0;
 										rt_thread_mdelay(1000);
+										detect_flag = 0;
 										rt_kprintf("boundry_num:%d\n", boundry_num);
                 }
                 else

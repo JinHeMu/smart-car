@@ -292,7 +292,7 @@ void arm_putbox(uint8 angle)
 		rt_thread_mdelay(20);
 	}
 	
-
+		rt_thread_mdelay(500);
 		magnet_front_release();
 
 		arm_return();

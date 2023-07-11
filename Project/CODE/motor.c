@@ -40,7 +40,10 @@ float Incremental_kd[4] = {0,0,0,0};
 float Angel_kp = 7, Angel_ki = 0, Angel_kd = 60; // 角度环
 
 //float Position_kp = 0.05, Position_ki = 0, Position_kd = 0;
-float Position_kp = 2.5, Position_ki = 0, Position_kd = 0.5;
+//float Position_kp = 2.5, Position_ki = 0, Position_kd = 0.5;
+
+float Position_kp = 10, Position_ki = 0, Position_kd = 0;
+
 float correct_kp = 0, correct_ki = 0, correct_kd = 0;
 
 // 积分法计算位移参数

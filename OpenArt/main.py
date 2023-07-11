@@ -32,9 +32,9 @@ card_threshold = [(42, 100, -27, 35, -54, 95)]#色块检测阈值
 boundary_threshold = [(49, 80, -35, 8, 24, 127)]#边线检测阈值
 boundary_column_threshold = [(49, 80, -35, 8, 24, 127)]#边线检测阈值
 boundary_row_threshold = [(49, 80, -35, 8, 24, 127)]#边线检测阈值
-day_brightness = 1000
+day_brightness = 2000
 LED(4).on()#照明
-binary_threshold = (148, 255)
+binary_threshold = (209, 255)
 
 uart = UART(1, baudrate=115200) #串口
 

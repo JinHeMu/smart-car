@@ -13,8 +13,8 @@ lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
 #晚上阈值
-card_threshold = [(56, 100, -27, 35, -54, 95)]#色块检测阈值
-day_brightness = 1000
+card_threshold = [(64, 100, -25, 57, -32, 127)]#色块检测阈值
+day_brightness = 2000
 LED(4).on()#照明
 
 def openart_init():
