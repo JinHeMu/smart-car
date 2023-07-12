@@ -39,7 +39,7 @@ void main()
 //        rt_thread_mdelay(1000);
 	
 //	
-////	
+//////	
 //	rt_sem_release(obj_detection_sem);
 
 	while (1)

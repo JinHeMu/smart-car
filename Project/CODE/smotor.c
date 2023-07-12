@@ -6,8 +6,7 @@
 3 - 180°
 4 - 270°*/
 
-uint8 tar_angle = 0;
-uint8 cur_angle = 0;
+uint8 cur_angle = 1;
 uint32 prime = 1;
 
 // 定义机械臂的PWM IO口
@@ -65,9 +64,9 @@ void ARM_MID_angle(int angle)
 
 void arm_out(void) // 防止仓卡住
 {
-	ARM_LOW_angle(80);
+	ARM_LOW_angle(70);
 	ARM_UP_angle(120);
-	rt_thread_mdelay(400); // 防止仓卡住
+	rt_thread_mdelay(200);
 }
 
 void arm_return(void) // 防止目标检测到舵机
@@ -115,11 +114,11 @@ void arm_carry(void)
 	ARM_UP_angle(5);
 	rt_thread_mdelay(200);
 	ARM_LOW_angle(53);
-	rt_thread_mdelay(150);
+	rt_thread_mdelay(100);
 	ARM_LOW_angle(48);
-	rt_thread_mdelay(150);
+	rt_thread_mdelay(100);
 	ARM_LOW_angle(43);
-	rt_thread_mdelay(150);
+	rt_thread_mdelay(100);
 
 	magnet_front_appeal();
 	rt_thread_mdelay(500);
@@ -304,27 +303,27 @@ void arm_putbox(uint8 angle)
 
 		arm_out();
 
-		switch (angle)
+		switch(angle)
 		{
-		case 1:
-			ARM_MID_angle(270);
-			rt_thread_mdelay(1500);
-			break;
+			case 1:angle = 4;ARM_MID_angle(270);break;
+			case 2:angle = 1;ARM_MID_angle(0);break;
+			case 3:angle = 2;ARM_MID_angle(91);break;
+			case 4:angle = 3;ARM_MID_angle(180);break;
+		}
+		
+		switch (abs(angle - cur_angle))
+		{
+		case 0:rt_thread_mdelay(0);cur_angle = angle;break;
+		case 1:rt_thread_mdelay(500);cur_angle = angle;break;
 		case 2:
-			ARM_MID_angle(0);
-			rt_thread_mdelay(1500);
+			rt_thread_mdelay(1000);cur_angle = angle;
 			break;
 		case 3:
-			ARM_MID_angle(90);
-			rt_thread_mdelay(1500);
-			break;
-		case 4:
-			ARM_MID_angle(180);
-			rt_thread_mdelay(1500);
+			rt_thread_mdelay(1500);cur_angle = angle;
 			break;
 		}
 
-		ARM_LEFT_angle(90);
+		ARM_LEFT_angle(100);
 		rt_thread_mdelay(300);
 
 		magnet_left_appeal();
@@ -344,7 +343,6 @@ void arm_putbox(uint8 angle)
 //		car.Speed_X = 0;
 //		rt_thread_mdelay(500);
 
-		arm_return();
 	}
 
 	// 机械臂合上盒子

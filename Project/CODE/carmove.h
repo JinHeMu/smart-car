@@ -58,6 +58,7 @@ extern rt_sem_t recognize_sem;
 extern rt_sem_t obj_detection_sem;
 extern rt_sem_t arrive_sem;
 extern uint8 game_mode;
+extern uint8 find_mode;
 
 extern uint8 running_mode;
 

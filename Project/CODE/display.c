@@ -51,7 +51,8 @@ void Menu_key_set(void)
 //		ARM_MID_angle(angle1 * 90);
 //		angle1 ++;
 		
-		arm_putbox(1);
+//		arm_openbox(1);
+		find_mode = 1;
 
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -74,7 +75,7 @@ void Menu_key_set(void)
 //		rt_thread_mdelay(5000);
 //		car_move(40,40);
 		
-		arm_putbox(2);
+		arm_openbox(2);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -92,7 +93,7 @@ void Menu_key_set(void)
 //		rt_thread_mdelay(5000);
 //		car_move(40,40);
 		
-		arm_putbox(3);
+		arm_openbox(3);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -109,7 +110,7 @@ void Menu_key_set(void)
 //		ips114_showfloat(160, 0, Position_kp, 3, 2);
 		
 //		
-		arm_putbox(4);
+		arm_openbox(4);
 //		
 		
 		mb_data = 0; // 邮箱数据清除
