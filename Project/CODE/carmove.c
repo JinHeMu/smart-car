@@ -60,23 +60,13 @@ float unknow_card_loction_y = 60;
 // 大类 盒2
 // 左三 盒1
 
-// card apple;     // 右三类
-// card bannana; // 下三类
-// card durian;   // 左三类
-// card grape;      // 车载
-// card orange;   // 上三类
 
-// card cabbage;  // 上三类
-// card cucumber; // 左三类
-// card eggplant;  // 车载
-// card radish;    // 下三类
-// card pepper;     // 右三类
+//apple;pepper;peanut; // 右三类
+//cabbage;orange;bean; // 上三类
+//eggplant;grape;corn; // 车载
+//radish;bannana;rice;// 下三类
+//potato;durian;cucumber; // 左三类
 
-// card corn;       // 车载
-// card bean;      // 上三类
-// card peanut; // 右三类
-// card potato; // 左三类
-// card rice ;      // 下三类
 
 struct card apple = {"fruit", "apple", 3, 36, 8};     // 右三类
 struct card bannana = {"fruit", "bannana", 0, 8, -1}; // 下三类

@@ -33,7 +33,6 @@ boundary_threshold = [(49, 80, -35, 8, 24, 127)]#边线检测阈值
 boundary_column_threshold = [(49, 80, -35, 8, 24, 127)]#边线检测阈值
 boundary_row_threshold = [(49, 80, -35, 8, 24, 127)]#边线检测阈值
 day_brightness = 2000
-LED(4).on()#照明
 binary_threshold = (209, 255)
 
 uart = UART(1, baudrate=115200) #串口
@@ -276,7 +275,7 @@ def recognize_pic(labels, net):
 
 def main():
     openart_init()
-    net_path = "7-11-epoch450.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
+    net_path = "7-13-epoch600-99.68.tflite"                                  # 瀹氫箟妯″瀷鐨勮矾寰
     labels = [line.rstrip() for line in open("/sd/labels.txt")]   # 鍔犺浇鏍囩
     net = tf.load(net_path, load_to_fb=True)                                  # 鍔犺浇妯″瀷
 
@@ -284,7 +283,7 @@ def main():
     while(True):
         img = sensor.snapshot()
         #find_coordinates()
-        #recognize_pic(labels, net)
+        recognize_pic(labels, net)
         #boundary_correct('column')
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if (uart_num):
