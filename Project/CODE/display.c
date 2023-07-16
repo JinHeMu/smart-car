@@ -5,7 +5,7 @@ rt_mailbox_t display_mailbox; // 定义一个接受信息的邮箱
 int angle1;
 int angle2;
 
-char taget_Big_category[10];
+char taget_Big_category[10] = "";
 
 void (*current_operation_index)();
 

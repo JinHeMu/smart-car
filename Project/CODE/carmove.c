@@ -170,7 +170,7 @@ void car_move(float tar_x, float tar_y)
 			{
 
         acceleration = 0.01;
-        max_speed = 0.75;
+        max_speed = 0.5;
 				
 				
 				tar_x += sin(angle) * target_distance / 5;
@@ -178,7 +178,7 @@ void car_move(float tar_x, float tar_y)
 			}else
 			{
 				tar_x += sin(angle) * target_distance / 7;
-        tar_y += cos(angle) * target_distance / 7 - 20;
+        tar_y += cos(angle) * target_distance / 7 - 25;
 				
 			}
         
@@ -222,7 +222,6 @@ void back(uint8 boundry_num)
     if (boundry_num == 5)
     {
 			
-				car_move(500,400);
         detect_flag = 0;
         running_mode = 0;
         ART2_mode = 0;
@@ -241,8 +240,9 @@ void back(uint8 boundry_num)
 
         if (game_mode == 1)
         {
-            car_move(50, 350);
+            car_move(70, 500);
             arm_openbox(2); // 大类
+
         }else
         {
             car_moveto_boundry(1, field_height + 1);
@@ -251,19 +251,24 @@ void back(uint8 boundry_num)
             arm_openbox(2); // 上三
         }
 
+						car.Speed_Y = -200;
+						rt_thread_mdelay(1000);
+						car.Speed_Y = 0;
 
-
-        car.Speed_Y = -200;
-        rt_thread_mdelay(1500);
-        car.Speed_Y = 0;
 
         car_moveto_boundry(-1, 1);
         car_boundry_carry(-1, 1);
         arm_openbox(1); // 左三
 
-        car.Speed_X = 200;
+				
+				
+				car.Speed_X = 200;
         rt_thread_mdelay(750);
         car.Speed_X = 0;
+				
+				
+
+				
 
         car_moveto_boundry(1, -1);
         rt_thread_mdelay(100000);
@@ -335,7 +340,7 @@ void car_moveto_boundry(int8 tar_x, int8 tar_y)
 
         if (detect_flag == 0)
         {
-            car.MileageY = 0;
+            car.MileageY = 16;
         }
     }
     else if (tar_x > field_width)
@@ -548,7 +553,6 @@ void back_fast(uint8 boundry_num)
     if (boundry_num == 5)
     {
 			
-				car_move(500,300);
         detect_flag = 0;
         running_mode = 0;
         ART2_mode = 0;
@@ -567,7 +571,7 @@ void back_fast(uint8 boundry_num)
 
         if (game_mode == 1)
         {
-            car_move(50, 350);
+            car_move(50, 500);
             arm_openbox(2); // 大类
         }else
         {
@@ -610,25 +614,25 @@ void car_boundry_carry(int8 tar_x, int8 tar_y)
     if (tar_x < 0)
     {
         car.Speed_X = -200;
-        rt_thread_mdelay(500);
+        rt_thread_mdelay(400);
         car.Speed_X = 0;
     }
     else if (tar_x > field_width)
     {
         car.Speed_X = 200;
-        rt_thread_mdelay(500);
+        rt_thread_mdelay(400);
         car.Speed_X = 0;
     }
     else if (tar_y < 0)
     {
         car.Speed_Y = -200;
-        rt_thread_mdelay(500);
+        rt_thread_mdelay(400);
         car.Speed_Y = 0;
     }
     else if (tar_y > field_height)
     {
         car.Speed_Y = 200;
-        rt_thread_mdelay(500);
+        rt_thread_mdelay(400);
         car.Speed_Y = 0;
     }
 }
@@ -791,6 +795,7 @@ void route_planning_entry(void *param)
 							rt_sem_release(obj_detection_sem);
 						}else
 						{
+							car_move(500,400);
 							back(5);
 						}
 						
@@ -899,7 +904,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, apple.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                apple.Box_location = 3; // 放入盒子3中
+                apple.Box_location = 2; // 放入盒子2中
                 arm_putbox(apple.Box_location);
             }
             else if (apple.Box_location)
@@ -922,7 +927,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, bannana.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                bannana.Box_location = 3;
+                bannana.Box_location = 2;
                 arm_putbox(bannana.Box_location);
             }
             else if (bannana.Box_location)
@@ -946,7 +951,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, grape.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                grape.Box_location = 3; // 放入盒子3中
+                grape.Box_location = 2; // 放入盒子2中
                 arm_putbox(grape.Box_location);
             }
             else
@@ -960,7 +965,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, durian.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                durian.Box_location = 3;
+                durian.Box_location = 2;
                 arm_putbox(durian.Box_location);
             }
             else if (durian.Box_location)
@@ -993,7 +998,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, orange.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                orange.Box_location = 3;
+                orange.Box_location = 2;
                 arm_putbox(orange.Box_location);
                 // 放入盒子中
             }
@@ -1026,7 +1031,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, cabbage.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                cabbage.Box_location = 3;
+                cabbage.Box_location = 2;
                 arm_putbox(cabbage.Box_location);
                 // 放入盒子中
             }
@@ -1050,7 +1055,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, cucumber.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                cucumber.Box_location = 3;
+                cucumber.Box_location = 2;
                 arm_putbox(cucumber.Box_location);
                 // 放入盒子中
             }
@@ -1074,7 +1079,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, eggplant.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                eggplant.Box_location = 3;
+                eggplant.Box_location = 2;
                 arm_putbox(eggplant.Box_location);
                 // 放入盒子中
             }
@@ -1089,7 +1094,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, radish.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                radish.Box_location = 3;
+                radish.Box_location = 2;
                 arm_putbox(radish.Box_location);
                 // 放入盒子中
             }
@@ -1113,7 +1118,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, pepper.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                pepper.Box_location = 3;
+                pepper.Box_location = 2;
                 arm_putbox(pepper.Box_location);
                 // 放入盒子中
             }
@@ -1137,7 +1142,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, corn.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                corn.Box_location = 3;
+                corn.Box_location = 2;
                 arm_putbox(corn.Box_location);
                 // 放入盒子中
             }
@@ -1161,7 +1166,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, bean.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                bean.Box_location = 3;
+                bean.Box_location = 2;
                 arm_putbox(bean.Box_location);
                 // 放入盒子中
             }
@@ -1185,7 +1190,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, peanut.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                peanut.Box_location = 3;
+                peanut.Box_location = 2;
                 arm_putbox(peanut.Box_location);
                 // 放入盒子中
             }
@@ -1209,7 +1214,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, potato.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                potato.Box_location = 3;
+                potato.Box_location = 2;
                 arm_putbox(potato.Box_location);
                 // 放入盒子中
             }
@@ -1233,7 +1238,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, rice.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                rice.Box_location = 3;
+                rice.Box_location = 2;
                 arm_putbox(rice.Box_location);
                 // 放入盒子中
             }

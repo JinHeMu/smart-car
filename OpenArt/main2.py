@@ -12,8 +12,8 @@ uart = UART(2, baudrate=115200) # 串口
 lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
-#晚上阈值
-card_threshold = [(65, 100, -25, 57, -32, 127)]#色块检测阈值
+#晚上阈值（需要调试！！！）
+card_threshold = [(71, 100, -40, 62, -31, 102)]#色块检测阈值
 day_brightness = 2000
 LED(4).on()#照明
 
@@ -99,8 +99,8 @@ def picture_correct():
                 q = int(q * 60)
 
                 img.draw_circle(b.cx(), b.cy(), 5, color=(0, 255, 0))
-                dis_X = b.cx() - 153
-                dis_Y = b.cy() - 199
+                dis_X = b.cx() - 172
+                dis_Y = b.cy() - 199#（可能需要调试，测试一下是否在中心位置）
 
                 if dis_X < -64:
                     dis_X = -64
@@ -130,7 +130,7 @@ def picture_correct():
                 uart.write("C")
                 uart.write("%c" % dis_X)
                 uart.write("%c" % -dis_Y)
-                if distance < 10:
+                if distance < 5 :
                     uart.write("%c" % 1)
                     correct_flag = 0
                 else:
