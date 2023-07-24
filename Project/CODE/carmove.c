@@ -150,6 +150,52 @@ float get_angle(float current_x, float current_y, float target_x, float target_y
 返回值：无
 **************************************************************************/
 
+void car_speed_x(int16 tar_speed)
+{
+    float acceleration = 0.02; // 加速度，可根据实际情况调整
+    float max_speed = 1;    // 最大速度，可根据实际情况调整
+    float current_speed = 0;
+    float progress = 0; // 用于表示进度，范围从 0 到 1
+
+    // 逐渐增加速度
+    while (progress < 1)
+    {
+        // 使用缓动函数（二次缓动函数）计算进度
+        progress = 1 - pow(1 - current_speed / max_speed, 2);
+
+        current_speed += acceleration;
+
+        if (current_speed > max_speed)current_speed = max_speed;
+
+        car.Speed_X = current_speed * tar_speed;
+        rt_thread_mdelay(20);
+    }
+}
+
+
+void car_speed_y(int16 tar_speed)
+{
+    float acceleration = 0.02; // 加速度，可根据实际情况调整
+    float max_speed = 1;    // 最大速度，可根据实际情况调整
+    float current_speed = 0;
+    float progress = 0; // 用于表示进度，范围从 0 到 1
+
+    // 逐渐增加速度
+    while (progress < 1)
+    {
+        // 使用缓动函数（二次缓动函数）计算进度
+        progress = 1 - pow(1 - current_speed / max_speed, 2);
+
+        current_speed += acceleration;
+        
+        if (current_speed > max_speed)current_speed = max_speed;
+
+        car.Speed_Y = current_speed * tar_speed;
+        rt_thread_mdelay(20);
+    }
+}
+
+
 void car_move(float tar_x, float tar_y)
 {
 
@@ -174,11 +220,11 @@ void car_move(float tar_x, float tar_y)
 				
 				
 				tar_x += sin(angle) * target_distance / 5;
-        tar_y += cos(angle) * target_distance / 5 - 40;
+                tar_y += cos(angle) * target_distance / 5 - 40;
 			}else
 			{
 				tar_x += sin(angle) * target_distance / 7;
-        tar_y += cos(angle) * target_distance / 7 - 25;
+                tar_y += cos(angle) * target_distance / 7 - 25;
 				
 			}
         
@@ -227,7 +273,7 @@ void back(uint8 boundry_num)
         ART2_mode = 0;
         car_moveto_boundry(field_width + 1, 1);
         car_boundry_carry(field_width + 1, 1);
-				car_boundry_carry(field_width + 1, 1);
+		car_boundry_carry(field_width + 1, 1);
         arm_openbox(3); // 右三
 
         car.Speed_Y = -200;

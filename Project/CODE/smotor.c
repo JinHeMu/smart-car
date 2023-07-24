@@ -140,6 +140,9 @@ void arm_carry(void)
 }
 
 // 将卡片放入盒子
+
+
+
 void arm_putbox(uint8 angle)
 {
 
@@ -182,7 +185,7 @@ void arm_putbox(uint8 angle)
 	magnet_front_appeal();
 	rt_thread_mdelay(500);
 
-	select_mode();
+//	select_mode();
 
 	switch (angle)
 	{

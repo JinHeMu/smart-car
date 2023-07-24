@@ -216,8 +216,11 @@ def recognize_pic(labels, net):
     global uart_num
     recognize_flag = 1
     class_per = []
+    
     recognized_result = None  # 记录识别结果
     same_result_count = 0  # 相同结果的计数器
+    nearest_blob = None  # 最近的色块
+    nearest_distance = float('inf')  # 最近色块与图像中心点的距离
 
     while recognize_flag:
         img = sensor.snapshot()
@@ -240,6 +243,25 @@ def recognize_pic(labels, net):
                 img.draw_rectangle((new_x, new_y, new_w, new_h), color=(255, 0, 0), scale=1, thickness=2)
 
                 img1 = img.copy(1, 1, (new_x, new_y, new_w, new_h))
+
+                # 计算色块中心点坐标
+                blob_center_x = new_x + new_w // 2
+                blob_center_y = new_y + new_h // 2
+
+                # 计算色块中心点与图像中心点的距离
+                distance_to_center = (blob_center_x - img.width() // 2) ** 2 + (blob_center_y - img.height() // 2) ** 2
+
+                # 更新最近色块的信息
+                if distance_to_center < nearest_distance:
+                    nearest_blob = b
+                    nearest_distance = distance_to_center
+
+            if nearest_blob is not None:
+                img.draw_rectangle(nearest_blob.rect(), color=(0, 255, 0), scale=1, thickness=2)
+
+                # 在最近的色块上进行识别
+                x, y, w, h = nearest_blob.rect()
+                img1 = img.copy(1, 1, (x, y, w, h))
 
                 for obj in tf.classify(net, img1, min_scale=1.0, scale_mul=0.5, x_overlap=0.0, y_overlap=0.0):
                     sorted_list = sorted(zip(labels, obj.output()), key=lambda x: x[1], reverse=True)

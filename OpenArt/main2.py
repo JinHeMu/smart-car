@@ -17,6 +17,9 @@ card_threshold = [(71, 100, -40, 62, -31, 102)]#色块检测阈值
 day_brightness = 2000
 LED(4).on()#照明
 
+card_w = 80
+card_h = 80
+
 
 def openart_init():
     sensor.reset()
@@ -29,6 +32,9 @@ def openart_init():
 
 
 
+
+#如果使用色块
+#如果使用目标检测
 def object_detect():
 
 
@@ -43,19 +49,19 @@ def object_detect():
             break
         else:
             for b in img.find_blobs(card_threshold, pixels_threshold=400, area_threshold=400, margin=1, merge=True,
-                                     invert=0):
-                img.draw_line(160, 240, b.cx(), b.cy(), color=(255, 0, 0))
-                #发送数据
-                uart.write("C")
-                uart.write("%c" % 1) #找到卡片发送1
-                uart.write("D")
-                print("find card!!!")
-                lcd.show_image(img, 160, 120, zoom=0)
-                detect_flag = 0
-                break
-
-
-
+                                    invert=0):
+                if b.w() < card_w and b.h() < card_h:#判断色块的大小，来确定是否是卡片参数需要调整
+                    img.draw_line(160, 240, b.cx(), b.cy(), color=(255, 0, 0))
+                    #发送数据
+                    uart.write("C")
+                    uart.write("%c" % 1) #找到卡片发送1
+                    uart.write("D")
+                    print("find card!!!")
+                    lcd.show_image(img, 160, 120, zoom=0)
+                    detect_flag = 0
+                    break
+                else:
+                    continue
 
 
 def picture_correct():
