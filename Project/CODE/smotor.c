@@ -140,6 +140,17 @@ void arm_carry(void)
 }
 
 // 将卡片放入盒子
+//添加六分类 十二点钟方向为1，以顺时针方向逐渐增大
+/*
+1-上
+2-右
+3-下
+4-左
+5-大类
+6-车载
+*/
+
+
 
 
 
@@ -152,23 +163,44 @@ void arm_putbox(uint8 angle)
 	switch (abs(angle - cur_angle))
 	{
 	case 0:
-		ARM_MID_angle(angle * 90 -90);
+		ARM_MID_angle(angle * 60 - 60);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
+
 	case 1:
-		ARM_MID_angle(angle * 90-90);
+		ARM_MID_angle(angle * 60-60);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
+
 	case 2:
-		ARM_MID_angle(angle * 90-90);
+		ARM_MID_angle(angle * 60 -60);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
+
 	case 3:
-		ARM_MID_angle(angle * 90-90);
+		ARM_MID_angle(angle * 60 - 60);
 		rt_thread_mdelay(0);
+		cur_angle = angle;
+		break;
+
+	case 4:
+		ARM_MID_angle(angle * 60 - 60);
+		rt_thread_mdelay(100);
+		cur_angle = angle;
+		break;
+
+	case 5:
+		ARM_MID_angle(angle * 60 - 60);
+		rt_thread_mdelay(200);
+		cur_angle = angle;
+		break;
+
+	case 6:
+		ARM_MID_angle(angle * 60 - 60);
+		rt_thread_mdelay(300);
 		cur_angle = angle;
 		break;
 	}
@@ -308,22 +340,22 @@ void arm_putbox(uint8 angle)
 
 		switch(angle)
 		{
-			case 1:angle = 4;ARM_MID_angle(270);break;
-			case 2:angle = 1;ARM_MID_angle(0);break;
-			case 3:angle = 2;ARM_MID_angle(91);break;
-			case 4:angle = 3;ARM_MID_angle(180);break;
+			case 1:angle = 4;ARM_MID_angle(180);break;
+			case 2:angle = 5;ARM_MID_angle(240);break;
+			case 3:angle = 6;ARM_MID_angle(300);break;
+			case 4:angle = 1;ARM_MID_angle(0);break;
+			case 5:angle = 2;ARM_MID_angle(60);break;
+			case 6:angle = 3;ARM_MID_angle(120);break;
 		}
 		
 		switch (abs(angle - cur_angle))
 		{
 		case 0:rt_thread_mdelay(0);cur_angle = angle;break;
-		case 1:rt_thread_mdelay(500);cur_angle = angle;break;
-		case 2:
-			rt_thread_mdelay(1000);cur_angle = angle;
-			break;
-		case 3:
-			rt_thread_mdelay(1500);cur_angle = angle;
-			break;
+		case 1:rt_thread_mdelay(100);cur_angle = angle;break;
+		case 2:rt_thread_mdelay(200);cur_angle = angle;break;
+		case 3:rt_thread_mdelay(300);cur_angle = angle;break;
+		case 4:rt_thread_mdelay(400);cur_angle = angle;break;
+		case 5:rt_thread_mdelay(500);cur_angle = angle;break;
 		}
 
 		ARM_LEFT_angle(100);

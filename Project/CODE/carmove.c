@@ -46,45 +46,49 @@ float unknow_card_loction_x = 80;
 float unknow_card_loction_y = 60;
 
 //**初赛**
-// 车载 盒4
-// 上三 盒2
-// 右三 盒3
-// 下三 单搬
-// 左三 盒1
+
+/*
+1-上
+2-右
+3-下
+4-左
+5-车载
+*/
+
 
 //**决赛**
-// 车载 盒4
-// 上三 单搬
-// 右三 盒3
-// 下三 单搬
-// 大类 盒2
-// 左三 盒1
+
+/*
+1-上
+2-右
+3-下
+4-左
+5-车载
+6-大类
+*/
 
 
-//apple;pepper;peanut; // 右三类
-//cabbage;orange;bean; // 上三类
-//eggplant;grape;corn; // 车载
-//radish;bannana;rice;// 下三类
-//potato;durian;cucumber; // 左三类
 
+struct card cabbage = {"vegetable", "cabbage", 1, 12, 26};  // 上三类
+struct card bean = {"food", "bean", 1, 4, 26};              // 上三类
+struct card orange = {"fruit", "orange", 1, 8, 26};         // 上三类
 
-struct card apple = {"fruit", "apple", 3, 36, 8};     // 右三类
-struct card bannana = {"fruit", "bannana", 0, 8, -1}; // 下三类
-struct card durian = {"fruit", "durian", 1, -1, 8};   // 左三类
-struct card grape = {"fruit", "grape", 4, 0, 0};      // 车载
-struct card orange = {"fruit", "orange", 2, 8, 26};   // 上三类
+struct card apple = {"fruit", "apple", 2, 36, 8};           // 右三类
+struct card pepper = {"vegetable", "pepper", 2, 36, 4};     // 右三类
+struct card peanut = {"food", "peanut", 2, 36, 12};         // 右三类
 
-struct card cabbage = {"vegetable", "cabbage", 2, 12, 26};  // 上三类
-struct card cucumber = {"vegetable", "cucumber", 1, -1, 4}; // 左三类
-struct card eggplant = {"vegetable", "eggplant", 4, 0, 0};  // 车载
-struct card radish = {"vegetable", "radish", 0, 12, -1};    // 下三类
-struct card pepper = {"vegetable", "pepper", 3, 36, 4};     // 右三类
+struct card bannana = {"fruit", "bannana", 3, 8, -1};       // 下三类
+struct card radish = {"vegetable", "radish", 3, 12, -1};    // 下三类
+struct card rice = {"food", "rice", 3, 4, -1};              // 下三类
 
-struct card corn = {"food", "corn", 4, 0, 0};       // 车载
-struct card bean = {"food", "bean", 2, 4, 26};      // 上三类
-struct card peanut = {"food", "peanut", 3, 36, 12}; // 右三类
-struct card potato = {"food", "potato", 1, -1, 12}; // 左三类
-struct card rice = {"food", "rice", 0, 4, -1};      // 下三类
+struct card durian = {"fruit", "durian", 4, -1, 8};         // 左三类
+struct card cucumber = {"vegetable", "cucumber", 4, -1, 4}; // 左三类
+struct card potato = {"food", "potato", 4, -1, 12};         // 左三类
+
+struct card grape = {"fruit", "grape", 5, 0, 0};            // 车载
+struct card corn = {"food", "corn", 5, 0, 0};               // 车载
+struct card eggplant = {"vegetable", "eggplant", 5, 0, 0};  // 车载
+
 
 //  struct card apple = {"fruit", "apple", 4, 36, 8};     // 右三类
 // struct card bannana = {"fruit", "bannana", 2, 8, -1}; // 下三类
@@ -950,7 +954,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, apple.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                apple.Box_location = 2; // 放入盒子2中
+                apple.Box_location = 6; // 放入盒子2中
                 arm_putbox(apple.Box_location);
             }
             else if (apple.Box_location)
@@ -973,7 +977,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, bannana.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                bannana.Box_location = 2;
+                bannana.Box_location = 6;
                 arm_putbox(bannana.Box_location);
             }
             else if (bannana.Box_location)
@@ -997,7 +1001,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, grape.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                grape.Box_location = 2; // 放入盒子2中
+                grape.Box_location = 6; // 放入盒子6中
                 arm_putbox(grape.Box_location);
             }
             else
@@ -1011,7 +1015,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, durian.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                durian.Box_location = 2;
+                durian.Box_location = 6;
                 arm_putbox(durian.Box_location);
             }
             else if (durian.Box_location)
@@ -1044,7 +1048,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, orange.Big_category) == 0)
             {
                 rt_kprintf("This is  fruit.\n");
-                orange.Box_location = 2;
+                orange.Box_location = 6;
                 arm_putbox(orange.Box_location);
                 // 放入盒子中
             }
@@ -1077,7 +1081,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, cabbage.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                cabbage.Box_location = 2;
+                cabbage.Box_location = 6;
                 arm_putbox(cabbage.Box_location);
                 // 放入盒子中
             }
@@ -1101,7 +1105,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, cucumber.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                cucumber.Box_location = 2;
+                cucumber.Box_location = 6;
                 arm_putbox(cucumber.Box_location);
                 // 放入盒子中
             }
@@ -1125,7 +1129,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, eggplant.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                eggplant.Box_location = 2;
+                eggplant.Box_location = 6;
                 arm_putbox(eggplant.Box_location);
                 // 放入盒子中
             }
@@ -1140,7 +1144,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, radish.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                radish.Box_location = 2;
+                radish.Box_location = 6;
                 arm_putbox(radish.Box_location);
                 // 放入盒子中
             }
@@ -1164,7 +1168,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, pepper.Big_category) == 0)
             {
                 rt_kprintf("This is  vegetable.\n");
-                pepper.Box_location = 2;
+                pepper.Box_location = 6;
                 arm_putbox(pepper.Box_location);
                 // 放入盒子中
             }
@@ -1188,7 +1192,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, corn.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                corn.Box_location = 2;
+                corn.Box_location = 6;
                 arm_putbox(corn.Box_location);
                 // 放入盒子中
             }
@@ -1212,7 +1216,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, bean.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                bean.Box_location = 2;
+                bean.Box_location = 6;
                 arm_putbox(bean.Box_location);
                 // 放入盒子中
             }
@@ -1236,7 +1240,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, peanut.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                peanut.Box_location = 2;
+                peanut.Box_location = 6;
                 arm_putbox(peanut.Box_location);
                 // 放入盒子中
             }
@@ -1260,7 +1264,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, potato.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                potato.Box_location = 2;
+                potato.Box_location = 6;
                 arm_putbox(potato.Box_location);
                 // 放入盒子中
             }
@@ -1284,7 +1288,7 @@ void carry_entry(void *param)
             if (strcmp(taget_Big_category, rice.Big_category) == 0)
             {
                 rt_kprintf("This is  food.\n");
-                rice.Box_location = 2;
+                rice.Box_location = 6;
                 arm_putbox(rice.Box_location);
                 // 放入盒子中
             }
