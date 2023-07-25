@@ -35,9 +35,36 @@ def openart_init():
 
 #如果使用色块
 #如果使用目标检测
+
+# 判断一个卡片是否为新卡片
+def is_new_card(card_center, last_card_center):
+    # 设置阈值
+    threshold = 20
+
+    # 如果这是第一次检测到卡片，那么就认为这是一个新的卡片
+    if last_card_center is None:
+        return True
+
+    # 检查卡片的位置是否与上一次检测到的卡片的位置足够接近
+    dx = card_center[0] - last_card_center[0]
+    dy = card_center[1] - last_card_center[1]
+    distance = (dx**2 + dy**2)**0.5
+
+    # 如果足够接近，那么就认为这不是一个新的卡片
+    if distance < threshold:
+        return False
+
+    # 如果不足够接近，那么就认为这是一个新的卡片
+    return True
+
+
+
+
+# 存储最近一次检测到的卡片的位置
+last_card_center = None
+
 def object_detect():
-
-
+    global last_card_center  # 用 global 关键字来在函数内部访问全局变量
     detect_flag = 1
 
     while detect_flag:
@@ -50,18 +77,28 @@ def object_detect():
         else:
             for b in img.find_blobs(card_threshold, pixels_threshold=400, area_threshold=400, margin=1, merge=True,
                                     invert=0):
-                if b.w() < card_w and b.h() < card_h:#判断色块的大小，来确定是否是卡片参数需要调整
-                    img.draw_line(160, 240, b.cx(), b.cy(), color=(255, 0, 0))
-                    #发送数据
+                #if b.w() < card_w and b.h() < card_h:  # 判断色块的大小，来确定是否是卡片参数需要调整
+                    # 得到卡片的中心点坐标
+                card_center = (b.cx(), b.cy())
+
+                # 判断这个卡片是否为新卡片
+                if is_new_card(card_center, last_card_center):
+                    # 如果是新卡片，将它的位置存储为最新的位置
+                    last_card_center = card_center
+
+                    # 发送数据
                     uart.write("C")
-                    uart.write("%c" % 1) #找到卡片发送1
+                    uart.write("%c" % 1)  # 找到卡片发送1
                     uart.write("D")
-                    print("find card!!!")
+                    print("find new card!!!")
                     lcd.show_image(img, 160, 120, zoom=0)
                     detect_flag = 0
                     break
                 else:
                     continue
+
+
+
 
 
 def picture_correct():
@@ -162,7 +199,7 @@ def main():
 
     while True:
         img = sensor.snapshot()
-        #object_detect()
+        object_detect()
         #picture_correct()
 
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺

@@ -80,7 +80,7 @@ void Menu_key_set(void)
 		
 //		arm_openbox(2);
 		
-		arm_putbox(2);
+		arm_putbox(4);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -101,7 +101,7 @@ void Menu_key_set(void)
 		
 //		arm_openbox(3);
 		
-		arm_putbox(4);
+		arm_putbox(5);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -121,7 +121,7 @@ void Menu_key_set(void)
 //		arm_openbox(4);
 //		
 		
-		arm_putbox(3);
+		arm_putbox(6);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
