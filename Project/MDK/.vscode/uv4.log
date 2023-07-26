@@ -1,4 +1,7 @@
 *** Using Compiler 'V6.15', folder: 'D:\keil_5.33\ARM\ARMCLANG\Bin'
 Build target 'nor_sdram_zf_dtcm_v6'
+compiling carmove2.c...
+linking...
+Program Size: Code=70352 RO-data=7504 RW-data=272 ZI-data=459504  
 ".\Objects\RT106X.axf" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02

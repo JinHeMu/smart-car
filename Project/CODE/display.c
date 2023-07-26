@@ -48,13 +48,14 @@ void Menu_key_set(void)
 ////		rt_thread_mdelay(5000);
 ////		car_move(40,40);
 //		
-//		ARM_MID_angle(angle1 * 90);
-//		angle1 ++;
+				angle1 ++;
+		ARM_MID_angle(angle1 * 60);
+
 		
 //		arm_openbox(1);
 //		find_mode = 1;
 
-		arm_putbox(1);
+//		arm_putbox(1);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -80,7 +81,8 @@ void Menu_key_set(void)
 		
 //		arm_openbox(2);
 		
-		arm_putbox(4);
+						angle1 --;
+		ARM_MID_angle(angle1 * 60);
 		
 		mb_data = 0; // 邮箱数据清除
 	}

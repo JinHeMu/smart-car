@@ -2304,6 +2304,16 @@
               <FileType>5</FileType>
               <FilePath>..\CODE\icm20602.h</FilePath>
             </File>
+            <File>
+              <FileName>carmove2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\carmove2.c</FilePath>
+            </File>
+            <File>
+              <FileName>carmove2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\carmove2.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -4604,6 +4614,16 @@
               <FileName>icm20602.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CODE\icm20602.h</FilePath>
+            </File>
+            <File>
+              <FileName>carmove2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\carmove2.c</FilePath>
+            </File>
+            <File>
+              <FileName>carmove2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\carmove2.h</FilePath>
             </File>
           </Files>
         </Group>
