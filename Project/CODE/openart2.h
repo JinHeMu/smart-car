@@ -7,8 +7,7 @@ extern int8 ART2_center_x;
 extern int8 ART2_center_y;
 extern int8 ART2_angle;
 extern uint8 ART2_mode;
-extern uint8 detect_flag;
-extern uint8 detect_arrive_flag;
+
 
 extern int8 ART2_CORRECT_X;
 extern int8 ART2_CORRECT_Y;

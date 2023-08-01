@@ -13,7 +13,7 @@ lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
 #晚上阈值（需要调试！！！）
-card_threshold = [(71, 100, -40, 62, -31, 102)]#色块检测阈值
+card_threshold = [(52, 100, -40, 62, -31, 102)]#色块检测阈值
 day_brightness = 2000
 LED(4).on()#照明
 
@@ -142,8 +142,8 @@ def picture_correct():
                 q = int(q * 60)
 
                 img.draw_circle(b.cx(), b.cy(), 5, color=(0, 255, 0))
-                dis_X = b.cx() - 172
-                dis_Y = b.cy() - 199#（可能需要调试，测试一下是否在中心位置）
+                dis_X = b.cx() - 166
+                dis_Y = b.cy() - 174#（可能需要调试，测试一下是否在中心位置）
 
                 if dis_X < -64:
                     dis_X = -64
@@ -199,8 +199,8 @@ def main():
 
     while True:
         img = sensor.snapshot()
-        object_detect()
-        #picture_correct()
+        #object_detect()
+        picture_correct()
 
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if uart_num:

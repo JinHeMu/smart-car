@@ -69,6 +69,13 @@ struct card grape = {"fruit", "grape", 5, 0, 0};           // 车载
 struct card corn = {"food", "corn", 5, 0, 0};              // 车载
 struct card eggplant = {"vegetable", "eggplant", 5, 0, 0}; // 车载
 
+
+void car_turnto(float angle)
+{
+    car.current_angle = angle;
+}
+
+
 int distance(float current_x, float current_y, float target_x, float target_y)
 {
 
@@ -623,6 +630,7 @@ void obj_detection_entry(void *param)
 {
     while (1)
     {
+			
         rt_sem_take(obj_detection_sem, RT_WAITING_FOREVER); // 接受识别信号量
 
         if (boundry_num % 2 == 0)
@@ -636,7 +644,7 @@ void obj_detection_entry(void *param)
 
         while (ART1_CORRECT_Boundary_Flag == 0)
         {
-            if (detect_flag == 1) // 如果找到卡片，记录发现卡片的里程计位置和卡片的大致距离
+            if (ART3_DETECT_Flag == 1) // 如果找到卡片，记录发现卡片的里程计位置和卡片的大致距离
             {
                 card_num++;
                 card_all_num++;
@@ -644,12 +652,13 @@ void obj_detection_entry(void *param)
                 detectedCards[card_num].Current_y = car.MileageY;
                 detectedCards[card_num].Distance = det_dis;
             }
-            detect_flag = 0;
+            ART3_DETECT_Flag = 0;
             rt_thread_mdelay(50);
         }
 
         boundry_num++;
         ART1_CORRECT_Boundary_Flag = 0;
+				rt_thread_mdelay(10000);
 
         if (card_all_num == 24 || boundry_num == 5)
         {

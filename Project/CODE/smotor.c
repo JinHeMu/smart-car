@@ -18,8 +18,8 @@ uint32 prime = 1;
 #define ARM_CENTER (1.5 * 50000 / 20)
 
 // 定义电磁铁控制IO口
-#define MAGNET_FRONT C5
-#define MAGNET_LEFT C6
+#define MAGNET_FRONT C6
+#define MAGNET_LEFT C5
 
 // 电磁铁释放
 void magnet_front_release(void)
@@ -73,7 +73,7 @@ void arm_return(void) // 防止目标检测到舵机
 {
 	ARM_UP_angle(180); // 收回，防止目标检测识别到
 	rt_thread_mdelay(500);
-	ARM_LOW_angle(90);
+	ARM_LOW_angle(80);
 }
 
 /*
@@ -169,7 +169,7 @@ void arm_putbox(uint8 angle)
 		break;
 
 	case 1:
-		ARM_MID_angle(angle * 60-60);
+		ARM_MID_angle(angle * 60 - 60);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
 		break;
@@ -205,17 +205,25 @@ void arm_putbox(uint8 angle)
 		break;
 	}
 
-	ARM_UP_angle(5);
+	ARM_UP_angle(0);
+	rt_thread_mdelay(100);
+	ARM_LOW_angle(40);
 	rt_thread_mdelay(200);
-	ARM_LOW_angle(53);
-	rt_thread_mdelay(100);
-	ARM_LOW_angle(48);
-	rt_thread_mdelay(100);
-	ARM_LOW_angle(43);
-	rt_thread_mdelay(100);
+		ARM_LOW_angle(34);
+	rt_thread_mdelay(50);
+		ARM_LOW_angle(33);
+	rt_thread_mdelay(50);
+		ARM_LOW_angle(32);
+	rt_thread_mdelay(50);
+		ARM_LOW_angle(31);
+	rt_thread_mdelay(50);
+	ARM_LOW_angle(30);
+	rt_thread_mdelay(50);
+	ARM_LOW_angle(25);
+	rt_thread_mdelay(50);
 
 	magnet_front_appeal();
-	rt_thread_mdelay(500);
+	rt_thread_mdelay(200);
 
 //	select_mode();
 
@@ -270,10 +278,11 @@ void arm_putbox(uint8 angle)
 	{
 		ARM_LOW_angle(70);
 		rt_thread_mdelay(100);
-		ARM_UP_angle(170);
-		rt_thread_mdelay(150 );
+		ARM_UP_angle(160);
+		rt_thread_mdelay(150);
 		ARM_LOW_angle(40);
 		rt_thread_mdelay(500);
+		
 
 		ARM_LOW_angle(50);
 		rt_thread_mdelay(100);
@@ -302,28 +311,22 @@ void arm_putbox(uint8 angle)
 		rt_thread_mdelay(100);
 				ARM_LOW_angle(80);
 		rt_thread_mdelay(100);
-		ARM_LOW_angle(90);
+		
+		
+		ARM_UP_angle(170);
+						ARM_LOW_angle(85);
 		rt_thread_mdelay(100);
-		ARM_LOW_angle(91);
-		rt_thread_mdelay(20);
-		ARM_LOW_angle(92);
-		rt_thread_mdelay(20);
-		ARM_LOW_angle(93);
-		rt_thread_mdelay(20);
-		ARM_LOW_angle(94);
-		rt_thread_mdelay(20);
-		ARM_LOW_angle(95);
-		rt_thread_mdelay(20);
-		ARM_LOW_angle(96);
-		rt_thread_mdelay(20);
-		ARM_LOW_angle(97);
-		rt_thread_mdelay(20);
-		ARM_LOW_angle(98);
-		rt_thread_mdelay(20);
-		ARM_LOW_angle(99);
-		rt_thread_mdelay(20);
-		ARM_LOW_angle(100);
-		rt_thread_mdelay(20);
+		ARM_LOW_angle(86);
+		rt_thread_mdelay(50);
+		ARM_LOW_angle(87);
+		rt_thread_mdelay(50);
+		ARM_LOW_angle(88);
+		rt_thread_mdelay(50);
+		ARM_LOW_angle(89);
+		rt_thread_mdelay(50);
+		ARM_LOW_angle(90);
+		rt_thread_mdelay(50);
+
 	}
 	
 		rt_thread_mdelay(500);
@@ -351,11 +354,11 @@ void arm_putbox(uint8 angle)
 		switch (abs(angle - cur_angle))
 		{
 		case 0:rt_thread_mdelay(0);cur_angle = angle;break;
-		case 1:rt_thread_mdelay(100);cur_angle = angle;break;
-		case 2:rt_thread_mdelay(200);cur_angle = angle;break;
-		case 3:rt_thread_mdelay(300);cur_angle = angle;break;
-		case 4:rt_thread_mdelay(400);cur_angle = angle;break;
-		case 5:rt_thread_mdelay(500);cur_angle = angle;break;
+		case 1:rt_thread_mdelay(500);cur_angle = angle;break;
+		case 2:rt_thread_mdelay(700);cur_angle = angle;break;
+		case 3:rt_thread_mdelay(900);cur_angle = angle;break;
+		case 4:rt_thread_mdelay(1100);cur_angle = angle;break;
+		case 5:rt_thread_mdelay(1300);cur_angle = angle;break;
 		}
 
 		ARM_LEFT_angle(100);
@@ -372,6 +375,8 @@ void arm_putbox(uint8 angle)
 
 		magnet_left_release();
 		rt_thread_mdelay(1000);
+		
+		ARM_LEFT_angle(40);
 
 //		car.Speed_X = 300;
 //		rt_thread_mdelay(500);
@@ -402,7 +407,7 @@ void arm_putbox(uint8 angle)
 		gpio_init(MAGNET_FRONT, GPO, 0, GPIO_PIN_CONFIG);
 		gpio_init(MAGNET_LEFT, GPO, 0, GPIO_PIN_CONFIG);
 
-		ARM_LEFT_angle(0);
+		ARM_LEFT_angle(40);
 		ARM_LOW_angle(80);
 		ARM_UP_angle(120); // 收回，防止目标检测识别到
 		ARM_MID_angle(0);

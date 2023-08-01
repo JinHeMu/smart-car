@@ -77,6 +77,9 @@ void car_turn(float angle);
 void car_turnto(float angle);
 void car_moveto_boundry(uint8 flag);
 
+void car_speed_x(int16 tar_speed);
+void car_speed_y(int16 tar_speed);
+
 
 
 

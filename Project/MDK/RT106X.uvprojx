@@ -2314,6 +2314,16 @@
               <FileType>5</FileType>
               <FilePath>..\CODE\carmove2.h</FilePath>
             </File>
+            <File>
+              <FileName>openart3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\openart3.c</FilePath>
+            </File>
+            <File>
+              <FileName>openart3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\openart3.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -2322,6 +2332,7 @@
       <TargetName>nor_sdram_zf_dtcm_v6</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pArmCC>6150000::V6.15::ARMCLANG</pArmCC>
       <pCCUsed>6150000::V6.15::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
@@ -4624,6 +4635,16 @@
               <FileName>carmove2.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\CODE\carmove2.h</FilePath>
+            </File>
+            <File>
+              <FileName>openart3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\CODE\openart3.c</FilePath>
+            </File>
+            <File>
+              <FileName>openart3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\CODE\openart3.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -41,8 +41,9 @@ void timer1_pit_entry(void *parameter)//一个时钟节拍一毫秒
 			
 			Mahony_computeAngles();//采集陀螺仪数据
 			car.Speed_Z=angel_pid((int)angle_z, (int)car.current_angle);//omnimove模式下目标方向一直为0	
-			//rt_kprintf("%d\n", (int)angle_z);
+		rt_kprintf("%d\n", (int)angle_z);
 			car_omni(car.Speed_X,car.Speed_Y,car.Speed_Z); 
+//						car_omni(car.Speed_X,car.Speed_Y,0); 
 //			car_omni(5,0,car.Speed_Z); 
 			//car_omni_angle(car.Speed_X,car.Speed_Y,car.Speed_Z);
 //					x *= cos(car.current_angle);

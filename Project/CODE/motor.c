@@ -29,7 +29,7 @@ int32 duty1 = 0, duty2 = 0, duty3 = 0, duty4 = 0; // 电机PWM值
 //float Incremental_kd[4] = {0,0,0,0}; 
 
 float Incremental_kp[4] = {70, 70, 70, 70};
-float Incremental_ki[4] = {5, 5 , 5, 5};
+float Incremental_ki[4] = {4, 4 , 4, 4};
 float Incremental_kd[4] = {0,0,0,0}; 
 
 //float Angel_kp = 6, Angel_ki = 0, Angel_kd = 24; // 角度环
@@ -37,7 +37,7 @@ float Incremental_kd[4] = {0,0,0,0};
 //float Angel_kp = 30, Angel_ki = 0, Angel_kd = 360; // 角度环
 //float Angel_kp = 30, Angel_ki = 0, Angel_kd = 400; // 角度环
 
-float Angel_kp = 7, Angel_ki = 0, Angel_kd = 60; // 角度环
+float Angel_kp = 10, Angel_ki = 0, Angel_kd = 110; // 角度环
 
 //float Position_kp = 0.05, Position_ki = 0, Position_kd = 0;
 //float Position_kp = 2.5, Position_ki = 0, Position_kd = 0.5;
@@ -315,9 +315,14 @@ void pid_calculate(void)
 	duty2 = Incremental_pid2(speed_tar_2, RC_encoder2);
 	duty3 = Incremental_pid3(speed_tar_3, RC_encoder3);
 	duty4 = Incremental_pid4(speed_tar_4, RC_encoder4);
-
+	
+	
+//	duty1 = -5000; // 计算得到每个电机输出目标值
+//	duty2 = 0;
+//	duty3 = 0;
+//	duty4 = 0;
 //		rt_kprintf("%d,%d,%d,%d   ", duty1,duty2,duty3,duty4);
-//		rt_kprintf("%d,%d,%d,%d   ", RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4);
+		//rt_kprintf("%d,%d,%d,%d\n", RC_encoder1,RC_encoder2,RC_encoder3,RC_encoder4);
 //		rt_kprintf("%d,%d,%d,%d\n", (int)speed_tar_1*116,(int)speed_tar_2*116,(int)speed_tar_3*116,(int)speed_tar_4*116);
 
 	duty1 = limit(duty1, PWM_LIMIT);

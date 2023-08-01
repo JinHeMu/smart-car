@@ -9,24 +9,30 @@ sensor.set_brightness(2000)
 clock = time.clock()                # Create a clock object to track the FPS.
 
 
+## 3：屏幕显示方向 参数范围0-3
+lcd = seekfree.IPS200(2)
+lcd.full()  # 将背景颜色显示到整个屏幕
+
 # 定义一个变量来保存上一次卡片的中心点位置
 last_card_center = None
 # 定义一个阈值，当两张卡片之间的距离大于此值时，认为是新的卡片
-distance_threshold = 50
+distance_threshold = 10
 
 #设置模型路径
 face_detect = '/sd/yolo3_iou_smartcar_final_with_post_processing.tflite'
 #载入模型
 net = tf.load(face_detect)
 
+detect_flag = 0
+
 # 定义摄像头中心下方的位置，你可能需要根据具体的摄像头参数进行调整
 camera_center = (sensor.width() / 2, sensor.height())
 
 
 while(True):
-    clock.tick()
     img = sensor.snapshot()
-
+    img.draw_line(140, 0, 140, 240, color=(255, 0, 0))
+    img.draw_line(180, 0, 180, 240, color=(255, 0, 0))
     closest_card = None
     closest_distance = float("inf") # Set to infinity initially
 
@@ -41,7 +47,7 @@ while(True):
             w = int(w*img.width())
             h = int(h*img.height())
 
-            if x1 >= 60 and x1+w <= 260:
+            if x1+w//2 >= 140 and x1+w//2 <= 180:
                 current_card_center = ((x1 + x2) / 2, (y1 + y2) / 2)
                 current_distance = ((current_card_center[0] - camera_center[0]) ** 2 + (current_card_center[1] - camera_center[1]) ** 2) ** 0.5
 
@@ -61,16 +67,13 @@ while(True):
             print("New card detected")
             # 在卡片右上角画出"new"
             img.draw_string(int(x1), int(y1), "New", color=(255,0,0), scale=2)
-
         else:
-            print("Old card detected")
             # 在卡片右上角画出"old"
             img.draw_string(int(x1), int(y1), "Old", color=(0,255,0), scale=2)
 
         # 更新上一张卡片的中心点位置
         last_card_center = current_card_center
-        print("Closest card detected")
-        img.draw_string(int(x1), int(y1), "Card", color=(255,0,0), scale=2)
+        lcd.show_image(img, 320, 240, zoom=0)
 
 
 

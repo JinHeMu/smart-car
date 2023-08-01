@@ -29,9 +29,9 @@ uart_num = 0
 
 #晚上阈值（需要调试）
 card_threshold = [(65, 100, -33, 66, -16, 102)]#色块检测阈值
-boundary_threshold = [(60, 100, -46, 8, -4, 102)]#边线检测阈值
-boundary_column_threshold = [(60, 100, -46, 8, -4, 102)]#边线检测阈值
-boundary_row_threshold = [(60, 100, -46, 8, -4, 102)]#边线检测阈值
+boundary_threshold = [(55, 81, -38, -12, 38, 99)]#边线检测阈值
+boundary_column_threshold = [(55, 81, -38, -12, 38, 99)]#边线检测阈值
+boundary_row_threshold = [(55, 81, -38, -12, 38, 99)]#边线检测阈值
 day_brightness = 2000
 binary_threshold = (175, 255)   #需要调节
 LED(4).on()#照明
@@ -216,7 +216,7 @@ def recognize_pic(labels, net):
     global uart_num
     recognize_flag = 1
     class_per = []
-    
+
     recognized_result = None  # 记录识别结果
     same_result_count = 0  # 相同结果的计数器
     nearest_blob = None  # 最近的色块
@@ -307,7 +307,7 @@ def main():
         img = sensor.snapshot()
         #find_coordinates()
         #recognize_pic(labels, net)
-        #boundary_correct('column')
+        #boundary_correct('row')
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if (uart_num):
             uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁

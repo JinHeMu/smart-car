@@ -33,6 +33,39 @@ Menu_table table[30] =
 
 uint8_t func_index = 0; // 主程序此时所在程序的索引值
 
+//void Menu_key_set(void)
+//{
+
+//	rt_ubase_t mb_data; // 储存邮箱的数据
+
+//	rt_mb_recv(display_mailbox, &mb_data, RT_WAITING_NO); // 接受按键发送过来的邮件
+
+//	if ((mb_data == 2)) // 按下按键1
+//	{
+//		ips114_clear(WHITE);
+//		func_index = table[func_index].next; // 按键next按下后的索引号
+//		mb_data = 0; // 邮箱数据清除
+//	}
+
+//	if ((mb_data == 3))
+//	{
+//		ips114_clear(WHITE);
+//		func_index = table[func_index].enter; // 按键enter按下后的索引号
+//		mb_data = 0; // 邮箱数据清除
+//	}
+
+//	if (mb_data == 4)
+//	{
+//		ips114_clear(WHITE);
+//		func_index = table[func_index].back; // 按键back按下后的索引号
+//		mb_data = 0; // 邮箱数据清除
+//	}
+//	current_operation_index = table[func_index].current_operation; // 执行当前索引号所对应的功能函数
+//	(*current_operation_index)();								   // 执行当前操作函数
+//}
+
+
+
 void Menu_key_set(void)
 {
 
@@ -48,11 +81,38 @@ void Menu_key_set(void)
 ////		rt_thread_mdelay(5000);
 ////		car_move(40,40);
 //		
-				angle1 ++;
-		ARM_MID_angle(angle1 * 60);
+//				angle1 ++;
+//		ARM_MID_angle(angle1 * 60);
+		
+//		magnet_left_appeal();
+		
+	car_turnto(20);
+		rt_thread_mdelay(1000);
+		
+			car_turnto(90);
+		rt_thread_mdelay(1000);
 
 		
-//		arm_openbox(1);
+			car_turnto(180);
+		rt_thread_mdelay(1000);
+
+
+	car_turnto(240);
+		rt_thread_mdelay(1000);
+
+
+	car_turnto(300);
+		rt_thread_mdelay(1000);
+
+
+	car_turnto(0);
+		rt_thread_mdelay(1000);
+
+
+		
+
+		
+//		arm_openbox(4);
 //		find_mode = 1;
 
 //		arm_putbox(1);
@@ -78,11 +138,44 @@ void Menu_key_set(void)
 //		car_move(200,200);
 //		rt_thread_mdelay(5000);
 //		car_move(40,40);
+		angle1 ++;
+		arm_openbox(angle1);
+		//arm_putbox(1);
+						
+//		ARM_MID_angle(angle1 * 60);
 		
-//		arm_openbox(2);
-		
-						angle1 --;
-		ARM_MID_angle(angle1 * 60);
+//		magnet_left_release();
+//		magnet_front_release();
+
+
+//		car.Speed_X = 300;
+//		car.Speed_Y = 300;
+//		rt_thread_mdelay(2000);
+//		car.Speed_X = 0;
+//		car.Speed_Y = 0;
+//		rt_thread_mdelay(2000);
+//		
+//		car.Speed_X = -300;
+//		car.Speed_Y = -300;
+//		rt_thread_mdelay(2000);
+//		car.Speed_X = 0;
+//		car.Speed_Y = 0;
+//		rt_thread_mdelay(2000);
+
+
+
+//		car.Speed_X = 300;
+//		rt_thread_mdelay(2000);
+//		car.Speed_X = 0;
+//		rt_thread_mdelay(2000);
+//		
+//		car.Speed_X = -300;
+//		rt_thread_mdelay(2000);
+//		car.Speed_X = 0;
+//		rt_thread_mdelay(2000);
+
+
+
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -100,11 +193,31 @@ void Menu_key_set(void)
 //		car_move(300,300);
 //		rt_thread_mdelay(5000);
 //		car_move(40,40);
-		
+//		Incremental_ki[0]++;
+//		Incremental_ki[1]++;
+//		Incremental_ki[2]++;
+//		Incremental_ki[3]++;
+//		Angel_kp++;
+//	ips114_showint16(50, 0, Angel_kp);
+
 //		arm_openbox(3);
+//		arm_putbox(2);
 		
-		arm_putbox(5);
-		
+//		magnet_left_appeal();
+//		magnet_front_appeal();
+
+
+
+	car_speed_x(300);
+	rt_thread_mdelay(2000);
+		car_speed_x(0);
+	rt_thread_mdelay(2000);
+			car_speed_x(-300);
+	rt_thread_mdelay(2000);
+			car_speed_x(0);
+	rt_thread_mdelay(2000);
+
+//		
 		mb_data = 0; // 邮箱数据清除
 	}
 
@@ -118,12 +231,22 @@ void Menu_key_set(void)
 //		
 //		Position_kp += 0.1;
 //		ips114_showfloat(160, 0, Position_kp, 3, 2);
-		
+//		arm_putbox(3);
 //		
 //		arm_openbox(4);
-//		
+////		
 		
-		arm_putbox(6);
+//		Incremental_kp[0]++;
+//		Incremental_kp[1]++;
+//		Incremental_kp[2]++;
+//		Incremental_kp[3]++;
+//				Angel_kd++;
+//	ips114_showint16(50, 0, Angel_kd);
+		
+		car_speed_x(300);
+
+		
+//		arm_putbox(6);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -273,11 +396,38 @@ void GUI_arm_value()
 	
 
 }
+
+
+void GUI_object_value()
+{
+	while(1)
+	{
+			ips114_showstr(0, 0, "Dis:");
+			ips114_showstr(0, 1, "Flag:");
+
+			ips114_showint16(50, 0, ART3_DETECT_DISTANCE);
+			ips114_showint16(50, 1, ART3_DETECT_Flag);
+			
+		
+			ips114_showstr(0, 2, "MileX:");
+			ips114_showfloat(60, 2, car.MileageX, 4, 2);
+			ips114_showstr(0, 3, "MileY:");
+			ips114_showfloat(60, 3, car.MileageY, 4, 2);
+		
+	}
+	
+
+}
+
+
 void display_entry(void *parameter)
 {
 	while(1)
 {
 	Menu_key_set();
+//	GUI_imu_ra_value();
+//	GUI_object_value();
+//	GUI_motor_value();
 }
 	
 }
