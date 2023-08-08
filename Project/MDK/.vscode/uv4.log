@@ -1,8 +1,7 @@
 *** Using Compiler 'V6.15', folder: 'D:\keil_5.33\ARM\ARMCLANG\Bin'
 Build target 'nor_sdram_zf_dtcm_v6'
-compiling buzzer.c...
 compiling carmove2.c...
 linking...
-Program Size: Code=74600 RO-data=7460 RW-data=400 ZI-data=459376  
+Program Size: Code=83232 RO-data=9640 RW-data=804 ZI-data=458972  
 ".\Objects\RT106X.axf" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01

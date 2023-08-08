@@ -139,7 +139,7 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 				{
 					ART1_CORRECT_Boundary_Angle = ART1_dat[0];
 					ART1_CORRECT_Boundary_Flag = ART1_dat[1];
-					if(abs(ART1_CORRECT_Boundary_Angle)>0 && abs(ART1_CORRECT_Boundary_Angle) < 5)
+					if(abs(ART1_CORRECT_Boundary_Angle)>0 && abs(ART1_CORRECT_Boundary_Angle) < 20)
 					{
 						angle_z = -ART1_CORRECT_Boundary_Angle;
 					}

@@ -225,6 +225,7 @@ void arm_putbox(uint8 angle)
 	magnet_front_appeal();
 	rt_thread_mdelay(200);
 
+  rt_sem_release(arrive_sem);
 //	select_mode();
 
 	switch (angle)

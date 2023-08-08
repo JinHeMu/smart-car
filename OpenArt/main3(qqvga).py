@@ -15,19 +15,15 @@ lcd.full()  # 将背景颜色显示到整个屏幕
 
 day_brightness = 2000
 
-camera_center = (160, 240)
 
-# 定义一个变量来保存上一次卡片的中心点位置
-last_card_center = None
-# 定义一个阈值，当两张卡片之间的距离大于此值时，认为是新的卡片
-distance_threshold = 20
+#qqvga 160 120
+camera_center = (160, 120)
 
-x_roi_min =130
-x_roi_max =190
+x_roi_min =70
+x_roi_max =90
 
 y_roi_min =50
-y_roi_max =240
-
+y_roi_max =70
 
 
 #设置模型路径
@@ -38,7 +34,7 @@ net = tf.load(face_detect)
 def openart_init():
     sensor.reset()
     sensor.set_pixformat(sensor.RGB565)
-    sensor.set_framesize(sensor.QVGA)
+    sensor.set_framesize(sensor.QQVGA)
     sensor.set_brightness(day_brightness)
     sensor.skip_frames(20)
     sensor.set_auto_gain(False)
@@ -46,15 +42,15 @@ def openart_init():
 
 
 def object_detect():
-    global last_card_center
+
     detect_flag = 1
 
     while detect_flag:
         uart_num = uart.any()  # 获取当前串口数据数量
         img = sensor.snapshot()
 
-
         roi = (x_roi_min, y_roi_min, x_roi_max - x_roi_min, y_roi_max - y_roi_min)
+
         # img.draw_rectangle(roi, thickness=2,color = (255, 0, 0))
 
         #cropped_img = img.copy(roi)
@@ -63,7 +59,6 @@ def object_detect():
         #img.draw_line(x_roi_max, y_roi_min, x_roi_max, y_roi_max, color=(255, 0, 0))
         #img.draw_line(x_roi_max, y_roi_max, x_roi_min, y_roi_max, color=(255, 0, 0))
         #img.draw_line(x_roi_max, y_roi_max, x_roi_min, y_roi_max, color=(255, 0, 0))
-
 
         if uart_num != 0:
             detect_flag = 0
@@ -85,35 +80,22 @@ def object_detect():
 
                     if card_dis_x >= x_roi_min and card_dis_x <= x_roi_max and card_dis_y >=y_roi_min:
                         img.draw_rectangle((x1, y1, w, h), color = (0, 255, 0),thickness=2)
-                        print(int(240-y1))
+                        print(int(120-y1))
                         uart.write("C")
-                        uart.write("%c" % int(240-y1))  # 找到卡片发送1
+                        uart.write("%c" % int(120-y1))  # 找到卡片发送1
                         uart.write("%c" % 1)  # 找到卡片发送
                         uart.write("D")
-                        lcd.show_image(img, 320, 240, zoom=0)
+                        lcd.show_image(img, 160, 120, zoom=0)
                     else:
                         img.draw_rectangle((x1, y1, w, h), thickness=2,color = (255, 0, 0))
-                        lcd.show_image(img, 320, 240, zoom=0)
-
-
-
-
-
-
-
-
-
-
-
+                        lcd.show_image(img, 160, 120, zoom=0)
 
 def main():
     openart_init()
 
-
-
     while True:
         img = sensor.snapshot()
-
+        
         object_detect()
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if uart_num:
@@ -124,7 +106,7 @@ def main():
                 uart_num=0
                 object_detect()
         else:
-            lcd.show_image(img, 320, 240, zoom=2)
+            lcd.show_image(img, 160, 120, zoom=2)
 
 if __name__ == '__main__':
     main()

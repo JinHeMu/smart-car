@@ -6,6 +6,7 @@
 #define field_width 35
 #define field_height 25
 
+
 #define A 0x41
 #define B 0x42
 #define C 0x43
@@ -16,6 +17,8 @@
 #define RIGHT 2
 #define LOW 3
 #define LEFT 4
+
+#define boundry_speed 150
 
 
 typedef struct Pose_car {
@@ -78,9 +81,15 @@ typedef struct unknowcard{
 
 
 extern Pose_car car;
-extern rt_sem_t recognize_sem;
-extern rt_sem_t obj_detection_sem;
+
+
+extern rt_sem_t back_sem;
+extern rt_sem_t arrive_sem;        // 到达
 extern rt_sem_t boundry_sem;        // 边线
+extern rt_sem_t correct_sem;       // 矫正
+extern rt_sem_t recognize_sem;     // 识别
+extern rt_sem_t obj_detection_sem; // 目标检测
+
 
 extern uint8 game_mode;
 extern uint8 find_mode;
