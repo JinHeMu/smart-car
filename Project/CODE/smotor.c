@@ -235,7 +235,7 @@ void arm_putbox(uint8 angle)
 		{
 			prime *= 2;
 			once_flag = 1;
-			rt_kprintf(" 1-first!!!\n");
+			//rt_kprintf(" 1-first!!!\n");
 		}
 		break;
 	}
@@ -245,7 +245,7 @@ void arm_putbox(uint8 angle)
 		{
 			prime *= 3;
 			once_flag = 1;
-			rt_kprintf(" 2-first!!!\n");
+			//rt_kprintf(" 2-first!!!\n");
 		}
 		break;
 	}
@@ -255,7 +255,7 @@ void arm_putbox(uint8 angle)
 		{
 			prime *= 5;
 			once_flag = 1;
-			rt_kprintf(" 3-first!!!\n");
+			//rt_kprintf(" 3-first!!!\n");
 		}
 		break;
 	}
@@ -265,13 +265,13 @@ void arm_putbox(uint8 angle)
 		{
 			prime *= 7;
 			once_flag = 1;
-			rt_kprintf(" 4-first!!!\n");
+			//rt_kprintf(" 4-first!!!\n");
 		}
 		break;
 	}
 	}
 	
-	rt_kprintf("prime:%d\n", prime);
+	//rt_kprintf("prime:%d\n", prime);
 
 
 	if(once_flag)

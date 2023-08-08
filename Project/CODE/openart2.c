@@ -81,8 +81,8 @@ void ART2_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					
 					ART2_DETECT_DISTANCE = (int)ART2_dat[0];
 					ART2_DETECT_Flag = ART2_dat[1];
-					rt_kprintf("DIS:%d", ART2_DETECT_DISTANCE);
-					rt_kprintf("FLAG:%d\n", ART2_DETECT_Flag);
+					//rt_kprintf("DIS:%d", ART2_DETECT_DISTANCE);
+					//rt_kprintf("FLAG:%d\n", ART2_DETECT_Flag);
 
 					rxstate = 0;
 				}

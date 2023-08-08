@@ -517,17 +517,17 @@ void rt_hw_board_init()
     uart_mb = rt_mb_create("uart_mb", 10, RT_IPC_FLAG_FIFO);
 }
 
-void rt_hw_console_output(const char *str)
-{
-    while(RT_NULL != *str)
-    {
-        if('\n' == *str)
-        {
-            uart_putchar(DEBUG_UART, '\r');
-        }
-        uart_putchar(DEBUG_UART, *str++);
-    }
-}
+//void rt_hw_console_output(const char *str)
+//{
+//    while(RT_NULL != *str)
+//    {
+//        if('\n' == *str)
+//        {
+//            uart_putchar(DEBUG_UART, '\r');
+//        }
+//        uart_putchar(DEBUG_UART, *str++);
+//    }
+//}
 
 
 

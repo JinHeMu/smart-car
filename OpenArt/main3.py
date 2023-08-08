@@ -126,12 +126,10 @@ def main():
         if uart_num:
             uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁
             print(uart_str.decode())
-            if(uart_str.decode() == "B"):
-                print("B")
+            if(uart_str.decode() == "A"):
+                print("A")
                 uart_num=0
                 object_detect()
-
-
         else:
             lcd.show_image(img, 320, 240, zoom=2)
 

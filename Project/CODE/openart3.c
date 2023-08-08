@@ -42,6 +42,15 @@ void ART3_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					ART3_DETECT_DISTANCE = (int)ART3_dat[0];
 					ART3_DETECT_Flag = ART3_dat[1];
 					
+
+					
+					
+					if(ART3_DETECT_Flag)
+					{
+						rt_sem_release(obj_detection_sem);
+						ART3_DETECT_Flag = 0;
+					}
+					
 					rxstate = 0;
 				}
 				else // 没有接收到帧尾

@@ -4,7 +4,7 @@ void main()
 {
 	
 
-	rt_thread_mdelay(8000);					// 延时150ms，等待主板其他外设上电成功
+	rt_thread_mdelay(2000);					// 延时150ms，等待主板其他外设上电成功
 	gpio_init(B9, GPO, 1, GPIO_PIN_CONFIG); // 初始化B9灯
 
 	arm_init();
@@ -26,9 +26,9 @@ void main()
 	motor_init();
 
 	car_start_init();
-	rt_sem_release(obj_detection_sem);
+//	rt_sem_release(obj_detection_sem);
 	
-//	uart_putchar(USART_4, 0x41); // 发送OPENART1告诉该识别A4纸了
+//	uart_putchar(USART_4, A); // 发送OPENART1告诉该识别A4纸了
 //	
 //	
 //	
@@ -38,7 +38,6 @@ void main()
 //				  ART1_mode = 3;
 //        uart_putchar(USART_4, 0x43);
 //        rt_thread_mdelay(1000);
-
 
 
 	while (1)

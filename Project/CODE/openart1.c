@@ -109,8 +109,8 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					
 					ART1_CLASS_Flag = ART1_dat[count - 1];
 					
-					rt_kprintf("%s\n", classified);
-					rt_kprintf("%d\n", ART1_CLASS_Flag);
+					//rt_kprintf("%s\n", classified);
+					//rt_kprintf("%d\n", ART1_CLASS_Flag);
 					
 					//rt_sem_release(recognize_sem);//识别卡片后发送识别信号量
 					rxstate = 0;
@@ -139,11 +139,11 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 				{
 					ART1_CORRECT_Boundary_Angle = ART1_dat[0];
 					ART1_CORRECT_Boundary_Flag = ART1_dat[1];
-					if(abs(ART1_CORRECT_Boundary_Angle)>0 && abs(ART1_CORRECT_Boundary_Angle) < 10)
+					if(abs(ART1_CORRECT_Boundary_Angle)>0 && abs(ART1_CORRECT_Boundary_Angle) < 5)
 					{
 						angle_z = -ART1_CORRECT_Boundary_Angle;
 					}
-					rt_kprintf("Angle: %d,FLAG:%d\n", ART1_CORRECT_Boundary_Angle,ART1_CORRECT_Boundary_Flag);
+					//rt_kprintf("Angle: %d,FLAG:%d\n", ART1_CORRECT_Boundary_Angle,ART1_CORRECT_Boundary_Flag);
 					
 					rxstate = 0;
 				}

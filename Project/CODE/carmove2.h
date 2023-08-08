@@ -3,6 +3,20 @@
 
 #include "headfile.h"
 
+#define field_width 35
+#define field_height 25
+
+#define A 0x41
+#define B 0x42
+#define C 0x43
+#define COLUMN 0x44
+#define ROW 0x45
+
+#define UP 1
+#define RIGHT 2
+#define LOW 3
+#define LEFT 4
+
 
 typedef struct Pose_car {
    //�ѵ����Ŀ���
@@ -66,6 +80,7 @@ typedef struct unknowcard{
 extern Pose_car car;
 extern rt_sem_t recognize_sem;
 extern rt_sem_t obj_detection_sem;
+extern rt_sem_t boundry_sem;        // 边线
 
 extern uint8 game_mode;
 extern uint8 find_mode;

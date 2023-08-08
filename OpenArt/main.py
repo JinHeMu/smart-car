@@ -29,20 +29,20 @@ uart_num = 0
 
 #晚上阈值（需要调试）
 card_threshold = [(65, 100, -33, 66, -16, 102)]#色块检测阈值
-boundary_threshold = [(55, 81, -38, -12, 38, 99)]#边线检测阈值
-boundary_column_threshold = [(55, 81, -38, -12, 38, 99)]#边线检测阈值
-boundary_row_threshold = [(55, 81, -38, -12, 38, 99)]#边线检测阈值
+boundary_threshold = [(54, 100, -128, 127, 50, 127)]#边线检测阈值
+boundary_column_threshold = [(54, 100, -128, 127, 50, 127)]#边线检测阈值
+boundary_row_threshold = [(54, 100, -128, 127, 50, 127)]#边线检测阈值
 day_brightness = 2000
 binary_threshold = (175, 255)   #需要调节
 LED(4).on()#照明
 
-uart = UART(1, baudrate=115200) #串口
+uart = UART(2, baudrate=115200) #串口
 
 
 
 
-
-
+lcd = seekfree.LCD180(2)#显示屏
+lcd.full()
 
 
 #openart初始化
@@ -77,6 +77,7 @@ def find_coordinates():
         pos_y = []
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         img = sensor.snapshot()
+        lcd.show_image(img, 320, 240, zoom=2)
         img.binary([binary_threshold])
         img.erode(2)
         img.dilate(2)
@@ -148,9 +149,9 @@ def boundary_correct(mode):
     while boundary_correct_flag :
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         img = sensor.snapshot()
+        lcd.show_image(img, 320, 240, zoom=2)
         blobs = []
         center = 0
-
         if(uart_num!=0):
             boundary_correct_flag=0
             break
@@ -201,6 +202,7 @@ def boundary_correct(mode):
                             print("now:angle:%d",angle)
                             img.draw_string(10,10,"boundary", (255,0,0))
                             boundary_correct_flag = 0
+                            lcd.show_image(img, 320, 240, zoom=2)
                             break
                         else:
                             break
@@ -208,6 +210,7 @@ def boundary_correct(mode):
                         # uart.write("%c" % 0)
                         # print("Line Angle: ", angle)
                         img.draw_string(10,10,"boundary", (255,0,0))
+                        lcd.show_image(img, 320, 240, zoom=2)
 
 
 
@@ -225,71 +228,77 @@ def recognize_pic(labels, net):
     while recognize_flag:
         img = sensor.snapshot()
         uart_num = uart.any()  # 获取当前串口数据数量
+        lcd.show_image(img, 320, 240, zoom=2)
         if uart_num != 0:
             recognize_flag = 0
             break
         else:
             for b in img.find_blobs(card_threshold, pixels_threshold=400, area_threshold=400, margin=1, merge=True,
                                     invert=0):
-                img.draw_rectangle(b.rect(), color=(255, 0, 0), scale=1, thickness=2)
-                x, y, w, h = b.rect()
-                # 缩小矩形框的宽度和高度
-                new_w = w
-                new_h = h
-                # 计算新的矩形框左上角坐标
-                new_x = x + (w - new_w) // 2
-                new_y = y + (h - new_h) // 2
+                blob_width = b.w()  # 获取blob的宽度
+                blob_height = b.h()  # 获取blob的高度
+                if blob_width > 40 and blob_height > 40:
+                    img.draw_rectangle(b.rect(), color=(255, 0, 0), scale=1, thickness=2)
+                    x, y, w, h = b.rect()
+                    # 缩小矩形框的宽度和高度
+                    new_w = w
+                    new_h = h
+                    # 计算新的矩形框左上角坐标
+                    new_x = x + (w - new_w) // 2
+                    new_y = y + (h - new_h) // 2
 
-                img.draw_rectangle((new_x, new_y, new_w, new_h), color=(255, 0, 0), scale=1, thickness=2)
+                    img.draw_rectangle((new_x, new_y, new_w, new_h), color=(255, 0, 0), scale=1, thickness=2)
 
-                img1 = img.copy(1, 1, (new_x, new_y, new_w, new_h))
+                    img1 = img.copy(1, 1, (new_x, new_y, new_w, new_h))
 
-                # 计算色块中心点坐标
-                blob_center_x = new_x + new_w // 2
-                blob_center_y = new_y + new_h // 2
+                    # 计算色块中心点坐标
+                    blob_center_x = new_x + new_w // 2
+                    blob_center_y = new_y + new_h // 2
 
-                # 计算色块中心点与图像中心点的距离
-                distance_to_center = (blob_center_x - img.width() // 2) ** 2 + (blob_center_y - img.height() // 2) ** 2
+                    # 计算色块中心点与图像中心点的距离
+                    distance_to_center = (blob_center_x - img.width() // 2) ** 2 + (blob_center_y - img.height() // 2) ** 2
 
-                # 更新最近色块的信息
-                if distance_to_center < nearest_distance:
-                    nearest_blob = b
-                    nearest_distance = distance_to_center
+                    # 更新最近色块的信息
+                    if distance_to_center < nearest_distance:
+                        nearest_blob = b
+                        nearest_distance = distance_to_center
 
-            if nearest_blob is not None:
-                img.draw_rectangle(nearest_blob.rect(), color=(0, 255, 0), scale=1, thickness=2)
+                if nearest_blob is not None:
+                    img.draw_rectangle(nearest_blob.rect(), color=(0, 255, 0), scale=1, thickness=2)
 
-                # 在最近的色块上进行识别
-                x, y, w, h = nearest_blob.rect()
-                img1 = img.copy(1, 1, (x, y, w, h))
+                    # 在最近的色块上进行识别
+                    x, y, w, h = nearest_blob.rect()
+                    img1 = img.copy(1, 1, (x, y, w, h))
 
-                for obj in tf.classify(net, img1, min_scale=1.0, scale_mul=0.5, x_overlap=0.0, y_overlap=0.0):
-                    sorted_list = sorted(zip(labels, obj.output()), key=lambda x: x[1], reverse=True)
-                    # 打印排名第一的结果
-                    for i in range(1):
-                        class_per = sorted_list[i][0]
-                        if class_per == recognized_result:
-                            same_result_count += 1
-                        else:
-                            recognized_result = class_per
-                            same_result_count = 1
+                    for obj in tf.classify(net, img1, min_scale=1.0, scale_mul=0.5, x_overlap=0.0, y_overlap=0.0):
+                        sorted_list = sorted(zip(labels, obj.output()), key=lambda x: x[1], reverse=True)
+                        # 打印排名第一的结果
+                        for i in range(1):
+                            class_per = sorted_list[i][0]
+                            if class_per == recognized_result:
+                                same_result_count += 1
+                            else:
+                                recognized_result = class_per
+                                same_result_count = 1
 
-                        if same_result_count >= 3:
-                            print("识别结果为：%s" % recognized_result)
-                            uart.write("I")
-                            uart.write(recognized_result)
-                            uart.write("%c" % 1)
-                            uart.write("J")
-                            img.draw_string(10, 10, "%s:%d" % (recognized_result, sorted_list[i][1] * 100),
-                                            (255, 0, 0), 2)
+                            if same_result_count >= 3:
+                                print("识别结果为：%s" % recognized_result)
+                                uart.write("I")
+                                uart.write(recognized_result)
+                                uart.write("%c" % 1)
+                                uart.write("J")
+                                img.draw_string(10, 10, "%s:%d" % (recognized_result, sorted_list[i][1] * 100),
+                                                (255, 0, 0), 2)
+                                lcd.show_image(img, 320, 240, zoom=2)
+                                recognize_flag = 0
+                                break
+                            else:
+                                img.draw_string(10, 10, "继续识别", (255, 0, 0))
+                                lcd.show_image(img, 320, 240, zoom=2)
 
-                            recognize_flag = 0
-                            break
-                        else:
-                            img.draw_string(10, 10, "继续识别", (255, 0, 0))
+                if recognize_flag == 0:
+                    break
 
-            if recognize_flag == 0:
-                break
 
 
 
@@ -331,6 +340,12 @@ def main():
                 print("E")
                 uart_num=0
                 boundary_correct('row')
+
+        else:
+            lcd.show_image(img, 320, 240, zoom=2)
+
+
+
 
 
 

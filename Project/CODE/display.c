@@ -85,37 +85,40 @@ void Menu_key_set(void)
 //		ARM_MID_angle(angle1 * 60);
 		
 //		magnet_left_appeal();
-		
-	car_turnto(20);
-		rt_thread_mdelay(1000);
-		
-			car_turnto(90);
-		rt_thread_mdelay(1000);
+//		
+//	car_turnto(20);
+//		rt_thread_mdelay(1000);
+//		
+//			car_turnto(90);
+//		rt_thread_mdelay(1000);
+
+//		
+//			car_turnto(180);
+//		rt_thread_mdelay(1000);
+
+
+//	car_turnto(240);
+//		rt_thread_mdelay(1000);
+
+
+//	car_turnto(300);
+//		rt_thread_mdelay(1000);
+
+
+//	car_turnto(0);
+//		rt_thread_mdelay(1000);
+
 
 		
-			car_turnto(180);
-		rt_thread_mdelay(1000);
-
-
-	car_turnto(240);
-		rt_thread_mdelay(1000);
-
-
-	car_turnto(300);
-		rt_thread_mdelay(1000);
-
-
-	car_turnto(0);
-		rt_thread_mdelay(1000);
-
-
-		
-
+//      uart_putchar(USART_4, 0x43);
+//			      uart_putchar(USART_4, 0x45);
+//						      uart_putchar(USART_4, 0x41);
 		
 //		arm_openbox(4);
 //		find_mode = 1;
 
 //		arm_putbox(1);
+		rt_sem_release(boundry_sem);
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -138,8 +141,8 @@ void Menu_key_set(void)
 //		car_move(200,200);
 //		rt_thread_mdelay(5000);
 //		car_move(40,40);
-		angle1 ++;
-		arm_openbox(angle1);
+//		angle1 ++;
+//		arm_openbox(angle1);
 		//arm_putbox(1);
 						
 //		ARM_MID_angle(angle1 * 60);
@@ -174,7 +177,11 @@ void Menu_key_set(void)
 //		car.Speed_X = 0;
 //		rt_thread_mdelay(2000);
 
+//      uart_putchar(USART_1, 0x43);
+//			      uart_putchar(USART_1, 0x42);
+//						      uart_putchar(USART_1, 0x41);
 
+uart_putchar(USART_4, 0x44);
 
 		
 		mb_data = 0; // 邮箱数据清除
@@ -208,14 +215,16 @@ void Menu_key_set(void)
 
 
 
-	car_speed_x(300);
-	rt_thread_mdelay(2000);
-		car_speed_x(0);
-	rt_thread_mdelay(2000);
-			car_speed_x(-300);
-	rt_thread_mdelay(2000);
-			car_speed_x(0);
-	rt_thread_mdelay(2000);
+//	car_speed_x(300);
+//	rt_thread_mdelay(2000);
+//		car_speed_x(0);
+//	rt_thread_mdelay(2000);
+//			car_speed_x(-300);
+//	rt_thread_mdelay(2000);
+//			car_speed_x(0);
+//	rt_thread_mdelay(2000);
+
+//uart_putchar(USART_8, 0x41);
 
 //		
 		mb_data = 0; // 邮箱数据清除

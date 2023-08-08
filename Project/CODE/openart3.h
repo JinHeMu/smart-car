@@ -4,8 +4,9 @@
 #include "headfile.h"
 
 
-extern uint8	ART3_DETECT_DISTANCE;//¼ÇÂ¼¿¨Æ¬¾àÀë
-extern uint8	ART3_DETECT_Flag;//¼ÇÂ¼ÊÇ·ñ·¢ÏÖ¿¨Æ¬
+extern uint8	ART3_DETECT_DISTANCE;//ï¿½ï¿½Â¼ï¿½ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½
+extern uint8	ART3_DETECT_Flag;//ï¿½ï¿½Â¼ï¿½Ç·ï¿½ï¿½Ö¿ï¿½Æ¬
+extern uint8    ART3_mode;//æ¨¡å¼1ä¸ºç›®æ ‡æ£€æµ‹æ¨¡å¼
 
 
 void ART3_UART_Init(void);
