@@ -1,7 +1,4 @@
-*** Using Compiler 'V6.15', folder: 'D:\keil_5.33\ARM\ARMCLANG\Bin'
-Build target 'nor_sdram_zf_dtcm_v6'
-compiling carmove2.c...
-linking...
-Program Size: Code=83232 RO-data=9640 RW-data=804 ZI-data=458972  
-".\Objects\RT106X.axf" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:01
+Load "c:\\Users\\49075\\Desktop\\smart-car\\Project\\MDK\\Objects\\RT106X.axf" 
+Erase Done.Programming Done.Application running ...
+RDDI-DAP Error
+Flash Load finished at 03:22:48

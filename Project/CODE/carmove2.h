@@ -72,9 +72,9 @@ typedef struct card {
 typedef struct unknowcard{
 	
 
-	int16 Current_x;//发现卡片的x里程计坐标
-	int16 Current_y;//发现卡片的y里程计坐标
-   int16 Distance;//发现卡片距离镜头的距离
+	float Current_x;//发现卡片的x里程计坐标
+	float Current_y;//发现卡片的y里程计坐标
+  int16 Distance;//发现卡片距离镜头的距离
 
 }unknowcard;
 
@@ -99,7 +99,7 @@ void car_start_init(void);
 void car_move(float tar_x, float tar_y);
 void car_turn(float angle);
 void car_turnto(float angle);
-void car_moveto_boundry(uint8 flag);
+void car_moveto_boundry(uint8 mode, uint16 speed);
 
 void car_speed_x(int16 tar_speed);
 void car_speed_y(int16 tar_speed);

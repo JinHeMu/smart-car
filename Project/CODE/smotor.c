@@ -59,7 +59,7 @@ void ARM_LEFT_angle(int angle)
 
 void ARM_MID_angle(int angle)
 {
-	pwm_duty(ARM_MID_PIN, 1250 + +angle * 14);
+	pwm_duty(ARM_MID_PIN, 1350 + +angle * 14);
 }
 
 void arm_out(void) // 防止仓卡住

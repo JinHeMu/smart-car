@@ -16,6 +16,7 @@
 #define MAIN_CATEGORY 6
 
 #define boundry_speed 150
+#define back_speed 300
 
 uint8 game_mode = 0; // 0为初赛  1为决赛
 
@@ -42,8 +43,11 @@ uint8 boundry_num = 0;      // 识别边界个数
 uint8 boundry_mode = RIGHT; // 1向前 2向右 3向下 4向左
 uint8 card_current_num = 0; // 识别到的卡片数量
 uint8 card_sum_num = 0;     // 识别到的总卡片数量
+uint16 card_y_max = 0;
 
 unknowcard detectedCards[24];
+
+
 
 //**初赛**
 
@@ -170,20 +174,24 @@ void car_move(float tar_x, float tar_y)
 
     // rt_kprintf("TARGRT TO X:%d, Y:%d\n", (int)tar_x, (int)tar_y);
 
-    if (target_distance >= 450)
-    {
+//    if (target_distance >= 450)
+//    {
 
-        acceleration = 0.01;
-        max_speed = 0.5;
+//        acceleration = 0.01;
+//        max_speed = 0.5;
 
-        tar_x += sin(angle) * target_distance / 5;
-        tar_y += cos(angle) * target_distance / 5 - 40;
-    }
-    else
-    {
-        tar_x += sin(angle) * target_distance / 7;
-        tar_y += cos(angle) * target_distance / 7 - 25;
-    }
+//        tar_x += sin(angle) * target_distance / 5;
+//        tar_y += cos(angle) * target_distance / 5 - 40;
+//    }
+//    else
+//    {
+       tar_x += sin(angle) * target_distance / 10;
+       tar_y += cos(angle) * target_distance / 10 - 20;
+
+
+//        tar_y -= 20;
+
+//    }
 
     // rt_kprintf("dis:%d\n", (int)target_distance);
     // rt_kprintf("MOVEING TO X:%d, Y:%d\n", (int)tar_x, (int)tar_y);
@@ -213,7 +221,7 @@ void car_move(float tar_x, float tar_y)
     // rt_kprintf("I HAVE ARRIVE X:%d, Y:%d\n", (int)car.MileageX, (int)car.MileageY);
 }
 
-void car_moveto_boundry(uint8 mode)
+void car_moveto_boundry(uint8 mode, uint16 speed)
 {
 
     // 1.向上 2.向右  3.向下  4.向左
@@ -228,8 +236,8 @@ void car_moveto_boundry(uint8 mode)
     {
     case UP:
         uart_putchar(USART_4, ROW); // 发送OPENART1告诉该识别边线了
-        rt_thread_mdelay(500);
-        car_speed_y(boundry_speed);
+        //rt_thread_mdelay(500);
+        car_speed_y(speed);
         while (ART1_CORRECT_Boundary_Flag == 0)
         {
             rt_thread_mdelay(100);
@@ -238,8 +246,8 @@ void car_moveto_boundry(uint8 mode)
 
     case RIGHT:
         uart_putchar(USART_4, COLUMN); // 发送OPENART1告诉该识别边线了
-        rt_thread_mdelay(500);
-        car_speed_x(boundry_speed);
+        //rt_thread_mdelay(500);
+        car_speed_x(speed);
         while (ART1_CORRECT_Boundary_Flag == 0)
         {
 
@@ -249,8 +257,8 @@ void car_moveto_boundry(uint8 mode)
 
     case LOW:
         uart_putchar(USART_4, ROW); // 发送OPENART1告诉该识别边线了
-        rt_thread_mdelay(500);
-        car_speed_y(-boundry_speed);
+        //rt_thread_mdelay(500);
+        car_speed_y(-speed);
         while (ART1_CORRECT_Boundary_Flag == 0)
         {
 
@@ -260,8 +268,8 @@ void car_moveto_boundry(uint8 mode)
 
     case LEFT:
         uart_putchar(USART_4, COLUMN); // 发送OPENART1告诉该识别边线了
-        rt_thread_mdelay(500);
-        car_speed_x(-boundry_speed);
+        //rt_thread_mdelay(500);
+        car_speed_x(-speed);
         while (ART1_CORRECT_Boundary_Flag == 0)
         {
 
@@ -316,9 +324,10 @@ void unload(uint8 mode)
 
     case LOW:
 
-        car.Speed_Y = -150;
-        rt_thread_mdelay(1000);
-        car.Speed_Y = 0;
+//        car.Speed_Y = -150;
+//        rt_thread_mdelay(1000);
+//        car.Speed_Y = 0;
+		
         arm_openbox(3);
 
         car.Speed_X = -150;
@@ -338,7 +347,7 @@ void unload(uint8 mode)
         arm_openbox(4);
 
         car.Speed_X = 150;
-        car.Speed_Y = 150;
+        // car.Speed_Y = 150;
         rt_thread_mdelay(2000);
         car.Speed_X = 0;
         car.Speed_Y = 0;
@@ -360,17 +369,17 @@ void back_entry(void *param)
         rt_sem_take(back_sem, RT_WAITING_FOREVER); // 获取回库信号
 
         // 默认此时位于左侧边线
-        car_moveto_boundry(LEFT);unload(LEFT);              //左类
+        car_moveto_boundry(LEFT, back_speed);unload(LEFT);              //左类
 
-        car_moveto_boundry(UP);unload(MAIN_CATEGORY);       //大类
+        car_moveto_boundry(UP, boundry_speed);unload(MAIN_CATEGORY);       //大类
 
         unload(UP);                                         //上类
 
-        car_moveto_boundry(RIGHT);unload(RIGHT);            //右类
+        car_moveto_boundry(RIGHT, back_speed);unload(RIGHT);            //右类
 
-        car_moveto_boundry(LOW);unload(LOW);                //下类
+        car_moveto_boundry(LOW, back_speed);unload(LOW);                //下类
 
-        car_moveto_boundry(LEFT);car_moveto_boundry(LOW);   //回库
+        car_moveto_boundry(LEFT, back_speed);car_moveto_boundry(LOW, back_speed);   //回库
 
         rt_thread_mdelay(10000);
 
@@ -397,43 +406,42 @@ void boundry_entry(void *param)
         {
         case UP:
             uart_putchar(USART_4, ROW); // 发送OPENART1告诉该识别边线了
-            rt_thread_mdelay(500);
+            //rt_thread_mdelay(500);
             car_speed_y(boundry_speed);
             while (ART1_CORRECT_Boundary_Flag == 0)
             {
-                rt_thread_mdelay(100);
+                rt_thread_mdelay(10);
             }
             break;
 
         case RIGHT:
             uart_putchar(USART_4, COLUMN); // 发送OPENART1告诉该识别边线了
-            rt_thread_mdelay(500);
+            //rt_thread_mdelay(500);
             car_speed_x(boundry_speed);
             while (ART1_CORRECT_Boundary_Flag == 0)
             {
-
-                rt_thread_mdelay(100);
+                rt_thread_mdelay(10);
             }
             break;
 
         case LOW:
             uart_putchar(USART_4, ROW); // 发送OPENART1告诉该识别边线了
-            rt_thread_mdelay(500);
+						//rt_thread_mdelay(500);
             car_speed_y(-boundry_speed);
             while (ART1_CORRECT_Boundary_Flag == 0)
             {
 
-                rt_thread_mdelay(100);
+                rt_thread_mdelay(10);
             }
             break;
 
         case LEFT:
             uart_putchar(USART_4, COLUMN); // 发送OPENART1告诉该识别边线了
-            rt_thread_mdelay(500);
+            //rt_thread_mdelay(500);
             car_speed_x(-boundry_speed);
             while (ART1_CORRECT_Boundary_Flag == 0)
             {
-                rt_thread_mdelay(100);
+                rt_thread_mdelay(10);
             }
             break;
         }
@@ -441,8 +449,6 @@ void boundry_entry(void *param)
         car.Speed_Y = 0;
         boundry_num++;
         rt_mb_send(buzzer_mailbox, 100);
-
-
 
         rt_sem_release(arrive_sem); // 获取到达信号
     }
@@ -460,18 +466,22 @@ void arrive_entry(void *param)
 
 
             //如果第三次识别到边线
-            if(boundry_num == 3)
+            if(boundry_num == 4)
             {
                 //back
                 rt_sem_release(back_sem);
             }else
             {
-                car_moveto_boundry(LEFT);//一直向左移动至边线
+                //先移动到目标检测到的最远距离
+                uint16 car_current_x = car.MileageX;
+                car_move(car_current_x, card_y_max);
+//                //向前移动
+//                car.Speed_Y = 150;
+//                rt_thread_mdelay(500);
+//                car.Speed_Y = 0;
 
-                //向前移动
-                car.Speed_Y = 150;
-                rt_thread_mdelay(1000);
-                car.Speed_Y = 0;
+                car_moveto_boundry(LEFT, boundry_speed);//一直向左移动至边线
+
 
                 //向右移动
                 car.Speed_X = 150;
@@ -489,8 +499,13 @@ void arrive_entry(void *param)
         }
         else
         {
+
+            // 更新最大的 Current_y 值
+            if (detectedCards[card_current_num].Current_y > card_y_max) {
+                card_y_max = detectedCards[card_current_num].Current_y;
+            }
+
             car_move(detectedCards[card_current_num].Current_x, detectedCards[card_current_num].Current_y); // 根据摄像头的距离进行相应的修改
-            card_current_num--;
             rt_sem_release(correct_sem); // 没有遍历完就矫正卡片
         }
     }
@@ -547,9 +562,10 @@ void correct_entry(void *param)
         car.Speed_Y = 0;
 
         rt_mb_send(buzzer_mailbox, 100);
-
-        rt_sem_release(recognize_sem);
+        //rt_sem_release(recognize_sem);
         // rt_sem_release(correct_sem);
+        card_current_num--;
+        rt_sem_release(arrive_sem);
     }
 }
 
@@ -812,7 +828,7 @@ void obj_detection_entry(void *param)
         card_sum_num++;
 
         detectedCards[card_current_num].Current_x = car.MileageX;
-        detectedCards[card_current_num].Current_y = car.MileageY + ART3_DETECT_DISTANCE - 20;
+        detectedCards[card_current_num].Current_y = car.MileageY + (float)ART3_DETECT_DISTANCE * 0.52;
 
         ips114_showint16(50, card_current_num, (int)detectedCards[card_current_num].Current_x);
 

@@ -128,6 +128,8 @@ void Menu_key_set(void)
 	{
 
 		
+		
+		rt_sem_release(back_sem);
 //		arm_openbox(1);
 ////		angle2 ++;
 //		

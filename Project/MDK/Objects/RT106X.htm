@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\RT106X.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\RT106X.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Tue Aug  8 22:02:33 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Fri Aug 11 03:22:14 2023
 <BR><P>
 <H3>Maximum Stack Usage =        784 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -963,6 +963,7 @@ Global Symbols
 <LI><a href="#[233]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_openbox
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ARHS_getValues
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ART1_uart_callback
+<LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ART3_uart_callback
 </UL>
 
 <P><STRONG><a name="[31b]"></a>___aeabi_memcpy4$ret</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, memcpy.o(.text), UNUSED)
@@ -1196,7 +1197,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[294]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[e0]"></a>ART1_uart_callback</STRONG> (Thumb, 514 bytes, Stack size 24 bytes, openart1.o(.text.ART1_uart_callback))
+<P><STRONG><a name="[e0]"></a>ART1_uart_callback</STRONG> (Thumb, 528 bytes, Stack size 24 bytes, openart1.o(.text.ART1_uart_callback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 280<LI>Call Chain = ART1_uart_callback &rArr; rt_sem_release &rArr; rt_ipc_list_resume &rArr; rt_thread_resume &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
@@ -1234,10 +1235,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[294]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[e2]"></a>ART3_uart_callback</STRONG> (Thumb, 180 bytes, Stack size 16 bytes, openart3.o(.text.ART3_uart_callback))
-<BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = ART3_uart_callback &rArr; rt_sem_release &rArr; rt_ipc_list_resume &rArr; rt_thread_resume &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
+<P><STRONG><a name="[e2]"></a>ART3_uart_callback</STRONG> (Thumb, 296 bytes, Stack size 32 bytes, openart3.o(.text.ART3_uart_callback))
+<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = ART3_uart_callback &rArr; rt_sem_release &rArr; rt_ipc_list_resume &rArr; rt_thread_resume &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_release
+<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;abs
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> openart3.o(.text.ART3_UART_Init)
 </UL>
@@ -2240,7 +2242,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer1_pit_entry
 </UL>
 
-<P><STRONG><a name="[1d8]"></a>Menu_key_set</STRONG> (Thumb, 96 bytes, Stack size 16 bytes, display.o(.text.Menu_key_set))
+<P><STRONG><a name="[1d8]"></a>Menu_key_set</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, display.o(.text.Menu_key_set))
 <BR><BR>[Stack]<UL><LI>Max Depth = 344<LI>Call Chain = Menu_key_set &rArr; car_speed_x &rArr; rt_thread_mdelay &rArr; rt_thread_sleep &rArr; rt_schedule &rArr; rt_schedule_remove_thread &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_recv
@@ -2782,8 +2784,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[237]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_putbox
 </UL>
 
-<P><STRONG><a name="[ea]"></a>arrive_entry</STRONG> (Thumb, 216 bytes, Stack size 0 bytes, carmove2.o(.text.arrive_entry))
-<BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = arrive_entry &rArr; car_move &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
+<P><STRONG><a name="[ea]"></a>arrive_entry</STRONG> (Thumb, 242 bytes, Stack size 0 bytes, carmove2.o(.text.arrive_entry))
+<BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = arrive_entry &rArr; car_move &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
 <LI><a href="#[23c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_take
@@ -2793,7 +2795,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> carmove2.o(.text.car_start_init)
 </UL>
-<P><STRONG><a name="[e9]"></a>back_entry</STRONG> (Thumb, 94 bytes, Stack size 0 bytes, carmove2.o(.text.back_entry))
+<P><STRONG><a name="[e9]"></a>back_entry</STRONG> (Thumb, 116 bytes, Stack size 0 bytes, carmove2.o(.text.back_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 696<LI>Call Chain = back_entry &rArr; unload &rArr; arm_openbox &rArr; arm_out &rArr; ARM_UP_angle &rArr; pwm_duty &rArr; PWM_UpdatePwmDutycycle &rArr; __aeabi_assert &rArr; DbgConsole_Printf &rArr; StrFormatPrintf &rArr; ConvertFloatRadixNumToString &rArr; __hardfp_pow &rArr; sqrt
 </UL>
 <BR>[Calls]<UL><LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
@@ -2813,7 +2815,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_hw_board_init
 </UL>
 
-<P><STRONG><a name="[eb]"></a>boundry_entry</STRONG> (Thumb, 308 bytes, Stack size 0 bytes, carmove2.o(.text.boundry_entry))
+<P><STRONG><a name="[eb]"></a>boundry_entry</STRONG> (Thumb, 274 bytes, Stack size 0 bytes, carmove2.o(.text.boundry_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = boundry_entry &rArr; car_speed_x &rArr; rt_thread_mdelay &rArr; rt_thread_sleep &rArr; rt_schedule &rArr; rt_schedule_remove_thread &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send
@@ -2866,8 +2868,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[294]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[23b]"></a>car_move</STRONG> (Thumb, 384 bytes, Stack size 64 bytes, carmove2.o(.text.car_move))
-<BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = car_move &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
+<P><STRONG><a name="[23b]"></a>car_move</STRONG> (Thumb, 356 bytes, Stack size 56 bytes, carmove2.o(.text.car_move))
+<BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = car_move &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send
 <LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
@@ -2881,7 +2883,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arrive_entry
 </UL>
 
-<P><STRONG><a name="[23d]"></a>car_moveto_boundry</STRONG> (Thumb, 246 bytes, Stack size 16 bytes, carmove2.o(.text.car_moveto_boundry))
+<P><STRONG><a name="[23d]"></a>car_moveto_boundry</STRONG> (Thumb, 214 bytes, Stack size 16 bytes, carmove2.o(.text.car_moveto_boundry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 344<LI>Call Chain = car_moveto_boundry &rArr; car_speed_x &rArr; rt_thread_mdelay &rArr; rt_thread_sleep &rArr; rt_schedule &rArr; rt_schedule_remove_thread &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send
@@ -2944,7 +2946,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> msh.o(FSymTab)
 </UL>
-<P><STRONG><a name="[ec]"></a>correct_entry</STRONG> (Thumb, 320 bytes, Stack size 0 bytes, carmove2.o(.text.correct_entry))
+<P><STRONG><a name="[ec]"></a>correct_entry</STRONG> (Thumb, 336 bytes, Stack size 0 bytes, carmove2.o(.text.correct_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = correct_entry &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send
@@ -3571,7 +3573,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO2_Combined_0_15_IRQHandler
 </UL>
 
-<P><STRONG><a name="[ee]"></a>obj_detection_entry</STRONG> (Thumb, 164 bytes, Stack size 0 bytes, carmove2.o(.text.obj_detection_entry))
+<P><STRONG><a name="[ee]"></a>obj_detection_entry</STRONG> (Thumb, 176 bytes, Stack size 0 bytes, carmove2.o(.text.obj_detection_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 784<LI>Call Chain = obj_detection_entry &rArr; ips114_showint16 &rArr; ips114_showchar &rArr; ips114_set_region &rArr; ips114_writedata_16bit &rArr; spi_mosi &rArr; LPSPI_MasterTransferBlocking &rArr; __aeabi_assert &rArr; DbgConsole_Printf &rArr; StrFormatPrintf &rArr; ConvertFloatRadixNumToString &rArr; __hardfp_pow &rArr; sqrt
 </UL>
 <BR>[Calls]<UL><LI><a href="#[241]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send
@@ -4852,7 +4854,7 @@ Global Symbols
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ART1_UART_Init
 </UL>
 
-<P><STRONG><a name="[23e]"></a>unload</STRONG> (Thumb, 280 bytes, Stack size 16 bytes, carmove2.o(.text.unload))
+<P><STRONG><a name="[23e]"></a>unload</STRONG> (Thumb, 268 bytes, Stack size 16 bytes, carmove2.o(.text.unload))
 <BR><BR>[Stack]<UL><LI>Max Depth = 696<LI>Call Chain = unload &rArr; arm_openbox &rArr; arm_out &rArr; ARM_UP_angle &rArr; pwm_duty &rArr; PWM_UpdatePwmDutycycle &rArr; __aeabi_assert &rArr; DbgConsole_Printf &rArr; StrFormatPrintf &rArr; ConvertFloatRadixNumToString &rArr; __hardfp_pow &rArr; sqrt
 </UL>
 <BR>[Calls]<UL><LI><a href="#[232]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay

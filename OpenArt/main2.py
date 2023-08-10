@@ -13,7 +13,7 @@ lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
 #晚上阈值（需要调试！！！）
-card_threshold = [(66, 100, -43, 89, -33, 127)]#色块检测阈值
+card_threshold = [(72, 100, -46, 41, -28, 102)]#色块检测阈值
 day_brightness = 2000
 LED(4).on()#照明
 
@@ -128,7 +128,7 @@ def picture_correct():
                                      invert=0):
                 blob_width = b.w()  # 获取blob的宽度
                 blob_height = b.h()  # 获取blob的高度
-                if blob_width > 30 and blob_height > 30:
+                if blob_width > 20 and blob_height > 20:
                 # 添加你想执行的代码块
                     corners = b.min_corners()
                     point_corners = tuple(sorted(corners))
@@ -150,7 +150,7 @@ def picture_correct():
 
                     img.draw_circle(b.cx(), b.cy(), 5, color=(0, 255, 0))
                     dis_X = b.cx() - 166
-                    dis_Y = b.cy() - 174#（可能需要调试，测试一下是否在中心位置）
+                    dis_Y = b.cy() - 162#（可能需要调试，测试一下是否在中心位置）
 
                     if dis_X < -64:
                         dis_X = -64

@@ -10,10 +10,10 @@ import sensor, image, time
 uart = UART(2, baudrate=115200) # 串口
 
 ## 3：屏幕显示方向 参数范围0-3
-lcd = seekfree.IPS200(2)
-lcd.full()  # 将背景颜色显示到整个屏幕
+lcd = seekfree.LCD180(2)#显示屏
+lcd.full()
 
-day_brightness = 2000
+day_brightness = 1000
 
 camera_center = (160, 240)
 
@@ -22,13 +22,13 @@ last_card_center = None
 # 定义一个阈值，当两张卡片之间的距离大于此值时，认为是新的卡片
 distance_threshold = 20
 
-x_roi_min =130
-x_roi_max =190
+x_roi_min =120
+x_roi_max =200
 
-y_roi_min =50
+y_roi_min =30
 y_roi_max =240
 
-
+roi = (x_roi_min, y_roi_min, x_roi_max-x_roi_min,y_roi_max-y_roi_min)
 
 #设置模型路径
 face_detect = '/sd/yolo3_iou_smartcar_final_with_post_processing.tflite'
@@ -52,17 +52,8 @@ def object_detect():
     while detect_flag:
         uart_num = uart.any()  # 获取当前串口数据数量
         img = sensor.snapshot()
-
-
         roi = (x_roi_min, y_roi_min, x_roi_max - x_roi_min, y_roi_max - y_roi_min)
-        # img.draw_rectangle(roi, thickness=2,color = (255, 0, 0))
-
-        #cropped_img = img.copy(roi)
-
-        #img.draw_line(x_roi_min, y_roi_min, x_roi_max, y_roi_min, color=(255, 0, 0))
-        #img.draw_line(x_roi_max, y_roi_min, x_roi_max, y_roi_max, color=(255, 0, 0))
-        #img.draw_line(x_roi_max, y_roi_max, x_roi_min, y_roi_max, color=(255, 0, 0))
-        #img.draw_line(x_roi_max, y_roi_max, x_roi_min, y_roi_max, color=(255, 0, 0))
+        img.draw_rectangle(roi, thickness=1,color = (255, 0, 0))
 
 
         if uart_num != 0:
@@ -70,30 +61,39 @@ def object_detect():
             break
         else:
             for obj in tf.detect(net,img):
+
+
                 x1,y1,x2,y2,label,scores = obj
 
-                if(scores>0.80):
-                    w = x2- x1
+                if(scores>0.70):
+                    w = x2 - x1
                     h = y2 - y1
                     x1 = int((x1-0.1)*img.width())
                     y1 = int(y1*img.height())
                     w = int(w*img.width())
                     h = int(h*img.height())
 
-                    card_dis_x = x1+w//2
-                    card_dis_y = y1+h//2
+                    card_dis_x = x1 + w//2
+                    card_dis_y = y1 + h//2
 
-                    if card_dis_x >= x_roi_min and card_dis_x <= x_roi_max and card_dis_y >=y_roi_min:
+                    #img.draw_rectangle((x1, y1, w, h), color = (0, 255, 0),thickness=2)
+
+                    if x1 >= x_roi_min and x1 <= x_roi_max and card_dis_y >=y_roi_min:
                         img.draw_rectangle((x1, y1, w, h), color = (0, 255, 0),thickness=2)
-                        print(int(240-y1))
+                        lcd.show_image(img, 320, 240, zoom=2)
+                        #print(int(240-y1))
                         uart.write("C")
-                        uart.write("%c" % int(240-y1))  # 找到卡片发送1
+                        uart.write("%c" % int(240-card_dis_y))  # 找到卡片发送1
                         uart.write("%c" % 1)  # 找到卡片发送
                         uart.write("D")
-                        lcd.show_image(img, 320, 240, zoom=0)
-                    else:
-                        img.draw_rectangle((x1, y1, w, h), thickness=2,color = (255, 0, 0))
-                        lcd.show_image(img, 320, 240, zoom=0)
+
+                        print(240-card_dis_y)
+
+                        img.draw_rectangle((x1, y1, w, h), thickness=2,color = (0, 255, 0))
+                        lcd.show_image(img, 320, 240, zoom=2)
+
+                        utime.sleep_ms(300)
+                        detect_flag = 0
 
 
 
@@ -108,6 +108,7 @@ def object_detect():
 
 def main():
     openart_init()
+    #object_detect()
 
 
 
@@ -123,8 +124,6 @@ def main():
                 print("A")
                 uart_num=0
                 object_detect()
-        else:
-            lcd.show_image(img, 320, 240, zoom=2)
 
 if __name__ == '__main__':
     main()

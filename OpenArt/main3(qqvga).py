@@ -9,7 +9,7 @@ import sensor, image, time
 
 uart = UART(2, baudrate=115200) # 串口
 
-## 3：屏幕显示方向 参数范围0-3
+# 3：屏幕显示方向 参数范围0-3
 lcd = seekfree.IPS200(2)
 lcd.full()  # 将背景颜色显示到整个屏幕
 
@@ -22,9 +22,11 @@ camera_center = (160, 120)
 x_roi_min =70
 x_roi_max =90
 
-y_roi_min =50
-y_roi_max =70
+y_roi_min =0
+y_roi_max =120
 
+
+roi = (70,0,80,120)
 
 #设置模型路径
 face_detect = '/sd/yolo3_iou_smartcar_final_with_post_processing.tflite'
@@ -37,6 +39,7 @@ def openart_init():
     sensor.set_framesize(sensor.QQVGA)
     sensor.set_brightness(day_brightness)
     sensor.skip_frames(20)
+    sensor.set_windowing(roi)
     sensor.set_auto_gain(False)
     sensor.set_auto_whitebal(False, (0, 0, 0))
 
@@ -51,14 +54,9 @@ def object_detect():
 
         roi = (x_roi_min, y_roi_min, x_roi_max - x_roi_min, y_roi_max - y_roi_min)
 
-        # img.draw_rectangle(roi, thickness=2,color = (255, 0, 0))
+        img.draw_rectangle(roi, thickness=1,color = (255, 0, 0))
 
         #cropped_img = img.copy(roi)
-
-        #img.draw_line(x_roi_min, y_roi_min, x_roi_max, y_roi_min, color=(255, 0, 0))
-        #img.draw_line(x_roi_max, y_roi_min, x_roi_max, y_roi_max, color=(255, 0, 0))
-        #img.draw_line(x_roi_max, y_roi_max, x_roi_min, y_roi_max, color=(255, 0, 0))
-        #img.draw_line(x_roi_max, y_roi_max, x_roi_min, y_roi_max, color=(255, 0, 0))
 
         if uart_num != 0:
             detect_flag = 0
@@ -85,17 +83,17 @@ def object_detect():
                         uart.write("%c" % int(120-y1))  # 找到卡片发送1
                         uart.write("%c" % 1)  # 找到卡片发送
                         uart.write("D")
-                        lcd.show_image(img, 160, 120, zoom=0)
+                        #lcd.show_image(img, 160, 120, zoom=0)
                     else:
                         img.draw_rectangle((x1, y1, w, h), thickness=2,color = (255, 0, 0))
-                        lcd.show_image(img, 160, 120, zoom=0)
+                        #lcd.show_image(img, 160, 120, zoom=0)
 
 def main():
     openart_init()
 
     while True:
         img = sensor.snapshot()
-        
+
         object_detect()
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if uart_num:
@@ -105,8 +103,7 @@ def main():
                 print("A")
                 uart_num=0
                 object_detect()
-        else:
-            lcd.show_image(img, 160, 120, zoom=2)
+            #lcd.show_image(img, 160, 120, zoom=2)
 
 if __name__ == '__main__':
     main()

@@ -11,6 +11,9 @@ uint8 ART3_mode = 1;//模式1为目标检测模式
 uint8	ART3_DETECT_DISTANCE = 0;//记录卡片距离
 uint8	ART3_DETECT_Flag = 0;//记录是否发现卡片
 
+uint16 Last_MileageX = 0;
+uint16 Last_Distance = 0;
+
 
 void ART3_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t status, void *userData)
 {
@@ -47,8 +50,24 @@ void ART3_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					
 					if(ART3_DETECT_Flag)
 					{
-						rt_sem_release(obj_detection_sem);
-						ART3_DETECT_Flag = 0;
+						//防止多次发送误判
+						if(abs(Last_MileageX - (int)car.MileageX) > 40)
+						{
+							rt_sem_release(obj_detection_sem);
+
+						 	ART3_DETECT_Flag = 0;
+
+
+							Last_MileageX = (int)car.MileageX;
+
+						}else if (abs(Last_MileageX - (int)car.MileageX) <= 40 && abs(ART3_DETECT_DISTANCE - Last_Distance) > 40)
+						{
+							rt_sem_release(obj_detection_sem);
+
+						 	ART3_DETECT_Flag = 0;
+							Last_Distance = ART3_DETECT_DISTANCE;
+						}
+
 					}
 					
 					rxstate = 0;
