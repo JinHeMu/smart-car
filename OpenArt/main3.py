@@ -13,7 +13,7 @@ uart = UART(2, baudrate=115200) # 串口
 lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
-day_brightness = 1000
+day_brightness = 2000
 
 camera_center = (160, 240)
 
@@ -22,8 +22,8 @@ last_card_center = None
 # 定义一个阈值，当两张卡片之间的距离大于此值时，认为是新的卡片
 distance_threshold = 20
 
-x_roi_min =120
-x_roi_max =200
+x_roi_min =130
+x_roi_max =190
 
 y_roi_min =30
 y_roi_max =240
@@ -65,7 +65,7 @@ def object_detect():
 
                 x1,y1,x2,y2,label,scores = obj
 
-                if(scores>0.70):
+                if(scores>0.50):
                     w = x2 - x1
                     h = y2 - y1
                     x1 = int((x1-0.1)*img.width())
@@ -74,11 +74,11 @@ def object_detect():
                     h = int(h*img.height())
 
                     card_dis_x = x1 + w//2
-                    card_dis_y = y1 + h//2
+                    card_dis_y = y1 + h // 2
 
-                    #img.draw_rectangle((x1, y1, w, h), color = (0, 255, 0),thickness=2)
+                    img.draw_rectangle((x1, y1, w, h), color = (255, 0, 0),thickness=2)
 
-                    if x1 >= x_roi_min and x1 <= x_roi_max and card_dis_y >=y_roi_min:
+                    if card_dis_x >= x_roi_min and card_dis_x <= x_roi_max and card_dis_y >=y_roi_min:
                         img.draw_rectangle((x1, y1, w, h), color = (0, 255, 0),thickness=2)
                         lcd.show_image(img, 320, 240, zoom=2)
                         #print(int(240-y1))
@@ -92,8 +92,8 @@ def object_detect():
                         img.draw_rectangle((x1, y1, w, h), thickness=2,color = (0, 255, 0))
                         lcd.show_image(img, 320, 240, zoom=2)
 
-                        utime.sleep_ms(300)
-                        detect_flag = 0
+                        utime.sleep_ms(50)
+                        # detect_flag = 0
 
 
 
@@ -124,6 +124,9 @@ def main():
                 print("A")
                 uart_num=0
                 object_detect()
+        else:
+            lcd.show_image(img, 320, 240, zoom=2)
+
 
 if __name__ == '__main__':
     main()

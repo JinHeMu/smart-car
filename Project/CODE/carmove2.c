@@ -15,7 +15,7 @@
 #define LEFT 4
 #define MAIN_CATEGORY 6
 
-#define boundry_speed 150
+#define boundry_speed 200
 #define back_speed 300
 
 uint8 game_mode = 0; // 0为初赛  1为决赛
@@ -43,7 +43,7 @@ uint8 boundry_num = 0;      // 识别边界个数
 uint8 boundry_mode = RIGHT; // 1向前 2向右 3向下 4向左
 uint8 card_current_num = 0; // 识别到的卡片数量
 uint8 card_sum_num = 0;     // 识别到的总卡片数量
-uint16 card_y_max = 0;
+float card_y_max = 0;
 
 unknowcard detectedCards[24];
 
@@ -185,8 +185,10 @@ void car_move(float tar_x, float tar_y)
 //    }
 //    else
 //    {
-       tar_x += sin(angle) * target_distance / 10;
-       tar_y += cos(angle) * target_distance / 10 - 20;
+//       tar_x -= 20;
+//			 tar_y -= 20;
+//			 tar_y += cos(angle) * target_distance / 7;
+//       tar_y += cos(angle) * target_distance / 7;
 
 
 //        tar_y -= 20;
@@ -282,6 +284,18 @@ void car_moveto_boundry(uint8 mode, uint16 speed)
     rt_mb_send(buzzer_mailbox, 100);
     // rt_kprintf("I HAVE ARRIVED BOUNDRE!!!");
 }
+
+
+void boundry_correct_angle(int8 angle)
+{
+    if(abs(angle) < 10)
+    {
+        angle_z = -angle;
+    }
+
+}
+
+
 
 // void car_moveto_boundry(
 
@@ -443,6 +457,7 @@ void boundry_entry(void *param)
             {
                 rt_thread_mdelay(10);
             }
+            boundry_correct_angle(ART1_CORRECT_Boundary_Angle);
             break;
         }
         car.Speed_X = 0;
@@ -464,17 +479,18 @@ void arrive_entry(void *param)
         if (card_current_num == 0)
         {
 
+            //先移动到目标检测到的最远距离
+            uint16 car_current_x = car.MileageX;
+            car_move(car_current_x, card_y_max);
 
             //如果第三次识别到边线
-            if(boundry_num == 4)
+            if(boundry_num == 3)
             {
                 //back
                 rt_sem_release(back_sem);
             }else
             {
-                //先移动到目标检测到的最远距离
-                uint16 car_current_x = car.MileageX;
-                car_move(car_current_x, card_y_max);
+
 //                //向前移动
 //                car.Speed_Y = 150;
 //                rt_thread_mdelay(500);
@@ -500,10 +516,7 @@ void arrive_entry(void *param)
         else
         {
 
-            // 更新最大的 Current_y 值
-            if (detectedCards[card_current_num].Current_y > card_y_max) {
-                card_y_max = detectedCards[card_current_num].Current_y;
-            }
+
 
             car_move(detectedCards[card_current_num].Current_x, detectedCards[card_current_num].Current_y); // 根据摄像头的距离进行相应的修改
             rt_sem_release(correct_sem); // 没有遍历完就矫正卡片
@@ -560,7 +573,11 @@ void correct_entry(void *param)
 
         car.Speed_X = 0;
         car.Speed_Y = 0;
-
+         // 更新最大的 Current_y 值
+        if (car.MileageY > card_y_max) 
+        {
+            card_y_max = car.MileageY;
+        }
         rt_mb_send(buzzer_mailbox, 100);
         //rt_sem_release(recognize_sem);
         // rt_sem_release(correct_sem);
@@ -827,8 +844,10 @@ void obj_detection_entry(void *param)
         card_current_num++;
         card_sum_num++;
 
-        detectedCards[card_current_num].Current_x = car.MileageX;
-        detectedCards[card_current_num].Current_y = car.MileageY + (float)ART3_DETECT_DISTANCE * 0.52;
+        detectedCards[card_current_num].Current_x = car.MileageX - 20;
+        detectedCards[card_current_num].Current_y = car.MileageY + (float)ART3_DETECT_DISTANCE * 0.6876 + 12.5972 - 20;
+
+        //12.5972 + 0.6876x
 
         ips114_showint16(50, card_current_num, (int)detectedCards[card_current_num].Current_x);
 
@@ -851,7 +870,7 @@ void car_start_init(void)
     boundry_th = rt_thread_create("boundry_th", boundry_entry, RT_NULL, 1024, 28, 10);
     correct_th = rt_thread_create("correct_th", correct_entry, RT_NULL, 1024, 28, 10);
     recognize_th = rt_thread_create("recognize_th", recognize_entry, RT_NULL, 1024, 28, 10);
-    obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 27, 10);
+    obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 20, 10);
 
     rt_thread_startup(back_th);
     rt_thread_startup(arrive_th);

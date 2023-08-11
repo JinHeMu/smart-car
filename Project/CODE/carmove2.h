@@ -18,7 +18,7 @@
 #define LOW 3
 #define LEFT 4
 
-#define boundry_speed 150
+#define boundry_speed 200
 
 
 typedef struct Pose_car {

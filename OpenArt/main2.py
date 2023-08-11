@@ -104,7 +104,7 @@ def object_detect():
 # 优先识别最近的卡片，同时限制识别卡片的大小，防止由于发光导致的识别错误
 
 
-def picture_correct():
+def picture_correct(): 
 
     dis_X = 0
     dis_Y = 0
