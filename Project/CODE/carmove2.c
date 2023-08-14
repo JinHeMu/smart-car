@@ -582,7 +582,8 @@ void correct_entry(void *param)
         //rt_sem_release(recognize_sem);
         // rt_sem_release(correct_sem);
         card_current_num--;
-        rt_sem_release(arrive_sem);
+        //rt_sem_release(arrive_sem);
+				rt_sem_release(recognize_sem);
     }
 }
 

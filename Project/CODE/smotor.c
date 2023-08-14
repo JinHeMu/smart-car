@@ -59,12 +59,12 @@ void ARM_LEFT_angle(int angle)
 
 void ARM_MID_angle(int angle)
 {
-	pwm_duty(ARM_MID_PIN, 1350 + +angle * 14);
+	pwm_duty(ARM_MID_PIN, 1450 + +angle * 14);
 }
 
 void arm_out(void) // 防止仓卡住
 {
-	ARM_LOW_angle(70);
+	ARM_LOW_angle(60);
 	ARM_UP_angle(120);
 	rt_thread_mdelay(200);
 }
@@ -73,7 +73,7 @@ void arm_return(void) // 防止目标检测到舵机
 {
 	ARM_UP_angle(180); // 收回，防止目标检测识别到
 	rt_thread_mdelay(500);
-	ARM_LOW_angle(80);
+	ARM_LOW_angle(70);
 }
 
 /*

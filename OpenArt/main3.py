@@ -22,8 +22,8 @@ last_card_center = None
 # 定义一个阈值，当两张卡片之间的距离大于此值时，认为是新的卡片
 distance_threshold = 20
 
-x_roi_min =130
-x_roi_max =190
+x_roi_min =110
+x_roi_max =210
 
 y_roi_min =30
 y_roi_max =240
@@ -73,8 +73,8 @@ def object_detect():
                     w = int(w*img.width())
                     h = int(h*img.height())
 
-                    card_dis_x = x1 + w//2
-                    card_dis_y = y1 + h // 2
+                    card_dis_x = x1
+                    card_dis_y = y1 + h
 
                     img.draw_rectangle((x1, y1, w, h), color = (255, 0, 0),thickness=2)
 
@@ -83,7 +83,7 @@ def object_detect():
                         lcd.show_image(img, 320, 240, zoom=2)
                         #print(int(240-y1))
                         uart.write("C")
-                        uart.write("%c" % int(240-card_dis_y))  # 找到卡片发送1
+                        uart.write("%c" % int(240-(y1 + h // 2)))  # 找到卡片发送1
                         uart.write("%c" % 1)  # 找到卡片发送
                         uart.write("D")
 
@@ -92,8 +92,11 @@ def object_detect():
                         img.draw_rectangle((x1, y1, w, h), thickness=2,color = (0, 255, 0))
                         lcd.show_image(img, 320, 240, zoom=2)
 
-                        utime.sleep_ms(50)
+                        utime.sleep_ms(200)
                         # detect_flag = 0
+
+                    else:
+                        lcd.show_image(img, 320, 240, zoom=2)
 
 
 
