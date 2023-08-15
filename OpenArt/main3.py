@@ -13,7 +13,7 @@ uart = UART(2, baudrate=115200) # 串口
 lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
-day_brightness = 2000
+day_brightness = 1000
 
 camera_center = (160, 240)
 
@@ -22,8 +22,8 @@ last_card_center = None
 # 定义一个阈值，当两张卡片之间的距离大于此值时，认为是新的卡片+
 distance_threshold = 20
 
-x_roi_min =70
-x_roi_max =250
+x_roi_min =110
+x_roi_max =210
 
 y_roi_min =20
 y_roi_max =240
@@ -31,7 +31,7 @@ y_roi_max =240
 roi = (x_roi_min, y_roi_min, x_roi_max-x_roi_min,y_roi_max-y_roi_min)
 
 #设置模型路径
-face_detect = '/sd/yolo3_iou_smartcar_final_with_post_processing.tflite'
+face_detect = '/sd/2yolo3_iou_smartcar_final_with_post_processing.tflite'
 #载入模型
 net = tf.load(face_detect)
 
@@ -65,7 +65,7 @@ def object_detect():
 
                 x1,y1,x2,y2,label,scores = obj
 
-                if(scores>0.70):
+                if(scores>0.50):
                     w = x2 - x1
                     h = y2 - y1
                     x1 = int((x1-0.1)*img.width())
@@ -76,7 +76,7 @@ def object_detect():
                     card_dis_x = x1
                     card_dis_y = y1 + h // 2
 
-                    #img.draw_rectangle((x1, y1, w, h), color = (255, 0, 0),thickness=2)
+                    img.draw_rectangle((x1, y1, w, h), color = (255, 0, 0),thickness=2)
 
                     if card_dis_x >= x_roi_min and card_dis_x <= x_roi_max and card_dis_y >=y_roi_min:
                         img.draw_rectangle((x1, y1, w, h), color = (0, 255, 0),thickness=2)
@@ -92,7 +92,7 @@ def object_detect():
                         img.draw_rectangle((x1, y1, w, h), thickness=2,color = (0, 255, 0))
                         lcd.show_image(img, 320, 240, zoom=2)
 
-                        utime.sleep_ms(500)
+                        utime.sleep_ms(250)
                         # detect_flag = 0
 
                     else:

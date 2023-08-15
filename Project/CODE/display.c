@@ -10,6 +10,8 @@ char taget_Big_category[10];
 void (*current_operation_index)();
 
 
+rt_thread_t display_th;
+
 // 多级菜单界面
 Menu_table table[30] =
 	{
@@ -119,7 +121,25 @@ void Menu_key_set(void)
 
 //		arm_putbox(1);
 
+		
+						                car.Speed_Y = 50;
+                rt_thread_mdelay(1000);
+                car.Speed_Y = 0;
+								
+								    car.Speed_X = 150;
+                rt_thread_mdelay(1000);
+                car.Speed_X = 0;
+
+		
 		game_mode = 0;
+		
+		ART3_mode = 1;
+    uart_putchar(USART_8, A);
+		
+		rt_sem_release(boundry_sem);
+		
+		rt_thread_delete(display_th);
+		
 
 		
 		mb_data = 0; // 邮箱数据清除
@@ -139,7 +159,7 @@ void Menu_key_set(void)
                 car.Speed_X = 0;
 
 		
-				//game_mode = 1;
+				game_mode = 1;
 //		
 		ips114_clear(WHITE);
 		strcpy(taget_Big_category, "fruit");
@@ -149,6 +169,8 @@ void Menu_key_set(void)
     uart_putchar(USART_8, A);
 		
 		rt_sem_release(boundry_sem);
+		
+		rt_thread_delete(display_th);
 		
 
 		
@@ -232,6 +254,8 @@ void Menu_key_set(void)
 		
 		rt_sem_release(boundry_sem);
 		
+		rt_thread_delete(display_th);
+		
 
 //		car_move(300,300);
 //		rt_thread_mdelay(5000);
@@ -268,7 +292,7 @@ void Menu_key_set(void)
 
 	if (mb_data == 4)
 	{
-		//game_mode = 1;
+
 
 ////		
 //		Position_kp += 0.1;
@@ -290,7 +314,7 @@ void Menu_key_set(void)
 		
 //		arm_putbox(6);
 
-
+		
 		                car.Speed_Y = 50;
                 rt_thread_mdelay(1000);
                 car.Speed_Y = 0;
@@ -299,7 +323,7 @@ void Menu_key_set(void)
                 rt_thread_mdelay(1000);
                 car.Speed_X = 0;
 
-		
+		game_mode = 1;
 		ips114_clear(WHITE);
 		strcpy(taget_Big_category, "food");
 		ips114_showstr(0, 0, "food");
@@ -309,6 +333,8 @@ void Menu_key_set(void)
     uart_putchar(USART_8, A);
 		
 		rt_sem_release(boundry_sem);
+		
+		rt_thread_delete(display_th);
 		
 
 		mb_data = 0; // 邮箱数据清除
@@ -503,7 +529,7 @@ void display_entry(void *parameter)
 void display_init(void)
 {
 
-	rt_thread_t display_th;
+
 
 	// 初始化屏幕
 	ips114_init();

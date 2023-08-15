@@ -388,8 +388,15 @@ void back_entry(void *param)
         // 默认此时位于左侧边线
         car_moveto_boundry(LEFT, back_speed);unload(LEFT);              //左类
 
-        car_moveto_boundry(UP, boundry_speed);unload(MAIN_CATEGORY);       //大类
+        car_moveto_boundry(UP, boundry_speed);
+			
+			
+				if(game_mode)
+				{
+					
+					unload(MAIN_CATEGORY);       //大类
 
+				}
         unload(UP);                                         //上类
 
         car_moveto_boundry(RIGHT, back_speed);unload(RIGHT);            //右类
@@ -418,7 +425,10 @@ void boundry_entry(void *param)
     while (1)
     {
         rt_sem_take(boundry_sem, RT_WAITING_FOREVER);
-        ART1_mode = 4;
+			
+			
+				
+				ART1_mode = 4;
         ART1_CORRECT_Boundary_Flag = 0;
 
         // if(boundry_num % 2 == 0)
@@ -491,6 +501,7 @@ void arrive_entry(void *param)
 
         if (card_current_num == 0)
         {
+						ART3_mode = 0;
 
             //先移动到目标检测到的最远距离
             uint16 car_current_x = car.MileageX;
@@ -529,9 +540,6 @@ void arrive_entry(void *param)
         }
         else
         {
-
-
-
             car_move(detectedCards[card_current_num].Current_x, detectedCards[card_current_num].Current_y); // 根据摄像头的距离进行相应的修改
             rt_sem_release(correct_sem); // 没有遍历完就矫正卡片
         }
@@ -557,15 +565,15 @@ void correct_entry(void *param)
 
             if (pic_dis > 65)
             {
-                car.correct_speed = 1;
+                car.correct_speed = 1.5;
             }
             else if (pic_dis <= 65 && pic_dis > 45)
             {
-                car.correct_speed = 0.75;
+                car.correct_speed = 1;
             }
             else if (pic_dis <= 45 && pic_dis > 25)
             {
-                car.correct_speed = 0.5;
+                car.correct_speed = 0.75;
             }
             else if (pic_dis <= 25 && pic_dis > 15)
             {
@@ -860,7 +868,7 @@ void obj_detection_entry(void *param)
 			
 			
 			
-				float real_distance = (float)ART3_DETECT_DISTANCE * (float)ART3_DETECT_DISTANCE * 0.0042 - (float)ART3_DETECT_DISTANCE * 0.2478 + 46.5513 - 30;
+				float real_distance = (float)ART3_DETECT_DISTANCE * (float)ART3_DETECT_DISTANCE * 0.0039 - (float)ART3_DETECT_DISTANCE * 0.2716 + 47.0712;
 
         detectedCards[card_current_num].Current_x = car.MileageX - 20;
         detectedCards[card_current_num].Current_y = car.MileageY + real_distance;
@@ -887,16 +895,10 @@ void car_start_init(void)
     arrive_th = rt_thread_create("arrive_th", arrive_entry, RT_NULL, 1024, 28, 10);
     boundry_th = rt_thread_create("boundry_th", boundry_entry, RT_NULL, 1024, 28, 10);
     correct_th = rt_thread_create("correct_th", correct_entry, RT_NULL, 1024, 28, 10);
-    recognize_th = rt_thread_create("recognize_th", recognize_entry, RT_NULL, 1024, 28, 10);
-    obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 20, 10);
-
-
+    recognize_th = rt_thread_create("recognize_th", recognize_entry, RT_NULL, 1024, 28, 28);
+    obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 10, 10);
 		
-		
-
-
-		
-		 rt_thread_startup(back_th);
+		rt_thread_startup(back_th);
     rt_thread_startup(arrive_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(recognize_th);

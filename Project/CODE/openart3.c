@@ -46,26 +46,31 @@ void ART3_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					ART3_DETECT_Flag = ART3_dat[1];
 					
 
-					
-					
 					if(ART3_DETECT_Flag)
 					{
-						//防止多次发送误判
-						if(abs(Last_MileageX - (int)car.MileageX) > 40)
+						//防止原地多次发送误判
+						if(abs(Last_MileageX - (int)car.MileageX) > 60)
 						{
-							rt_sem_release(obj_detection_sem);
-
-						 	ART3_DETECT_Flag = 0;
-
-
+							
+							
+							
 							Last_MileageX = (int)car.MileageX;
-
-						}else if (abs(Last_MileageX - (int)car.MileageX) <= 40 && abs(ART3_DETECT_DISTANCE - Last_Distance) > 50)
-						{
+							ART3_DETECT_Flag = 0;
+							
 							rt_sem_release(obj_detection_sem);
 
-						 	ART3_DETECT_Flag = 0;
+
+
+						}else if (abs(Last_MileageX - (int)car.MileageX) <= 60 && abs(ART3_DETECT_DISTANCE - Last_Distance) > 60)
+						{
+							
 							Last_Distance = ART3_DETECT_DISTANCE;
+							Last_MileageX = (int)car.MileageX;
+							ART3_DETECT_Flag = 0;
+							
+							rt_sem_release(obj_detection_sem);
+							
+
 						}
 
 					}
