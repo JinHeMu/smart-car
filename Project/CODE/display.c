@@ -118,7 +118,9 @@ void Menu_key_set(void)
 //		find_mode = 1;
 
 //		arm_putbox(1);
-		rt_sem_release(boundry_sem);
+
+		game_mode = 0;
+
 		
 		mb_data = 0; // 邮箱数据清除
 	}
@@ -128,17 +130,32 @@ void Menu_key_set(void)
 	{
 
 		
+				                car.Speed_Y = 50;
+                rt_thread_mdelay(1000);
+                car.Speed_Y = 0;
+								
+								    car.Speed_X = 150;
+                rt_thread_mdelay(1000);
+                car.Speed_X = 0;
+
 		
-		rt_sem_release(back_sem);
+				//game_mode = 1;
+//		
+		ips114_clear(WHITE);
+		strcpy(taget_Big_category, "fruit");
+		ips114_showstr(0, 0, "fruit");
+				
+		ART3_mode = 1;
+    uart_putchar(USART_8, A);
+		
+		rt_sem_release(boundry_sem);
+		
+
+		
 //		arm_openbox(1);
 ////		angle2 ++;
 //		
-//		game_mode = 1;
-//		
-//		ips114_clear(WHITE);
-//		strcpy(taget_Big_category, "fruit");
-//		rt_kprintf("taget_Big_category is fruit!!!\n");
-//		ips114_showstr(0, 0, "fruit");
+
 //		
 //		car_move(200,200);
 //		rt_thread_mdelay(5000);
@@ -183,7 +200,7 @@ void Menu_key_set(void)
 //			      uart_putchar(USART_1, 0x42);
 //						      uart_putchar(USART_1, 0x41);
 
-uart_putchar(USART_4, 0x44);
+//uart_putchar(USART_4, 0x44);
 
 		
 		mb_data = 0; // 邮箱数据清除
@@ -192,12 +209,29 @@ uart_putchar(USART_4, 0x44);
 
 	if ((mb_data == 3))
 	{
-//		game_mode = 1;
-//		ips114_clear(WHITE);
+		
+		
+				                car.Speed_Y = 50;
+                rt_thread_mdelay(1000);
+                car.Speed_Y = 0;
+								
+								    car.Speed_X = 150;
+                rt_thread_mdelay(1000);
+                car.Speed_X = 0;
 
-//		rt_kprintf("taget_Big_category is vegetable!!!\n");
-//		strcpy(taget_Big_category, "vegetable");
-//		ips114_showstr(0, 0, "vegetable");
+		
+		game_mode = 1;
+		ips114_clear(WHITE);
+
+		strcpy(taget_Big_category, "vegetable");
+		ips114_showstr(0, 0, "vegetable");
+		
+		
+				ART3_mode = 1;
+    uart_putchar(USART_8, A);
+		
+		rt_sem_release(boundry_sem);
+		
 
 //		car_move(300,300);
 //		rt_thread_mdelay(5000);
@@ -234,12 +268,9 @@ uart_putchar(USART_4, 0x44);
 
 	if (mb_data == 4)
 	{
-//		game_mode = 1;
-//		ips114_clear(WHITE);
-//		rt_kprintf("taget_Big_category is food!!!\n");
-//		strcpy(taget_Big_category, "food");
-//		ips114_showstr(0, 0, "food");
-//		
+		//game_mode = 1;
+
+////		
 //		Position_kp += 0.1;
 //		ips114_showfloat(160, 0, Position_kp, 3, 2);
 //		arm_putbox(3);
@@ -254,11 +285,32 @@ uart_putchar(USART_4, 0x44);
 //				Angel_kd++;
 //	ips114_showint16(50, 0, Angel_kd);
 		
-		car_speed_x(300);
+//		car_speed_x(300);
 
 		
 //		arm_putbox(6);
+
+
+		                car.Speed_Y = 50;
+                rt_thread_mdelay(1000);
+                car.Speed_Y = 0;
+								
+								    car.Speed_X = 150;
+                rt_thread_mdelay(1000);
+                car.Speed_X = 0;
+
 		
+		ips114_clear(WHITE);
+		strcpy(taget_Big_category, "food");
+		ips114_showstr(0, 0, "food");
+		
+		
+				ART3_mode = 1;
+    uart_putchar(USART_8, A);
+		
+		rt_sem_release(boundry_sem);
+		
+
 		mb_data = 0; // 邮箱数据清除
 	}
 

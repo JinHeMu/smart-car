@@ -53,7 +53,7 @@ def object_detect():
         uart_num = uart.any()  # 获取当前串口数据数量
         img = sensor.snapshot()
         roi = (x_roi_min, y_roi_min, x_roi_max - x_roi_min, y_roi_max - y_roi_min)
-        img.draw_rectangle(roi, thickness=1,color = (255, 0, 0))
+        #img.draw_rectangle(roi, thickness=1,color = (255, 0, 0))
 
 
         if uart_num != 0:
@@ -65,7 +65,7 @@ def object_detect():
 
                 x1,y1,x2,y2,label,scores = obj
 
-                if(scores>0.70):
+                if(scores>0.80):
                     w = x2 - x1
                     h = y2 - y1
                     x1 = int((x1-0.1)*img.width())
@@ -76,7 +76,7 @@ def object_detect():
                     card_dis_x = x1
                     card_dis_y = y1 + h // 2
 
-                    #img.draw_rectangle((x1, y1, w, h), color = (255, 0, 0),thickness=2)
+                    img.draw_rectangle((x1, y1, w, h), color = (255, 0, 0),thickness=2)
 
                     if card_dis_x >= x_roi_min and card_dis_x <= x_roi_max and card_dis_y >=y_roi_min:
                         img.draw_rectangle((x1, y1, w, h), color = (0, 255, 0),thickness=2)
@@ -92,7 +92,7 @@ def object_detect():
                         img.draw_rectangle((x1, y1, w, h), thickness=2,color = (0, 255, 0))
                         lcd.show_image(img, 320, 240, zoom=2)
 
-                        utime.sleep_ms(500)
+                        #utime.sleep_ms(400)
                         # detect_flag = 0
 
                     else:
@@ -118,7 +118,7 @@ def main():
     while True:
         img = sensor.snapshot()
 
-        #object_detect()
+        object_detect()
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if uart_num:
             uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁

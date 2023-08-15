@@ -4,12 +4,16 @@ void main()
 {
 	
 
-	rt_thread_mdelay(2000);					// 延时150ms，等待主板其他外设上电成功
+	rt_thread_mdelay(150);					// 延时150ms，等待主板其他外设上电成功
 	gpio_init(B9, GPO, 1, GPIO_PIN_CONFIG); // 初始化B9灯
 
 	arm_init();
 
-	display_init(); // 显示屏初始化
+	display_init(); // 显示屏初始化	
+	
+	
+	buzzer_init(); // 初始化蜂鸣器
+	button_init(); // 初始化按键
 
 	ART1_UART_Init();
 	ART2_UART_Init();
@@ -20,8 +24,7 @@ void main()
 	icm_zeroBias();
 	timer_pit_init(); // 周期定时器
 	
-	buzzer_init(); // 初始化蜂鸣器
-	button_init(); // 初始化按键
+
 
 	motor_init();
 

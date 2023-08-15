@@ -13,7 +13,7 @@ lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
 #晚上阈值（需要调试！！！）
-card_threshold = [(72, 100, -46, 41, -28, 102)]#色块检测阈值
+card_threshold = [(19, 100, -128, 127, -13, 127)]#色块检测阈值
 day_brightness = 2000
 LED(4).on()#照明
 
@@ -119,7 +119,7 @@ def picture_correct():
         closest_distance = float('inf')
         closest_blob = None
 
-        for b in img.find_blobs(card_threshold, pixels_threshold=400, area_threshold=400, margin=1, merge=True, invert=0):
+        for b in img.find_blobs(card_threshold, pixels_threshold=1000, area_threshold=800, margin=1, merge=True, invert=0):
             blob_center = (b.cx(), b.cy())
             current_distance = math.sqrt((blob_center[0] - 160) ** 2 + (blob_center[1] - 200) ** 2)
 
@@ -134,7 +134,7 @@ def picture_correct():
             img.draw_string(10, 10, "closest distance: {}".format(closest_distance), (255, 0, 0))
 
             dis_X = closest_blob.cx() - 159
-            dis_Y = closest_blob.cy() - 180
+            dis_Y = closest_blob.cy() - 188
 
             dis_X = max(min(dis_X, 64), -64)
             dis_Y = max(min(dis_Y, 64), -64)
@@ -171,7 +171,7 @@ def main():
     while True:
         img = sensor.snapshot()
         #object_detect()
-        picture_correct()
+        #picture_correct()
 
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if uart_num:

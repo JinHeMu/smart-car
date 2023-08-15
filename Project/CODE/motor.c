@@ -37,7 +37,7 @@ float Incremental_kd[4] = {0,0,0,0};
 //float Angel_kp = 30, Angel_ki = 0, Angel_kd = 360; // 角度环
 //float Angel_kp = 30, Angel_ki = 0, Angel_kd = 400; // 角度环
 
-float Angel_kp = 10, Angel_ki = 0, Angel_kd = 110; // 角度环
+float Angel_kp = 10, Angel_ki = 0, Angel_kd = 90; // 角度环
 
 //float Position_kp = 0.05, Position_ki = 0, Position_kd = 0;
 //float Position_kp = 2.5, Position_ki = 0, Position_kd = 0.5;

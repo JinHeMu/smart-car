@@ -59,7 +59,7 @@ void ARM_LEFT_angle(int angle)
 
 void ARM_MID_angle(int angle)
 {
-	pwm_duty(ARM_MID_PIN, 1450 + +angle * 14);
+	pwm_duty(ARM_MID_PIN, 3100 + 55.6548 * angle );
 }
 
 void arm_out(void) // 防止仓卡住
@@ -152,6 +152,21 @@ void arm_carry(void)
 
 
 
+
+void arm_set_mid(uint8 angle)
+{
+	arm_out();
+		switch(angle)
+		{
+			case 1:angle = 4;ARM_MID_angle(180);break;
+			case 2:angle = 5;ARM_MID_angle(240);break;
+			case 3:angle = 6;ARM_MID_angle(300);break;
+			case 4:angle = 1;ARM_MID_angle(0);break;
+			case 5:angle = 2;ARM_MID_angle(60);break;
+			case 6:angle = 3;ARM_MID_angle(120);break;
+		}
+	arm_return();
+}
 
 
 void arm_putbox(uint8 angle)
@@ -337,7 +352,7 @@ void arm_putbox(uint8 angle)
 	}
 
 	// 机械臂打开盒子
-	void arm_openbox(uint8 angle)
+	void arm_openbox(uint8 angle, uint8 location)
 	{
 
 		arm_out();
@@ -375,9 +390,21 @@ void arm_putbox(uint8 angle)
 		//	rt_thread_mdelay(300);
 
 		magnet_left_release();
-		rt_thread_mdelay(1000);
+		//ARM_MID_angle(300);
+
+		switch(location)
+		{
+			case 1:ARM_MID_angle(240);break;
+			case 2:ARM_MID_angle(180);break;
+			case 3:ARM_MID_angle(240);break;
+			case 4:ARM_MID_angle(240);break;
+			case 5:ARM_MID_angle(120);break;
+			case 6:ARM_MID_angle(180);break;
+		}
+		rt_thread_mdelay(500);
+
+
 		
-		ARM_LEFT_angle(40);
 
 //		car.Speed_X = 300;
 //		rt_thread_mdelay(500);
@@ -403,14 +430,15 @@ void arm_putbox(uint8 angle)
 		pwm_init(ARM_UP_PIN, 50, ARM_CENTER);
 		pwm_init(ARM_LOW_PIN, 50, ARM_CENTER);
 		pwm_init(ARM_LEFT_PIN, 50, ARM_CENTER);
-		pwm_init(ARM_MID_PIN, 50, ARM_CENTER);
+		pwm_init(ARM_MID_PIN, 200, ARM_CENTER);
 
 		gpio_init(MAGNET_FRONT, GPO, 0, GPIO_PIN_CONFIG);
 		gpio_init(MAGNET_LEFT, GPO, 0, GPIO_PIN_CONFIG);
 
 		ARM_LEFT_angle(40);
-		ARM_LOW_angle(80);
+		ARM_LOW_angle(60);
 		ARM_UP_angle(120); // 收回，防止目标检测识别到
 		ARM_MID_angle(0);
-		rt_thread_mdelay(200);
+		rt_thread_mdelay(2000);
+		ARM_LOW_angle(80);
 	}

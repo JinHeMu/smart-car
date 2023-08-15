@@ -60,7 +60,7 @@ void ART3_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 
 							Last_MileageX = (int)car.MileageX;
 
-						}else if (abs(Last_MileageX - (int)car.MileageX) <= 40 && abs(ART3_DETECT_DISTANCE - Last_Distance) > 20)
+						}else if (abs(Last_MileageX - (int)car.MileageX) <= 40 && abs(ART3_DETECT_DISTANCE - Last_Distance) > 50)
 						{
 							rt_sem_release(obj_detection_sem);
 

@@ -43,7 +43,7 @@ uint8 boundry_num = 0;      // 识别边界个数
 uint8 boundry_mode = RIGHT; // 1向前 2向右 3向下 4向左
 uint8 card_current_num = 0; // 识别到的卡片数量
 uint8 card_sum_num = 0;     // 识别到的总卡片数量
-float card_y_max = 0;
+float card_y_average = 0;
 
 unknowcard detectedCards[24];
 
@@ -78,17 +78,17 @@ struct card apple = {"fruit", "apple", 2};       // 右三类
 struct card pepper = {"vegetable", "pepper", 2}; // 右三类
 struct card peanut = {"food", "peanut", 2};      // 右三类
 
-struct card bannana = {"fruit", "bannana", 3};   // 下三类
-struct card radish = {"vegetable", "radish", 3}; // 下三类
-struct card rice = {"food", "rice", 3};          // 下三类
+struct card bannana = {"fruit", "bannana", 4};   // 下三类
+struct card radish = {"vegetable", "radish", 4}; // 下三类
+struct card rice = {"food", "rice", 4};          // 下三类
 
-struct card durian = {"fruit", "durian", 4};         // 左三类
-struct card cucumber = {"vegetable", "cucumber", 4}; // 左三类
-struct card potato = {"food", "potato", 4};          // 左三类
+struct card durian = {"fruit", "durian", 5};         // 左三类
+struct card cucumber = {"vegetable", "cucumber", 5}; // 左三类
+struct card potato = {"food", "potato", 5};          // 左三类
 
-struct card grape = {"fruit", "grape", 5};           // 车载
-struct card corn = {"food", "corn", 5};              // 车载
-struct card eggplant = {"vegetable", "eggplant", 5}; // 车载
+struct card grape = {"fruit", "grape", 3};           // 车载
+struct card corn = {"food", "corn", 3};              // 车载
+struct card eggplant = {"vegetable", "eggplant", 3}; // 车载
 
 void car_turnto(float angle)
 {
@@ -307,14 +307,15 @@ void unload(uint8 mode)
     {
     case UP:
         car.Speed_Y = 150;
-        rt_thread_mdelay(1000);
+        rt_thread_mdelay(2000);
         car.Speed_Y = 0;
-        arm_openbox(1);
+        arm_openbox(1, 1);
+
 
         //需要添加部分函数防止压到舱门
 
         car.Speed_X = 150;
-        car.Speed_Y = -150;
+        car.Speed_Y = -300;
         rt_thread_mdelay(2000);
         car.Speed_X = 0;
         car.Speed_Y = 0;
@@ -327,7 +328,8 @@ void unload(uint8 mode)
         car.Speed_X = 150;
         rt_thread_mdelay(1000);
         car.Speed_X = 0;
-        arm_openbox(2);
+        arm_openbox(2, 2);
+
 
         car.Speed_X = -150;
         car.Speed_Y = -150;
@@ -342,7 +344,7 @@ void unload(uint8 mode)
 //        rt_thread_mdelay(1000);
 //        car.Speed_Y = 0;
 		
-        arm_openbox(3);
+        arm_openbox(4, 4);
 
         car.Speed_X = -150;
         car.Speed_Y = 150;
@@ -358,7 +360,8 @@ void unload(uint8 mode)
         rt_thread_mdelay(1000);
         car.Speed_X = 0;
 
-        arm_openbox(4);
+        arm_openbox(5,5);
+
 
         car.Speed_X = 150;
         // car.Speed_Y = 150;
@@ -370,7 +373,7 @@ void unload(uint8 mode)
 
     case MAIN_CATEGORY:
 
-        arm_openbox(6);
+        arm_openbox(6,6);
 
         break;
     }
@@ -393,7 +396,17 @@ void back_entry(void *param)
 
         car_moveto_boundry(LOW, back_speed);unload(LOW);                //下类
 
-        car_moveto_boundry(LEFT, back_speed);car_moveto_boundry(LOW, back_speed);   //回库
+        car_moveto_boundry(LEFT, back_speed);
+			
+			
+				car.Speed_X = 150;
+        rt_thread_mdelay(750);
+        car.Speed_X = 0;
+			
+				car_moveto_boundry(LOW, boundry_speed);   //回库
+			
+
+				
 
         rt_thread_mdelay(10000);
 
@@ -457,7 +470,7 @@ void boundry_entry(void *param)
             {
                 rt_thread_mdelay(10);
             }
-            boundry_correct_angle(ART1_CORRECT_Boundary_Angle);
+            //boundry_correct_angle(ART1_CORRECT_Boundary_Angle);
             break;
         }
         car.Speed_X = 0;
@@ -481,8 +494,9 @@ void arrive_entry(void *param)
 
             //先移动到目标检测到的最远距离
             uint16 car_current_x = car.MileageX;
-            car_move(car_current_x, card_y_max);
-
+						card_y_average = card_y_average / card_sum_num;
+            car_move(car_current_x, card_y_average);
+						card_sum_num = 0;
             //如果第三次识别到边线
             if(boundry_num == 3)
             {
@@ -574,10 +588,9 @@ void correct_entry(void *param)
         car.Speed_X = 0;
         car.Speed_Y = 0;
          // 更新最大的 Current_y 值
-        if (car.MileageY > card_y_max) 
-        {
-            card_y_max = car.MileageY;
-        }
+				
+				card_y_average += car.MileageY;
+				
         rt_mb_send(buzzer_mailbox, 100);
         //rt_sem_release(recognize_sem);
         // rt_sem_release(correct_sem);
@@ -844,11 +857,15 @@ void obj_detection_entry(void *param)
 
         card_current_num++;
         card_sum_num++;
+			
+			
+			
+				float real_distance = (float)ART3_DETECT_DISTANCE * (float)ART3_DETECT_DISTANCE * 0.0042 - (float)ART3_DETECT_DISTANCE * 0.2478 + 46.5513 - 30;
 
         detectedCards[card_current_num].Current_x = car.MileageX - 20;
-        detectedCards[card_current_num].Current_y = car.MileageY + (float)ART3_DETECT_DISTANCE * 0.6876 + 12.5972 - 20;
+        detectedCards[card_current_num].Current_y = car.MileageY + real_distance;
 
-        //12.5972 + 0.6876x
+			//0.00425722687x ^2−0.247807950x+46.5513049
 
         ips114_showint16(50, card_current_num, (int)detectedCards[card_current_num].Current_x);
 
@@ -873,13 +890,16 @@ void car_start_init(void)
     recognize_th = rt_thread_create("recognize_th", recognize_entry, RT_NULL, 1024, 28, 10);
     obj_detection_th = rt_thread_create("obj_detection_th", obj_detection_entry, RT_NULL, 1024, 20, 10);
 
-    rt_thread_startup(back_th);
+
+		
+		
+
+
+		
+		 rt_thread_startup(back_th);
     rt_thread_startup(arrive_th);
     rt_thread_startup(correct_th);
     rt_thread_startup(recognize_th);
     rt_thread_startup(obj_detection_th);
     rt_thread_startup(boundry_th);
-
-    ART3_mode = 1;
-    uart_putchar(USART_8, A);
 }
