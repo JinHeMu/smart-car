@@ -49,7 +49,7 @@ void ART3_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 					if(ART3_DETECT_Flag)
 					{
 						//防止原地多次发送误判
-						if(abs(Last_MileageX - (int)car.MileageX) > 60)
+						if(abs(Last_MileageX - (int)car.MileageX) > 40)
 						{
 							
 							
@@ -61,7 +61,7 @@ void ART3_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 
 
 
-						}else if (abs(Last_MileageX - (int)car.MileageX) <= 60 && abs(ART3_DETECT_DISTANCE - Last_Distance) > 60)
+						}else if (abs(Last_MileageX - (int)car.MileageX) <= 40 && abs(ART3_DETECT_DISTANCE - Last_Distance) > 40)
 						{
 							
 							Last_Distance = ART3_DETECT_DISTANCE;
@@ -94,7 +94,7 @@ void ART3_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 void ART3_UART_Init(void)
 {
 	uart_init(USART_8, 115200, UART8_TX_D16, UART8_RX_D17);
-	NVIC_SetPriority(LPUART1_IRQn, 0); // 设置串口中断优先级 范围0-15 越小优先级越高
+	NVIC_SetPriority(LPUART1_IRQn, 1); // 设置串口中断优先级 范围0-15 越小优先级越高
 	uart_rx_irq(USART_8, 1);
 	uart_tx_irq(USART_8, 1);
 	// 配置串口接收的缓冲区及缓冲区长度

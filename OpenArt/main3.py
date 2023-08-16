@@ -22,8 +22,14 @@ last_card_center = None
 # 定义一个阈值，当两张卡片之间的距离大于此值时，认为是新的卡片+
 distance_threshold = 20
 
-x_roi_min =110
-x_roi_max =210
+
+
+#130 20
+#210 20
+#210 240
+#110 240
+x_roi_min =100
+x_roi_max =220
 
 y_roi_min =20
 y_roi_max =240
@@ -53,7 +59,7 @@ def object_detect():
         uart_num = uart.any()  # 获取当前串口数据数量
         img = sensor.snapshot()
         roi = (x_roi_min, y_roi_min, x_roi_max - x_roi_min, y_roi_max - y_roi_min)
-        img.draw_rectangle(roi, thickness=1,color = (255, 0, 0))
+        img.draw_rectangle(roi, thickness=1,color = (0, 0, 255))
 
 
         if uart_num != 0:
@@ -64,8 +70,9 @@ def object_detect():
 
 
                 x1,y1,x2,y2,label,scores = obj
+                #print(obj)
 
-                if(scores>0.50):
+                if(scores>0.3):
                     w = x2 - x1
                     h = y2 - y1
                     x1 = int((x1-0.1)*img.width())
@@ -92,7 +99,7 @@ def object_detect():
                         img.draw_rectangle((x1, y1, w, h), thickness=2,color = (0, 255, 0))
                         lcd.show_image(img, 320, 240, zoom=2)
 
-                        utime.sleep_ms(250)
+                        utime.sleep_ms(500)
                         # detect_flag = 0
 
                     else:
@@ -118,7 +125,7 @@ def main():
     while True:
         img = sensor.snapshot()
 
-        #object_detect()
+        object_detect()
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if uart_num:
             uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁

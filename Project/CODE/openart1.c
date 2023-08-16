@@ -166,7 +166,7 @@ void ART1_uart_callback(LPUART_Type *base, lpuart_handle_t *handle, status_t sta
 void ART1_UART_Init(void)
 {
 	uart_init(USART_4, 115200, UART4_TX_C16, UART4_RX_C17);
-	NVIC_SetPriority(LPUART4_IRQn, 1); // 设置串口中断优先级 范围0-15 越小优先级越高
+	NVIC_SetPriority(LPUART4_IRQn, 0); // 设置串口中断优先级 范围0-15 越小优先级越高
 	uart_rx_irq(USART_4, 1);
 	uart_tx_irq(USART_4, 1);
 	// 配置串口接收的缓冲区及缓冲区长度

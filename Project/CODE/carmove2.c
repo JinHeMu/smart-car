@@ -185,8 +185,8 @@ void car_move(float tar_x, float tar_y)
 //    }
 //    else
 //    {
-//       tar_x -= 20;
-//			 tar_y -= 20;
+       tar_x -= 30;
+			 tar_y -= 30;
 //			 tar_y += cos(angle) * target_distance / 7;
 //       tar_y += cos(angle) * target_distance / 7;
 
@@ -391,12 +391,12 @@ void back_entry(void *param)
         car_moveto_boundry(UP, boundry_speed);
 			
 			
-				if(game_mode)
-				{
-					
-					unload(MAIN_CATEGORY);       //大类
+        if(game_mode)
+        {
+            
+            unload(MAIN_CATEGORY);       //大类
 
-				}
+        }
         unload(UP);                                         //上类
 
         car_moveto_boundry(RIGHT, back_speed);unload(RIGHT);            //右类
@@ -406,11 +406,11 @@ void back_entry(void *param)
         car_moveto_boundry(LEFT, back_speed);
 			
 			
-				car.Speed_X = 150;
+		car.Speed_X = 150;
         rt_thread_mdelay(750);
         car.Speed_X = 0;
 			
-				car_moveto_boundry(LOW, boundry_speed);   //回库
+		car_moveto_boundry(LOW, boundry_speed);   //回库
 			
 
 				
@@ -483,6 +483,8 @@ void boundry_entry(void *param)
             //boundry_correct_angle(ART1_CORRECT_Boundary_Angle);
             break;
         }
+				
+				ART3_mode = 0;
         car.Speed_X = 0;
         car.Speed_Y = 0;
         boundry_num++;
@@ -497,17 +499,19 @@ void arrive_entry(void *param)
     while (1)
     {
         rt_sem_take(arrive_sem, RT_WAITING_FOREVER); // 获取到达信号
+
         ART3_mode = 0;
 
         if (card_current_num == 0)
         {
-						ART3_mode = 0;
+
 
             //先移动到目标检测到的最远距离
             uint16 car_current_x = car.MileageX;
-						card_y_average = card_y_average / card_sum_num;
+			card_y_average = card_y_average / card_sum_num;
             car_move(car_current_x, card_y_average);
-						card_sum_num = 0;
+			card_sum_num = 0;
+
             //如果第三次识别到边线
             if(boundry_num == 3)
             {
@@ -526,7 +530,7 @@ void arrive_entry(void *param)
 
                 //向右移动
                 car.Speed_X = 150;
-                rt_thread_mdelay(1000);
+                rt_thread_mdelay(1500);
                 car.Speed_X = 0;
 
                 //继续向右平移寻找边线
@@ -535,8 +539,6 @@ void arrive_entry(void *param)
                 rt_sem_release(boundry_sem); // 遍历完所有检测到的点,进行下一次遍历
 
             }
-
-            
         }
         else
         {
@@ -595,8 +597,12 @@ void correct_entry(void *param)
 
         car.Speed_X = 0;
         car.Speed_Y = 0;
-         // 更新最大的 Current_y 值
+
 				
+//				//矫正当前x坐标
+//				car.MileageX = detectedCards[card_current_num].Current_x;
+				
+	      // 更新最大的 Current_y 值
 				card_y_average += car.MileageY;
 				
         rt_mb_send(buzzer_mailbox, 100);
@@ -870,7 +876,7 @@ void obj_detection_entry(void *param)
 			
 				float real_distance = (float)ART3_DETECT_DISTANCE * (float)ART3_DETECT_DISTANCE * 0.0039 - (float)ART3_DETECT_DISTANCE * 0.2716 + 47.0712;
 
-        detectedCards[card_current_num].Current_x = car.MileageX - 20;
+        detectedCards[card_current_num].Current_x = car.MileageX;
         detectedCards[card_current_num].Current_y = car.MileageY + real_distance;
 
 			//0.00425722687x ^2−0.247807950x+46.5513049

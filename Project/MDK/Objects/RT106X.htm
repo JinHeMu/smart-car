@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\RT106X.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\RT106X.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Wed Aug 16 05:40:38 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6150002: Last Updated: Wed Aug 16 18:29:11 2023
 <BR><P>
 <H3>Maximum Stack Usage =        808 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -2245,7 +2245,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer1_pit_entry
 </UL>
 
-<P><STRONG><a name="[1d8]"></a>Menu_key_set</STRONG> (Thumb, 544 bytes, Stack size 40 bytes, display.o(.text.Menu_key_set))
+<P><STRONG><a name="[1d8]"></a>Menu_key_set</STRONG> (Thumb, 574 bytes, Stack size 40 bytes, display.o(.text.Menu_key_set))
 <BR><BR>[Stack]<UL><LI>Max Depth = 808<LI>Call Chain = Menu_key_set &rArr; ips114_showstr &rArr; ips114_showchar &rArr; ips114_set_region &rArr; ips114_writedata_16bit &rArr; spi_mosi &rArr; LPSPI_MasterTransferBlocking &rArr; __aeabi_assert &rArr; DbgConsole_Printf &rArr; StrFormatPrintf &rArr; ConvertFloatRadixNumToString &rArr; __hardfp_pow &rArr; sqrt
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_recv
@@ -2791,7 +2791,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[23a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_putbox
 </UL>
 
-<P><STRONG><a name="[ea]"></a>arrive_entry</STRONG> (Thumb, 232 bytes, Stack size 0 bytes, carmove2.o(.text.arrive_entry))
+<P><STRONG><a name="[ea]"></a>arrive_entry</STRONG> (Thumb, 230 bytes, Stack size 0 bytes, carmove2.o(.text.arrive_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = arrive_entry &rArr; car_move &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_thread_mdelay
@@ -2822,7 +2822,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_hw_board_init
 </UL>
 
-<P><STRONG><a name="[eb]"></a>boundry_entry</STRONG> (Thumb, 274 bytes, Stack size 0 bytes, carmove2.o(.text.boundry_entry))
+<P><STRONG><a name="[eb]"></a>boundry_entry</STRONG> (Thumb, 278 bytes, Stack size 0 bytes, carmove2.o(.text.boundry_entry))
 <BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = boundry_entry &rArr; car_speed_y &rArr; rt_thread_mdelay &rArr; rt_thread_sleep &rArr; rt_schedule &rArr; rt_schedule_remove_thread &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send
@@ -2875,7 +2875,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[294]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[23e]"></a>car_move</STRONG> (Thumb, 268 bytes, Stack size 56 bytes, carmove2.o(.text.car_move))
+<P><STRONG><a name="[23e]"></a>car_move</STRONG> (Thumb, 280 bytes, Stack size 56 bytes, carmove2.o(.text.car_move))
 <BR><BR>[Stack]<UL><LI>Max Depth = 352<LI>Call Chain = car_move &rArr; rt_mb_send &rArr; rt_mb_send_wait &rArr; rt_ipc_list_suspend &rArr; rt_thread_suspend &rArr; rt_timer_stop &rArr; rt_object_get_type &rArr; rt_assert_handler &rArr; rt_kprintf &rArr; rt_vsnprintf &rArr; print_number
 </UL>
 <BR>[Calls]<UL><LI><a href="#[244]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mb_send

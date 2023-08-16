@@ -315,7 +315,7 @@ void Menu_key_set(void)
 //		arm_putbox(6);
 
 		
-		                car.Speed_Y = 50;
+		                car.Speed_Y = 75;
                 rt_thread_mdelay(1000);
                 car.Speed_Y = 0;
 								
