@@ -24,16 +24,18 @@ distance_threshold = 20
 
 
 
-#130 20
-#210 20
-#210 240
-#110 240
+#128 21
+#195 21
+#274 240
+#60 240
 x_roi_min =100
 x_roi_max =220
 
 y_roi_min =20
 y_roi_max =240
 
+
+points = [(128, 21), (195, 21), (274, 240), (60, 240)]
 roi = (x_roi_min, y_roi_min, x_roi_max-x_roi_min,y_roi_max-y_roi_min)
 
 #设置模型路径
@@ -58,9 +60,15 @@ def object_detect():
     while detect_flag:
         uart_num = uart.any()  # 获取当前串口数据数量
         img = sensor.snapshot()
-        roi = (x_roi_min, y_roi_min, x_roi_max - x_roi_min, y_roi_max - y_roi_min)
-        img.draw_rectangle(roi, thickness=1,color = (0, 0, 255))
+        #roi = (x_roi_min, y_roi_min, x_roi_max - x_roi_min, y_roi_max - y_roi_min)
+        #img.draw_rectangle(roi, thickness=1,color = (0, 0, 255))
 
+        for i in range(len(points)):
+            start_point = points[i]
+            end_point = points[(i + 1) % len(points)]  # 获取下一个点，确保连接最后一个点到第一个点
+            img.draw_line(start_point[0], start_point[1], end_point[0], end_point[1], color=(0, 0, 0), thickness=2)
+
+        #img.draw_line(points[i], points[i + 1], color=(0, 0, 0), thickness=2)
 
         if uart_num != 0:
             detect_flag = 0
@@ -85,31 +93,52 @@ def object_detect():
 
                     img.draw_rectangle((x1, y1, w, h), color = (255, 0, 0),thickness=2)
 
-                    if card_dis_x >= x_roi_min and card_dis_x <= x_roi_max and card_dis_y >=y_roi_min:
-                        img.draw_rectangle((x1, y1, w, h), color = (0, 255, 0),thickness=2)
-                        lcd.show_image(img, 320, 240, zoom=2)
-                        #print(int(240-y1))
-                        uart.write("C")
-                        uart.write("%c" % int(240-card_dis_y))  # 找到卡片发送1
-                        uart.write("%c" % 1)  # 找到卡片发送
-                        uart.write("D")
 
-                        print(240-card_dis_y)
+                    if card_dis_y >= 165:
+                        if card_dis_x >=84 and card_dis_x <= 248:
+                            uart_dis(x1, y1, w, h,img,card_dis_y)
 
-                        img.draw_rectangle((x1, y1, w, h), thickness=2,color = (0, 255, 0))
-                        lcd.show_image(img, 320, 240, zoom=2)
+                    elif card_dis_y >= 114 and card_dis_y < 165:
+                        if card_dis_x >=98 and card_dis_x <= 228:
+                            uart_dis(x1, y1, w, h,img,card_dis_y)
 
-                        utime.sleep_ms(500)
-                        # detect_flag = 0
+                    elif card_dis_y >= 87 and card_dis_y < 114:
+                        if card_dis_x >=108 and card_dis_x <= 219:
+                            uart_dis(x1, y1, w, h,img,card_dis_y)
 
-                    else:
-                        lcd.show_image(img, 320, 240, zoom=2)
+                    elif card_dis_y >= 69 and card_dis_y < 87:
+                        if card_dis_x >=114 and card_dis_x <= 212:
+                            uart_dis(x1, y1, w, h,img,card_dis_y)
+
+                    elif card_dis_y >= 51 and card_dis_y < 69:
+                        if card_dis_x >=119 and card_dis_x <= 206:
+                            uart_dis(x1, y1, w, h,img,card_dis_y)
+                    elif card_dis_y <= 51:
+                        if card_dis_x >=124 and card_dis_x <= 201:
+                            uart_dis(x1, y1, w, h,img,card_dis_y)
+
+                    # if card_dis_x >= x_roi_min and card_dis_x <= x_roi_max and card_dis_y >=y_roi_min:
+
+                    #     # detect_flag = 0
+                else:
+                    lcd.show_image(img, 320, 240, zoom=2)
 
 
+def uart_dis(x1, y1, w, h,img,card_dis_y):
+    img.draw_rectangle((x1, y1, w, h), color = (0, 255, 0),thickness=2)
+    lcd.show_image(img, 320, 240, zoom=2)
+    #print(int(240-y1))
+    uart.write("C")
+    uart.write("%c" % int(240-card_dis_y))  # 找到卡片发送1
+    uart.write("%c" % 1)  # 找到卡片发送
+    uart.write("D")
 
+    print(240-card_dis_y)
 
+    img.draw_rectangle((x1, y1, w, h), thickness=2,color = (0, 255, 0))
+    lcd.show_image(img, 320, 240, zoom=2)
 
-
+    utime.sleep_ms(200)
 
 
 

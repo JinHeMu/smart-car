@@ -13,7 +13,7 @@ lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
 #晚上阈值（需要调试！！！）
-card_threshold = [(19, 100, -128, 127, -13, 127)]#色块检测阈值
+card_threshold = [(0, 100, -128, 127, -1, 127)]#色块检测阈值
 day_brightness = 2000
 LED(4).on()#照明
 
@@ -131,13 +131,16 @@ def picture_correct():
         if closest_blob:
             img.draw_circle(closest_blob.cx(), closest_blob.cy(), 5, color=(0, 255, 0))
             img.draw_line(160, 240, closest_blob.cx(), closest_blob.cy(), color=(255, 0, 0))
-            img.draw_string(10, 10, "closest distance: {}".format(closest_distance), (255, 0, 0))
 
-            dis_X = closest_blob.cx() - 159
-            dis_Y = closest_blob.cy() - 188
+            dis_X = closest_blob.cx() - 154
+            dis_Y = closest_blob.cy() - 184
 
             dis_X = max(min(dis_X, 64), -64)
             dis_Y = max(min(dis_Y, 64), -64)
+
+            img.draw_string(10, 10, "x: {}".format(dis_X), (255, 0, 0),scale = 2)
+            img.draw_string(10, 30, "y: {}".format(-dis_Y), (0, 255, 0),scale = 2)
+
 
             distance = math.sqrt(dis_X ** 2 + dis_Y ** 2)
 

@@ -44,6 +44,7 @@ uint8 boundry_mode = RIGHT; // 1向前 2向右 3向下 4向左
 uint8 card_current_num = 0; // 识别到的卡片数量
 uint8 card_sum_num = 0;     // 识别到的总卡片数量
 float card_y_average = 0;
+float card_y_max = 0;
 
 unknowcard detectedCards[24];
 
@@ -185,8 +186,8 @@ void car_move(float tar_x, float tar_y)
 //    }
 //    else
 //    {
-       tar_x -= 30;
-			 tar_y -= 30;
+            tar_x -= 30;
+			 tar_y -= 20;
 //			 tar_y += cos(angle) * target_distance / 7;
 //       tar_y += cos(angle) * target_distance / 7;
 
@@ -508,9 +509,11 @@ void arrive_entry(void *param)
 
             //先移动到目标检测到的最远距离
             uint16 car_current_x = car.MileageX;
-			card_y_average = card_y_average / card_sum_num;
-            car_move(car_current_x, card_y_average);
-			card_sum_num = 0;
+            car_move(car_current_x, card_y_max - 40);
+            card_sum_num = 0;
+            // card_y_average = card_y_average / card_sum_num + 40;
+            // car_move(car_current_x, card_y_average);
+            // card_sum_num = 0;
 
             //如果第三次识别到边线
             if(boundry_num == 3)
@@ -575,15 +578,15 @@ void correct_entry(void *param)
             }
             else if (pic_dis <= 45 && pic_dis > 25)
             {
-                car.correct_speed = 0.75;
+                car.correct_speed = 1;
             }
             else if (pic_dis <= 25 && pic_dis > 15)
             {
-                car.correct_speed = 1;
+                car.correct_speed = 2;
             }
             else if (pic_dis < 15)
             {
-                car.correct_speed = 2;
+                car.correct_speed = 2.5;
             }
             else
             {
@@ -597,15 +600,20 @@ void correct_entry(void *param)
 
         car.Speed_X = 0;
         car.Speed_Y = 0;
-
+        rt_mb_send(buzzer_mailbox, 100);
 				
 //				//矫正当前x坐标
 //				car.MileageX = detectedCards[card_current_num].Current_x;
 				
 	      // 更新最大的 Current_y 值
-				card_y_average += car.MileageY;
+				// card_y_average += car.MileageY;
 				
-        rt_mb_send(buzzer_mailbox, 100);
+        if(card_y_max < car.MileageY)
+        {
+            card_y_max = car.MileageY;
+        }
+
+
         //rt_sem_release(recognize_sem);
         // rt_sem_release(correct_sem);
         card_current_num--;
@@ -874,7 +882,7 @@ void obj_detection_entry(void *param)
 			
 			
 			
-				float real_distance = (float)ART3_DETECT_DISTANCE * (float)ART3_DETECT_DISTANCE * 0.0039 - (float)ART3_DETECT_DISTANCE * 0.2716 + 47.0712;
+		float real_distance = (float)ART3_DETECT_DISTANCE * (float)ART3_DETECT_DISTANCE * 0.0039 - (float)ART3_DETECT_DISTANCE * 0.2716 + 47.0712;
 
         detectedCards[card_current_num].Current_x = car.MileageX;
         detectedCards[card_current_num].Current_y = car.MileageY + real_distance;
