@@ -186,8 +186,8 @@ void car_move(float tar_x, float tar_y)
 //    }
 //    else
 //    {
-            tar_x -= 30;
-			 tar_y -= 20;
+            tar_x -= 20;
+						tar_y -= 20;
 //			 tar_y += cos(angle) * target_distance / 7;
 //       tar_y += cos(angle) * target_distance / 7;
 
@@ -509,7 +509,7 @@ void arrive_entry(void *param)
 
             //先移动到目标检测到的最远距离
             uint16 car_current_x = car.MileageX;
-            car_move(car_current_x, card_y_max - 40);
+            car_move(car_current_x, card_y_max-10);
             card_sum_num = 0;
             // card_y_average = card_y_average / card_sum_num + 40;
             // car_move(car_current_x, card_y_average);
@@ -551,6 +551,42 @@ void arrive_entry(void *param)
     }
 }
 
+
+
+float correct_speed(int16 dis)
+{
+	
+					float speed = 0;
+						if (dis > 64)
+            {
+                speed = 1.5;
+            }
+            else if (dis <= 64 && dis > 45)
+            {
+                speed = 1;
+            }
+            else if (dis <= 45 && dis > 25)
+            {
+                speed = 0.75;
+            }
+            else if (dis <= 25 && dis > 15)
+            {
+                speed = 1;
+            }
+            else if (dis < 15)
+            {
+                speed = 1;
+            }
+            else
+            {
+               speed = 0;
+            }
+						
+						return speed;
+	
+	
+}
+
 void correct_entry(void *param)
 {
     while (1)
@@ -566,35 +602,10 @@ void correct_entry(void *param)
 
         while (ART2_CORRECT_Flag == 0)
         {
-            pic_dis = (int)distance(ART2_CORRECT_X, ART2_CORRECT_Y, 0, 0);
+//            pic_dis = (int)distance(ART2_CORRECT_X, ART2_CORRECT_Y, 0, 0);
 
-            if (pic_dis > 65)
-            {
-                car.correct_speed = 1.5;
-            }
-            else if (pic_dis <= 65 && pic_dis > 45)
-            {
-                car.correct_speed = 1;
-            }
-            else if (pic_dis <= 45 && pic_dis > 25)
-            {
-                car.correct_speed = 1;
-            }
-            else if (pic_dis <= 25 && pic_dis > 15)
-            {
-                car.correct_speed = 2;
-            }
-            else if (pic_dis < 15)
-            {
-                car.correct_speed = 2.5;
-            }
-            else
-            {
-                car.correct_speed = 0;
-            }
-
-            car.Speed_X = car.correct_speed * ART2_CORRECT_X;
-            car.Speed_Y = car.correct_speed * ART2_CORRECT_Y;
+            car.Speed_X = correct_speed(ART2_CORRECT_X) * ART2_CORRECT_X;
+            car.Speed_Y = correct_speed(ART2_CORRECT_Y) * ART2_CORRECT_Y;
             rt_thread_mdelay(5);
         }
 
@@ -615,7 +626,7 @@ void correct_entry(void *param)
 
 
         //rt_sem_release(recognize_sem);
-        // rt_sem_release(correct_sem);
+        //rt_sem_release(correct_sem);
         card_current_num--;
         //rt_sem_release(arrive_sem);
 				rt_sem_release(recognize_sem);

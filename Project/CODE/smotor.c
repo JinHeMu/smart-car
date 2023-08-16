@@ -21,6 +21,9 @@ uint32 prime = 1;
 #define MAGNET_FRONT C6
 #define MAGNET_LEFT C5
 
+
+uint8 storehouse_num[6] = {0,0,0,0,0,0};
+
 // 电磁铁释放
 void magnet_front_release(void)
 {
@@ -59,7 +62,7 @@ void ARM_LEFT_angle(int angle)
 
 void ARM_MID_angle(int angle)
 {
-	pwm_duty(ARM_MID_PIN, 3100 + 55.6548 * angle );
+	pwm_duty(ARM_MID_PIN, 3050 + 55.6548 * angle );
 }
 
 void arm_out(void) // 防止仓卡住
@@ -181,42 +184,76 @@ void arm_putbox(uint8 angle)
 		ARM_MID_angle(angle * 60 - 60);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
+		if(storehouse_num[0] == 0)
+		{
+			once_flag = 1;
+		}
 		break;
 
 	case 1:
 		ARM_MID_angle(angle * 60 - 60);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
+		if(storehouse_num[0] == 0)
+		{
+			storehouse_num[0] = 1;
+			once_flag = 1;
+		}
 		break;
 
 	case 2:
 		ARM_MID_angle(angle * 60 -60);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
+		if(storehouse_num[1] == 0)
+		{
+			storehouse_num[1] = 1;
+			once_flag = 1;
+		}
 		break;
 
 	case 3:
 		ARM_MID_angle(angle * 60 - 60);
 		rt_thread_mdelay(0);
 		cur_angle = angle;
+			if(storehouse_num[2] == 0)
+		{
+			storehouse_num[2] = 1;
+			once_flag = 1;
+		}
 		break;
 
 	case 4:
 		ARM_MID_angle(angle * 60 - 60);
 		rt_thread_mdelay(100);
 		cur_angle = angle;
+			if(storehouse_num[3] == 0)
+		{
+			storehouse_num[3] = 1;
+			once_flag = 1;
+		}
 		break;
 
 	case 5:
 		ARM_MID_angle(angle * 60 - 60);
 		rt_thread_mdelay(200);
 		cur_angle = angle;
+			if(storehouse_num[4] == 0)
+		{
+			storehouse_num[4] = 1;
+			once_flag = 1;
+		}
 		break;
 
 	case 6:
 		ARM_MID_angle(angle * 60 - 60);
 		rt_thread_mdelay(300);
 		cur_angle = angle;
+			if(storehouse_num[5] == 0)
+		{
+			storehouse_num[5] = 1;
+			once_flag = 1;
+		}
 		break;
 	}
 
@@ -243,49 +280,49 @@ void arm_putbox(uint8 angle)
   rt_sem_release(arrive_sem);
 //	select_mode();
 
-	switch (angle)
-	{
-	case 1:
-	{
-		if (prime % 2 != 0)
-		{
-			prime *= 2;
-			once_flag = 1;
-			//rt_kprintf(" 1-first!!!\n");
-		}
-		break;
-	}
-	case 2:
-	{
-		if (prime % 3 != 0)
-		{
-			prime *= 3;
-			once_flag = 1;
-			//rt_kprintf(" 2-first!!!\n");
-		}
-		break;
-	}
-	case 3:
-	{
-		if (prime % 5 != 0)
-		{
-			prime *= 5;
-			once_flag = 1;
-			//rt_kprintf(" 3-first!!!\n");
-		}
-		break;
-	}
-	case 4:
-	{
-		if (prime % 7 != 0)
-		{
-			prime *= 7;
-			once_flag = 1;
-			//rt_kprintf(" 4-first!!!\n");
-		}
-		break;
-	}
-	}
+//	switch (angle)
+//	{
+//	case 1:
+//	{
+//		if (prime % 2 != 0)
+//		{
+//			prime *= 2;
+//			once_flag = 1;
+//			//rt_kprintf(" 1-first!!!\n");
+//		}
+//		break;
+//	}
+//	case 2:
+//	{
+//		if (prime % 3 != 0)
+//		{
+//			prime *= 3;
+//			once_flag = 1;
+//			//rt_kprintf(" 2-first!!!\n");
+//		}
+//		break;
+//	}
+//	case 3:
+//	{
+//		if (prime % 5 != 0)
+//		{
+//			prime *= 5;
+//			once_flag = 1;
+//			//rt_kprintf(" 3-first!!!\n");
+//		}
+//		break;
+//	}
+//	case 4:
+//	{
+//		if (prime % 7 != 0)
+//		{
+//			prime *= 7;
+//			once_flag = 1;
+//			//rt_kprintf(" 4-first!!!\n");
+//		}
+//		break;
+//	}
+//	}
 	
 	//rt_kprintf("prime:%d\n", prime);
 
@@ -294,21 +331,18 @@ void arm_putbox(uint8 angle)
 	{
 		ARM_LOW_angle(70);
 		rt_thread_mdelay(100);
-		ARM_UP_angle(160);
+		ARM_UP_angle(170);
 		rt_thread_mdelay(150);
 		ARM_LOW_angle(40);
 		rt_thread_mdelay(500);
 		
-
-		ARM_LOW_angle(50);
+				ARM_LOW_angle(50);
 		rt_thread_mdelay(100);
-		ARM_LOW_angle(60);
+				ARM_LOW_angle(60);
 		rt_thread_mdelay(100);
-		ARM_LOW_angle(70);
+				ARM_LOW_angle(70);
 		rt_thread_mdelay(100);
-		ARM_LOW_angle(80);
-		rt_thread_mdelay(100);
-		ARM_LOW_angle(90);
+				ARM_LOW_angle(80);
 		rt_thread_mdelay(100);
 	}else
 	{
@@ -344,6 +378,7 @@ void arm_putbox(uint8 angle)
 		rt_thread_mdelay(50);
 
 	}
+		once_flag = 0;
 	
 		rt_thread_mdelay(500);
 		magnet_front_release();
@@ -361,10 +396,10 @@ void arm_putbox(uint8 angle)
 		{
 			case 1:angle = 4;ARM_MID_angle(180);break;
 			case 2:angle = 5;ARM_MID_angle(240);break;
-			case 3:angle = 6;ARM_MID_angle(300);break;
+			case 3:angle = 6;ARM_MID_angle(295);break;
 			case 4:angle = 1;ARM_MID_angle(0);break;
-			case 5:angle = 2;ARM_MID_angle(60);break;
-			case 6:angle = 3;ARM_MID_angle(120);break;
+			case 5:angle = 2;ARM_MID_angle(59);break;
+			case 6:angle = 3;ARM_MID_angle(118);break;
 		}
 		
 		switch (abs(angle - cur_angle))
@@ -377,13 +412,17 @@ void arm_putbox(uint8 angle)
 		case 5:rt_thread_mdelay(1300);cur_angle = angle;break;
 		}
 
+		
 		ARM_LEFT_angle(100);
 		rt_thread_mdelay(300);
+		ARM_LEFT_angle(105);
+		rt_thread_mdelay(200);
+
 
 		magnet_left_appeal();
 		rt_thread_mdelay(500);
 
-		ARM_LEFT_angle(0);
+		ARM_LEFT_angle(30);
 		rt_thread_mdelay(500);
 
 		//	ARM_LEFT_angle(100);

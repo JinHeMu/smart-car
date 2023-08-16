@@ -28,7 +28,8 @@ typedef struct Pose_car {
    double Speed_X;
    double Speed_Y;
    double Speed_Z;
-   float correct_speed;
+   float correct_speed_x;
+	 float correct_speed_y;
      
    //��ǰ��̬
    float current_angle;

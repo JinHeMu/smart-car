@@ -13,7 +13,7 @@ uart = UART(2, baudrate=115200) # 串口
 lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
-day_brightness = 1000
+day_brightness = 2000
 
 camera_center = (160, 240)
 
@@ -78,9 +78,10 @@ def object_detect():
 
 
                 x1,y1,x2,y2,label,scores = obj
+
                 #print(obj)
 
-                if(scores>0.3):
+                if(scores>0.5):
                     w = x2 - x1
                     h = y2 - y1
                     x1 = int((x1-0.1)*img.width())
@@ -138,7 +139,7 @@ def uart_dis(x1, y1, w, h,img,card_dis_y):
     img.draw_rectangle((x1, y1, w, h), thickness=2,color = (0, 255, 0))
     lcd.show_image(img, 320, 240, zoom=2)
 
-    utime.sleep_ms(200)
+    utime.sleep_ms(100)
 
 
 
@@ -154,7 +155,7 @@ def main():
     while True:
         img = sensor.snapshot()
 
-        object_detect()
+        #object_detect()
         uart_num = uart.any()  # 鑾峰彇褰撳墠涓插彛鏁版嵁鏁伴噺
         if uart_num:
             uart_str = uart.read(uart_num).strip()  # 璇诲彇涓插彛鏁版嵁

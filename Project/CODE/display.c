@@ -149,29 +149,31 @@ void Menu_key_set(void)
 	if ((mb_data == 2)) // °´ÏÂ°´¼ü1
 	{
 
-		
-				                car.Speed_Y = 50;
-                rt_thread_mdelay(1000);
-                car.Speed_Y = 0;
-								
-								    car.Speed_X = 150;
-                rt_thread_mdelay(1000);
-                car.Speed_X = 0;
-
-		
-				game_mode = 1;
 //		
-		ips114_clear(WHITE);
-		strcpy(taget_Big_category, "fruit");
-		ips114_showstr(0, 0, "fruit");
-				
-		ART3_mode = 1;
-    uart_putchar(USART_8, A);
-		
-		rt_sem_release(boundry_sem);
-		
-		rt_thread_delete(display_th);
-		
+//				                car.Speed_Y = 50;
+//                rt_thread_mdelay(1000);
+//                car.Speed_Y = 0;
+//								
+//								    car.Speed_X = 150;
+//                rt_thread_mdelay(1000);
+//                car.Speed_X = 0;
+
+//		
+//				game_mode = 1;
+////		
+//		ips114_clear(WHITE);
+//		strcpy(taget_Big_category, "fruit");
+//		ips114_showstr(0, 0, "fruit");
+//				
+//		ART3_mode = 1;
+//    uart_putchar(USART_8, A);
+//		
+//		rt_sem_release(boundry_sem);
+//		
+//		rt_thread_delete(display_th);
+////		
+
+		//rt_sem_release(correct_sem);
 
 		
 //		arm_openbox(1);
@@ -182,9 +184,9 @@ void Menu_key_set(void)
 //		car_move(200,200);
 //		rt_thread_mdelay(5000);
 //		car_move(40,40);
-//		angle1 ++;
-//		arm_openbox(angle1);
-		//arm_putbox(1);
+		angle1 ++;
+//		arm_openbox(5, angle1);
+		arm_putbox(angle1);
 						
 //		ARM_MID_angle(angle1 * 60);
 		
@@ -232,29 +234,29 @@ void Menu_key_set(void)
 	if ((mb_data == 3))
 	{
 		
-		
-				                car.Speed_Y = 50;
-                rt_thread_mdelay(1000);
-                car.Speed_Y = 0;
-								
-								    car.Speed_X = 150;
-                rt_thread_mdelay(1000);
-                car.Speed_X = 0;
+//	
+//											car.Speed_Y = 50;
+//							rt_thread_mdelay(1000);
+//							car.Speed_Y = 0;
+//							
+//									car.Speed_X = 150;
+//							rt_thread_mdelay(1000);
+//							car.Speed_X = 0;
 
-		
-		game_mode = 1;
-		ips114_clear(WHITE);
+//	
+//	game_mode = 1;
+//	ips114_clear(WHITE);
 
-		strcpy(taget_Big_category, "vegetable");
-		ips114_showstr(0, 0, "vegetable");
-		
-		
-				ART3_mode = 1;
-    uart_putchar(USART_8, A);
-		
-		rt_sem_release(boundry_sem);
-		
-		rt_thread_delete(display_th);
+//	strcpy(taget_Big_category, "vegetable");
+//	ips114_showstr(0, 0, "vegetable");
+//	
+//	
+//			ART3_mode = 1;
+//	uart_putchar(USART_8, A);
+//	
+//	rt_sem_release(boundry_sem);
+//	
+//	rt_thread_delete(display_th);
 		
 
 //		car_move(300,300);
@@ -273,6 +275,9 @@ void Menu_key_set(void)
 //		magnet_left_appeal();
 //		magnet_front_appeal();
 
+		angle1 --;
+//		arm_openbox(5, angle1);
+		arm_putbox(angle1);
 
 
 //	car_speed_x(300);

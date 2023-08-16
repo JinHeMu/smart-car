@@ -44,7 +44,7 @@ float Angel_kp = 10, Angel_ki = 0, Angel_kd = 90; // 角度环
 
 float Position_kp = 10, Position_ki = 0, Position_kd = 0;
 
-float correct_kp = 0, correct_ki = 0, correct_kd = 0;
+float correct_kp = 1, correct_ki = 0.002, correct_kd = 0;
 
 // 积分法计算位移参数
 
@@ -287,10 +287,10 @@ int correct_x_pid(int16 now_x, int16 target_x)
     Integral_bias += Bias;
     Speed_X = correct_kp * Bias + correct_ki * Integral_bias + correct_kd * (Bias - Last_Bias);
     Last_Bias = Bias;
-    if (Speed_X >= 100)
-        Speed_X = 100;
-    if (Speed_X <= -100)
-        Speed_X = -100;
+    if (Speed_X >= 200)
+        Speed_X = 200;
+    if (Speed_X <= -200)
+        Speed_X = -200;
     return (int)Speed_X;
 }
 
@@ -301,10 +301,10 @@ int correct_y_pid(int16 now_y, int16 target_y)
     Integral_bias += Bias;
     Speed_Y = correct_kp * Bias + correct_ki * Integral_bias + correct_kd * (Bias - Last_Bias);
     Last_Bias = Bias;
-    if (Speed_Y >= 100)
-        Speed_Y = 100;
-    if (Speed_Y <= -100)
-        Speed_Y = -100;
+    if (Speed_Y >= 200)
+        Speed_Y = 200;
+    if (Speed_Y <= -200)
+        Speed_Y = -200;
     return (int)Speed_Y;
 }
 
