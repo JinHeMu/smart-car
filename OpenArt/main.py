@@ -13,7 +13,7 @@ uart = UART(2, baudrate=115200) # 串口
 lcd = seekfree.LCD180(2)#显示屏
 lcd.full()
 
-day_brightness = 2000
+day_brightness = 1500
 
 camera_center = (160, 240)
 
@@ -79,9 +79,9 @@ def object_detect():
 
                 x1,y1,x2,y2,label,scores = obj
 
-                #print(obj)
+                print(obj)
 
-                if(scores>0.5):
+                if(scores>0.2):
                     w = x2 - x1
                     h = y2 - y1
                     x1 = int((x1-0.1)*img.width())

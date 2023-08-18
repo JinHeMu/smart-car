@@ -122,7 +122,7 @@ void Menu_key_set(void)
 //		arm_putbox(1);
 
 		
-						                car.Speed_Y = 50;
+						                car.Speed_Y = 75;
                 rt_thread_mdelay(1000);
                 car.Speed_Y = 0;
 								
@@ -130,7 +130,6 @@ void Menu_key_set(void)
                 rt_thread_mdelay(1000);
                 car.Speed_X = 0;
 
-		
 		game_mode = 0;
 		
 		ART3_mode = 1;
@@ -149,82 +148,28 @@ void Menu_key_set(void)
 	if ((mb_data == 2)) // 按下按键1
 	{
 
-//		
-//				                car.Speed_Y = 50;
-//                rt_thread_mdelay(1000);
-//                car.Speed_Y = 0;
-//								
-//								    car.Speed_X = 150;
-//                rt_thread_mdelay(1000);
-//                car.Speed_X = 0;
-
-//		
-//				game_mode = 1;
-////		
-//		ips114_clear(WHITE);
-//		strcpy(taget_Big_category, "fruit");
-//		ips114_showstr(0, 0, "fruit");
-//				
-//		ART3_mode = 1;
-//    uart_putchar(USART_8, A);
-//		
-//		rt_sem_release(boundry_sem);
-//		
-//		rt_thread_delete(display_th);
-////		
-
-		//rt_sem_release(correct_sem);
+		
+			car.Speed_Y = 75;
+      rt_thread_mdelay(1000);
+      car.Speed_Y = 0;
+								
+			car.Speed_X = 150;
+      rt_thread_mdelay(1000);
+       car.Speed_X = 0;
 
 		
-//		arm_openbox(1);
-////		angle2 ++;
+			game_mode = 1;
 //		
-
-//		
-//		car_move(200,200);
-//		rt_thread_mdelay(5000);
-//		car_move(40,40);
-		angle1 ++;
-//		arm_openbox(5, angle1);
-		arm_putbox(angle1);
-						
-//		ARM_MID_angle(angle1 * 60);
+		ips114_clear(WHITE);
+		strcpy(taget_Big_category, "fruit");
+		ips114_showstr(0, 0, "fruit");
+				
+		ART3_mode = 1;
+    uart_putchar(USART_8, A);
 		
-//		magnet_left_release();
-//		magnet_front_release();
-
-
-//		car.Speed_X = 300;
-//		car.Speed_Y = 300;
-//		rt_thread_mdelay(2000);
-//		car.Speed_X = 0;
-//		car.Speed_Y = 0;
-//		rt_thread_mdelay(2000);
-//		
-//		car.Speed_X = -300;
-//		car.Speed_Y = -300;
-//		rt_thread_mdelay(2000);
-//		car.Speed_X = 0;
-//		car.Speed_Y = 0;
-//		rt_thread_mdelay(2000);
-
-
-
-//		car.Speed_X = 300;
-//		rt_thread_mdelay(2000);
-//		car.Speed_X = 0;
-//		rt_thread_mdelay(2000);
-//		
-//		car.Speed_X = -300;
-//		rt_thread_mdelay(2000);
-//		car.Speed_X = 0;
-//		rt_thread_mdelay(2000);
-
-//      uart_putchar(USART_1, 0x43);
-//			      uart_putchar(USART_1, 0x42);
-//						      uart_putchar(USART_1, 0x41);
-
-//uart_putchar(USART_4, 0x44);
+		rt_sem_release(boundry_sem);
+		
+		rt_thread_delete(display_th);
 
 		
 		mb_data = 0; // 邮箱数据清除
@@ -235,28 +180,28 @@ void Menu_key_set(void)
 	{
 		
 //	
-//											car.Speed_Y = 50;
-//							rt_thread_mdelay(1000);
-//							car.Speed_Y = 0;
-//							
-//									car.Speed_X = 150;
-//							rt_thread_mdelay(1000);
-//							car.Speed_X = 0;
+											car.Speed_Y = 75;
+							rt_thread_mdelay(1000);
+							car.Speed_Y = 0;
+							
+									car.Speed_X = 150;
+							rt_thread_mdelay(1000);
+							car.Speed_X = 0;
 
-//	
-//	game_mode = 1;
-//	ips114_clear(WHITE);
+	
+	game_mode = 1;
+	ips114_clear(WHITE);
 
-//	strcpy(taget_Big_category, "vegetable");
-//	ips114_showstr(0, 0, "vegetable");
-//	
-//	
-//			ART3_mode = 1;
-//	uart_putchar(USART_8, A);
-//	
-//	rt_sem_release(boundry_sem);
-//	
-//	rt_thread_delete(display_th);
+	strcpy(taget_Big_category, "vegetable");
+	ips114_showstr(0, 0, "vegetable");
+	
+	
+			ART3_mode = 1;
+	uart_putchar(USART_8, A);
+	
+	rt_sem_release(boundry_sem);
+	
+	rt_thread_delete(display_th);
 		
 
 //		car_move(300,300);
@@ -275,9 +220,9 @@ void Menu_key_set(void)
 //		magnet_left_appeal();
 //		magnet_front_appeal();
 
-		angle1 --;
-//		arm_openbox(5, angle1);
-		arm_putbox(angle1);
+//		angle1 --;
+////		arm_openbox(5, angle1);
+//		arm_putbox(angle1);
 
 
 //	car_speed_x(300);

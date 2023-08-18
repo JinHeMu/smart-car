@@ -18,7 +18,7 @@
 #define LOW 3
 #define LEFT 4
 
-#define boundry_speed 200
+#define boundry_speed 300
 
 
 typedef struct Pose_car {
@@ -28,8 +28,7 @@ typedef struct Pose_car {
    double Speed_X;
    double Speed_Y;
    double Speed_Z;
-   float correct_speed_x;
-	 float correct_speed_y;
+   float correct_speed;
      
    //��ǰ��̬
    float current_angle;

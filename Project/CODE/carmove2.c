@@ -15,7 +15,7 @@
 #define LEFT 4
 #define MAIN_CATEGORY 6
 
-#define boundry_speed 200
+#define boundry_speed 300
 #define back_speed 300
 
 uint8 game_mode = 0; // 0为初赛  1为决赛
@@ -169,10 +169,13 @@ void car_move(float tar_x, float tar_y)
     float target_distance = distance(car.MileageX, car.MileageY, tar_x, tar_y);
     float current_distance = target_distance;
     float acceleration = 0.01; // 加速度，可根据实际情况调整
-    float max_speed = 0.5;     // 最大速度，可根据实际情况调整
+    float max_speed = 1;     // 最大速度，可根据实际情况调整
     float current_speed = 0;
     float angle = get_angle(car.MileageX, car.MileageY, tar_x, tar_y);
 
+	
+	
+	
     // rt_kprintf("TARGRT TO X:%d, Y:%d\n", (int)tar_x, (int)tar_y);
 
 //    if (target_distance >= 450)
@@ -186,8 +189,8 @@ void car_move(float tar_x, float tar_y)
 //    }
 //    else
 //    {
-            tar_x -= 20;
-						tar_y -= 20;
+            tar_x -= 30;
+						tar_y -= 30;
 //			 tar_y += cos(angle) * target_distance / 7;
 //       tar_y += cos(angle) * target_distance / 7;
 
@@ -411,7 +414,7 @@ void back_entry(void *param)
         rt_thread_mdelay(750);
         car.Speed_X = 0;
 			
-		car_moveto_boundry(LOW, boundry_speed);   //回库
+		car_moveto_boundry(LOW, back_speed);   //回库
 			
 
 				
@@ -509,7 +512,7 @@ void arrive_entry(void *param)
 
             //先移动到目标检测到的最远距离
             uint16 car_current_x = car.MileageX;
-            car_move(car_current_x, card_y_max-10);
+            car_move(car_current_x, card_y_max);
             card_sum_num = 0;
             // card_y_average = card_y_average / card_sum_num + 40;
             // car_move(car_current_x, card_y_average);
@@ -553,39 +556,7 @@ void arrive_entry(void *param)
 
 
 
-float correct_speed(int16 dis)
-{
-	
-					float speed = 0;
-						if (dis > 64)
-            {
-                speed = 1.5;
-            }
-            else if (dis <= 64 && dis > 45)
-            {
-                speed = 1;
-            }
-            else if (dis <= 45 && dis > 25)
-            {
-                speed = 0.75;
-            }
-            else if (dis <= 25 && dis > 15)
-            {
-                speed = 1;
-            }
-            else if (dis < 15)
-            {
-                speed = 1;
-            }
-            else
-            {
-               speed = 0;
-            }
-						
-						return speed;
-	
-	
-}
+
 
 void correct_entry(void *param)
 {
@@ -602,13 +573,37 @@ void correct_entry(void *param)
 
         while (ART2_CORRECT_Flag == 0)
         {
-//            pic_dis = (int)distance(ART2_CORRECT_X, ART2_CORRECT_Y, 0, 0);
+            pic_dis = (int)distance(ART2_CORRECT_X, ART2_CORRECT_Y, 0, 0);
 
-            car.Speed_X = correct_speed(ART2_CORRECT_X) * ART2_CORRECT_X;
-            car.Speed_Y = correct_speed(ART2_CORRECT_Y) * ART2_CORRECT_Y;
+            if (pic_dis > 65)
+            {
+                car.correct_speed = 1.5;
+            }
+            else if (pic_dis <= 65 && pic_dis > 45)
+            {
+                car.correct_speed = 1;
+            }
+            else if (pic_dis <= 45 && pic_dis > 25)
+            {
+                car.correct_speed = 1.5;
+            }
+            else if (pic_dis <= 25 && pic_dis > 15)
+            {
+                car.correct_speed = 2.5;
+            }
+            else if (pic_dis < 15)
+            {
+                car.correct_speed = 3;
+            }
+            else
+            {
+                car.correct_speed = 0;
+            }
+
+            car.Speed_X = car.correct_speed * ART2_CORRECT_X;
+            car.Speed_Y = car.correct_speed * ART2_CORRECT_Y;
             rt_thread_mdelay(5);
         }
-
         car.Speed_X = 0;
         car.Speed_Y = 0;
         rt_mb_send(buzzer_mailbox, 100);

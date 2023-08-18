@@ -28,11 +28,11 @@ uart_num = 0
 
 
 #晚上阈值（需要调试）
-card_threshold = [(0, 100, -128, 127, -1, 127)]#色块检测阈值
-boundary_threshold = [(51, 100, -121, 127, 44, 127)]#边线检测阈值
-boundary_column_threshold = [(51, 100, -121, 127, 44, 127)]#边线检测阈值
-boundary_row_threshold = [(51, 100, -121, 127, 44, 127)]#边线检测阈值
-day_brightness = 2000
+card_threshold = [(54, 100, -128, 127, -128, 46)]#色块检测阈值
+boundary_threshold = [(58, 100, -128, 127, 15, 127)]#边线检测阈值
+boundary_column_threshold = [(58, 100, -128, 127, 15, 127)]#边线检测阈值
+boundary_row_threshold = [(58, 100, -128, 127, 15, 127)]#边线检测阈值
+day_brightness = 600
 binary_threshold = (175, 255)   #需要调节
 LED(4).on()#照明
 

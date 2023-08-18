@@ -422,7 +422,7 @@ void arm_putbox(uint8 angle)
 		magnet_left_appeal();
 		rt_thread_mdelay(500);
 
-		ARM_LEFT_angle(30);
+		ARM_LEFT_angle(20);
 		rt_thread_mdelay(500);
 
 		//	ARM_LEFT_angle(100);
